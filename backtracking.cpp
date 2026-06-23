@@ -1,0 +1,352 @@
+//1. FINDING ALL SUBSEQUENCES
+// #include<bits/stdc++.h>
+// using namespace std;
+// void printSubsequences(int index,vector<int>arr,vector<int>current){
+//     //BASE CASE
+//     if(index==arr.size()){
+//         cout<<"CASE : ";
+//         for(auto x: current){
+//             cout<<x<<" ";
+//         }cout<<endl;
+//         return;
+//     }
+
+//     //PUSH THE CURRENT
+//     current.push_back(arr[index]);
+//     printSubsequences(index+1,arr,current);
+//     //POP THE CURRENT
+//     current.pop_back();
+//     printSubsequences(index+1,arr,current);
+// }
+// int main(){
+//     vector<int>arr={1,2,3};
+//     vector<int>current;
+//     printSubsequences(0,arr,current);
+//     return 0;
+// }
+
+//2. PRINT ALL SUBSEQUENCE WHOSE SUM EQUALS TO K
+//MY WAY - I END UP CALCULATING SUM FOR ALL THE SEQUENCES 1 EXTRA O(N) each time
+// #include<bits/stdc++.h>
+// using namespace std;
+// void printSubseqSumK(int index,int k,vector<int>arr,vector<int>current){
+//     //base case
+//     if(arr.size()==index){
+//         int sum=0;
+//        for(auto x: current){
+//           sum+=x;
+//        }
+//        if(sum==k){
+//         cout<<"CASE : ";
+//          for(auto x: current){
+//             cout<<x<<" ";
+//          }cout<<endl;
+//        }
+//        return;
+//     }
+//     //push current element
+//     current.push_back(arr[index]);
+//     printSubseqSumK(index+1,k,arr,current);
+//     //pop current element
+//     current.pop_back();
+//     printSubseqSumK(index+1,k,arr,current);
+// }
+// int main()
+// {
+//     vector<int>arr={1,2,3};
+//     vector<int>current;
+//     printSubseqSumK(0,3,arr,current);
+//     return 0;
+// }
+// OPTIMAL WAY
+// #include<bits/stdc++.h>
+// using namespace std;
+// void printSubseqSumK(int index,int k,int sum,vector<int>arr,vector<int>current){
+//     //base case
+//     if(index==arr.size()){
+//         if(sum==k){
+//             cout<<"CASE : ";
+//         for(auto x: current){
+//             cout<<x<<" ";
+//         }cout<<endl;
+//         }
+//         return;
+//     }
+//     //push current
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     printSubseqSumK(index+1,k,sum,arr,current);
+
+//     sum-=arr[index];
+//     current.pop_back();
+//     printSubseqSumK(index+1,k,sum,arr,current);
+// }
+// int main()
+// {
+//         vector<int>arr={1,2,3};
+//     vector<int>current;
+//     printSubseqSumK(0,3,0,arr,current);
+//     return 0;
+// }
+
+
+
+//3. PRINT ONLY 1 SUBSEQUENCE WITH THE SUM K
+#include<bits/stdc++.h>
+using namespace std;
+//MY WAY--- THIS WONT WORK BECAUSE USING JUST RETURN INSIDE MY CONDITION WILL JUST MAKE MY RETURN FASTER. IT WONT STOP THE RECURSION. NOW I WANT MY RECURSION TO STOP AFTER SOMETHING HAPPENS ELSE CONTINUE TILL THAT SOMETHING HAPPENS TILL I HAVE EXPLORED ALL SUBSEQUENCES.
+// void printSubseqSumK(int index,int k,int sum,vector<int>&arr,vector<int>&current){
+//     //base case
+//     if(arr.size()==index){
+//         if(sum==k){
+//             for(int x: current){
+//                 cout<<x<<" ";
+//             }cout<<endl;
+//             return;
+//         }
+//         return;
+//     }
+
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     printSubseqSumK(index+1,k,sum,arr,current);
+
+//     sum-=arr[index];
+//     current.pop_back();
+//     printSubseqSumK(index+1,k,sum,arr,current);
+// }
+// int main(){
+//         vector<int>arr={1,2,3};
+//     vector<int>current;
+//     printSubseqSumK(0,3,0,arr,current);
+//     return 0;
+// }
+
+
+// #include<bits/stdc++.h>
+// using namespace std;
+// bool printSubseqWithSumK(int index,int k,int sum,vector<int>&arr,vector<int>&current){
+//     //base case
+//     if(index==arr.size()){
+//         if(sum==k){
+//             for(int x: current){
+//                 cout<<x<<" ";
+//             }cout<<endl;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     //pick
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     if(printSubseqWithSumK(index+1,k,sum,arr,current)) return true;
+
+//     //skip
+//     sum-=arr[index];
+//     current.pop_back();
+//     if(printSubseqWithSumK(index+1,k,sum,arr,current)) return true;
+
+//     return false;
+// }
+// int main(){
+//             vector<int>arr={1,2,3};
+//     vector<int>current;
+//     printSubseqWithSumK(0,3,0,arr,current);
+//     return 0;
+// }
+
+//4. Count Number Of Subsequences with sum = k
+#include<bits/stdc++.h>
+using namespace std;
+//I'm taking the count variable when I dont even need it in reality
+// int countNumberOfSub(int index,int k,int sum,int count,vector<int>&arr,vector<int>&current){
+//     if(arr.size()==index){
+//         if(sum==k){
+//             count++;
+//         }
+//         return count;
+//     }
+
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     int c= countNumberOfSub(index+1,k,sum,count,arr,current);
+
+//     sum-=arr[index];
+//     current.pop_back();
+//     int b= countNumberOfSub(index+1,k,sum,count,arr,current);
+//     return c+b;
+// }
+
+
+// int countNumberOfSub(int index,int k,int sum,vector<int>&arr,vector<int>&current){
+//     //base case
+//     if(arr.size()==index){
+//         if(sum==k) return 1;
+//         return 0;
+//     }
+
+//     //left case : pick
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     int left=countNumberOfSub(index+1,k,sum,arr,current);
+
+//     //right case : skip
+//     sum-=arr[index];
+//     current.pop_back();
+//     int right=countNumberOfSub(index+1,k,sum,arr,current);
+//     return left+right;
+// }
+// int main(){
+//     vector<int>arr={1,2,3};
+//     vector<int>current;
+//     cout<<countNumberOfSub(0,3,0,arr,current);
+//     return 0;
+// }
+
+//5. Count subsequences with even sum
+// #include<bits/stdc++.h>
+// using namespace std;
+// int countEvenSubseq(int index,int sum,vector<int>&arr,vector<int>&current){
+//     //base case
+//     if(arr.size()==index){
+//         if(sum%2==0){return 1;}
+//         return 0;
+//     }
+
+//     //left case: pick
+//     current.push_back(arr[index]);
+//     sum+=arr[index];
+//     int left=countEvenSubseq(index+1,sum,arr,current);
+
+//     //right case: skip
+//     sum-=arr[index];
+//     current.pop_back();
+//     int right=countEvenSubseq(index+1,sum,arr,current);
+    
+//     return left+right;
+// }
+// int main()
+// {
+//     vector<int>arr={1,2,3};
+//     vector<int>current;
+//     cout<<countEvenSubseq(0,0,arr,current);   
+//     return 0;
+// }
+
+
+//6.Power Set
+// #include<bits/stdc++.h>
+// using namespace std;
+// void powerSet(int index,string& str,string& current){
+//     //base case
+//     if(index==str.size()){
+//        if(current.size()){
+//         for(char ch: current){
+//          cout<<ch;
+//        }cout<<endl;
+//        }
+//        return;
+//     }
+
+//     //pick:
+//     current.push_back(str[index]);
+//     powerSet(index+1,str,current);
+
+//     //skip
+//     current.pop_back();
+//     powerSet(index+1,str,current);
+// }
+// int main(){
+//     string s="abc";
+//     string current;
+//     powerSet(0,s,current);
+//     return 0;
+// }
+
+//7.Generating Binary Strings of a particular length
+// #include<bits/stdc++.h>
+// using namespace std;
+// void generateBinaryStrings(int index,int n,string& current){
+//     //base case
+//     if(index==n){
+//         cout<<current<<endl;
+//         return;
+//     }
+//     current.push_back('0');
+//     generateBinaryStrings(index+1,n,current);
+//     current.pop_back();
+
+//     current.push_back('1');
+//     generateBinaryStrings(index+1,n,current);
+//     current.pop_back();
+// }
+// int main(){
+//     string current;
+//     generateBinaryStrings(0,3,current);
+//     return 0;
+// }
+
+//8. Generate Binary Strings of a particular length without any consecutive ones
+// #include<bits/stdc++.h>
+// using namespace std;
+
+//MY WAY: I end up checking 2 to the power n cases. Then reject if any problem arises.
+//But using backtracking I can create the exact cases without encountering a problem.
+// void generateStrings(int index,int n,string& current){
+//     //base case
+//     if(n==index){
+//         bool check=false;
+//         for(int i=0;i<current.size()-1;i++){
+//             if(current[i]=='1' && current[i+1]=='1'){
+//                check=true;
+//                break;
+//             }
+//         }
+//         if(check){return;}
+//         cout<<current<<endl;
+//         return;
+//     }
+
+//     //pick 0
+//     current.push_back('0');
+//     generateStrings(index+1,n,current);
+//     current.pop_back();
+
+//     //pick 1
+//     current.push_back('1');
+//     generateStrings(index+1,n,current);
+//     current.pop_back();
+// }
+// int main()
+// { 
+//     string current="";
+//     generateStrings(0,3,current);
+//     return 0;
+// }
+
+#include<bits/stdc++.h>
+using namespace std;
+void generateStrings(int index,int n,string &current){
+    if(index==n){
+        cout<<current<<endl;
+        return;
+    }
+
+    // NO RESTRICTION ON PRINTING 0
+    current.push_back('0');
+    generateStrings(index+1,n,current);
+    current.pop_back();
+
+    //There is a restriction ON 1. PRINT 1 ONLY IF EITHER THE STRING IS EMPTY OR THE LAST CHARACTER OF STRING IS NOT 1
+    if(current.empty() || current.back()!='1'){
+        current.push_back('1');
+        generateStrings(index+1,n,current);
+        current.pop_back();
+    }
+}
+int main(){
+        string current="";
+    generateStrings(0,3,current);
+    return 0;
+}
