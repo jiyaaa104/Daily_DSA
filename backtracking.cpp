@@ -92,8 +92,8 @@
 
 
 //3. PRINT ONLY 1 SUBSEQUENCE WITH THE SUM K
-#include<bits/stdc++.h>
-using namespace std;
+// #include<bits/stdc++.h>
+// using namespace std;
 //MY WAY--- THIS WONT WORK BECAUSE USING JUST RETURN INSIDE MY CONDITION WILL JUST MAKE MY RETURN FASTER. IT WONT STOP THE RECURSION. NOW I WANT MY RECURSION TO STOP AFTER SOMETHING HAPPENS ELSE CONTINUE TILL THAT SOMETHING HAPPENS TILL I HAVE EXPLORED ALL SUBSEQUENCES.
 // void printSubseqSumK(int index,int k,int sum,vector<int>&arr,vector<int>&current){
 //     //base case
@@ -157,8 +157,8 @@ using namespace std;
 // }
 
 //4. Count Number Of Subsequences with sum = k
-#include<bits/stdc++.h>
-using namespace std;
+// #include<bits/stdc++.h>
+// using namespace std;
 //I'm taking the count variable when I dont even need it in reality
 // int countNumberOfSub(int index,int k,int sum,int count,vector<int>&arr,vector<int>&current){
 //     if(arr.size()==index){
@@ -325,28 +325,81 @@ using namespace std;
 //     return 0;
 // }
 
+// #include<bits/stdc++.h>
+// using namespace std;
+// void generateStrings(int index,int n,string &current){
+//     if(index==n){
+//         cout<<current<<endl;
+//         return;
+//     }
+
+//     // NO RESTRICTION ON PRINTING 0
+//     current.push_back('0');
+//     generateStrings(index+1,n,current);
+//     current.pop_back();
+
+//     //There is a restriction ON 1. PRINT 1 ONLY IF EITHER THE STRING IS EMPTY OR THE LAST CHARACTER OF STRING IS NOT 1
+//     if(current.empty() || current.back()!='1'){
+//         current.push_back('1');
+//         generateStrings(index+1,n,current);
+//         current.pop_back();
+//     }
+// }
+// int main(){
+//         string current="";
+//     generateStrings(0,3,current);
+//     return 0;
+// }
+
+// 9. Generating all combinations of Well formed parenthesis of a particular length
 #include<bits/stdc++.h>
 using namespace std;
-void generateStrings(int index,int n,string &current){
-    if(index==n){
+//My approach -I was creating for n=3, 2^6 strings. But didnt understand how to remove the invalid cases from my answer. The approach itself was wrong Instead of first creating all possiblities and the removing the unrequired ones. I should have not created the unrequired ones in the first place. Just like binary strings with no consecutive ones.
+
+//But what exactly are the non required cases -> I want to insert open bracket if : the current number of open <n .Because the moment the number of open brackets become equal to n.Do I need to insert more? No.
+
+//What about close brackets. At any point if the count of close brackets increases open That case is surely the unrequired case.
+
+//What about the base case? the moment the number of open becomes equal to n and close also to n. Thats the required string
+// bool printParenthesis(int index,int n,string& current){
+//     //base case
+//     if(index==n){
+//         cout<<current<<endl;
+//         return ;
+//     }
+
+//     current.push_back('(');
+//     printParenthesis(index+1,n,current);
+
+//     current.push_back(')');
+//     printParenthesis(index+1,n,current);
+
+//     current.pop_back();
+//     current.pop_back();
+// }
+
+#include<bits/stdc++.h>
+using namespace std;
+void printParenthesis(int open,int close,int n,string& current){
+    //base case
+    if(open==n && close==n){
         cout<<current<<endl;
         return;
     }
 
-    // NO RESTRICTION ON PRINTING 0
-    current.push_back('0');
-    generateStrings(index+1,n,current);
-    current.pop_back();
-
-    //There is a restriction ON 1. PRINT 1 ONLY IF EITHER THE STRING IS EMPTY OR THE LAST CHARACTER OF STRING IS NOT 1
-    if(current.empty() || current.back()!='1'){
-        current.push_back('1');
-        generateStrings(index+1,n,current);
+    if(open<n){
+        current.push_back('(');
+        printParenthesis(open+1,close,n,current);
+        current.pop_back();
+    }
+    if(close<open){
+        current.push_back(')');
+        printParenthesis(open,close+1,n,current);
         current.pop_back();
     }
 }
 int main(){
-        string current="";
-    generateStrings(0,3,current);
+    string current="";
+    printParenthesis(0,0,3,current);
     return 0;
 }

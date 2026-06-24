@@ -333,6 +333,8 @@
 using namespace std;
 
 int main(){
-
-  return 0;
+   vector<int>arr(10,0);
+   for(int i=0;i<10;i++){
+    cin>>arr[i];
+   }
 }
