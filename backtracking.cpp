@@ -378,28 +378,61 @@ using namespace std;
 //     current.pop_back();
 // }
 
+// #include<bits/stdc++.h>
+// using namespace std;
+// void printParenthesis(int open,int close,int n,string& current){
+//     //base case
+//     if(open==n && close==n){
+//         cout<<current<<endl;
+//         return;
+//     }
+
+//     if(open<n){
+//         current.push_back('(');
+//         printParenthesis(open+1,close,n,current);
+//         current.pop_back();
+//     }
+//     if(close<open){
+//         current.push_back(')');
+//         printParenthesis(open,close+1,n,current);
+//         current.pop_back();
+//     }
+// }
+// int main(){
+//     string current="";
+//     printParenthesis(0,0,3,current);
+//     return 0;
+// }
+
+
+//10. L-784. LETTER CASE PERMUTATION
 #include<bits/stdc++.h>
 using namespace std;
-void printParenthesis(int open,int close,int n,string& current){
-    //base case
-    if(open==n && close==n){
+void generate(int index,string&s,string& current,vector<string>&ans){
+    if(index==s.size()){
+        ans.push_back(current);
         cout<<current<<endl;
         return;
     }
-
-    if(open<n){
-        current.push_back('(');
-        printParenthesis(open+1,close,n,current);
+    if(isdigit(s[index])){
+        current.push_back(s[index]);
+        generate(index+1,s,current,ans);
         current.pop_back();
     }
-    if(close<open){
-        current.push_back(')');
-        printParenthesis(open,close+1,n,current);
-        current.pop_back();
+    else{
+        current.push_back(tolower(s[index]));
+    generate(index+1,s,current,ans);
+    current.pop_back();
+
+    current.push_back(toupper(s[index]));
+    generate(index+1,s,current,ans);
+    current.pop_back();
     }
 }
 int main(){
     string current="";
-    printParenthesis(0,0,3,current);
+    string s="a1b2";
+    vector<string>ans;
+    generate(0,s,current,ans);
     return 0;
 }
