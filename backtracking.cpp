@@ -406,33 +406,133 @@ using namespace std;
 
 
 //10. L-784. LETTER CASE PERMUTATION
+// #include<bits/stdc++.h>
+// using namespace std;
+// void generate(int index,string&s,string& current,vector<string>&ans){
+//     if(index==s.size()){
+//         ans.push_back(current);
+//         cout<<current<<endl;
+//         return;
+//     }
+//     if(isdigit(s[index])){
+//         current.push_back(s[index]);
+//         generate(index+1,s,current,ans);
+//         current.pop_back();
+//     }
+//     else{
+//         current.push_back(tolower(s[index]));
+//     generate(index+1,s,current,ans);
+//     current.pop_back();
+
+//     current.push_back(toupper(s[index]));
+//     generate(index+1,s,current,ans);
+//     current.pop_back();
+//     }
+// }
+// int main(){
+//     string current="";
+//     string s="a1b2";
+//     vector<string>ans;
+//     generate(0,s,current,ans);
+//     return 0;
+// }
+
+//11. L-17 PHONE NUMBERS
+// #include<bits/stdc++.h>
+// using namespace std;
+// void phone(int index,string& digits,vector<string>&mapping,string& current){
+//     //base case;
+//     if(index==digits.size()){
+//         cout<<current<<endl;
+//         return;
+//     }
+//     int d=digits[index]-'0';
+//     string k=mapping[d];
+//     for(int i=0;i<k.size();i++){
+//         current.push_back(k[i]);
+//         phone(index+1,digits,mapping,current);
+//         current.pop_back();
+//     }
+// }
+// int main(){
+//     vector<string>mapping={
+//         "",             //0
+//         "",             //1
+//         "abc",          //2
+//         "def",          //3
+//         "ghi",          //4
+//         "jkl",          //5
+//         "mno"           //6
+//         "pqrs",         //7
+//         "tuv"           //8
+//         "wxyz"          //9
+//     };
+//     string current;
+//     string digits="23";
+//     phone(0,digits,mapping,current);
+//     return 0;
+// }
+
+//12. COMBINATION SUM 1 & 2
 #include<bits/stdc++.h>
 using namespace std;
-void generate(int index,string&s,string& current,vector<string>&ans){
-    if(index==s.size()){
-        ans.push_back(current);
-        cout<<current<<endl;
+void combinationSum(int index,vector<int>&candidates,int target,vector<int>&current,int sum){
+    //base case
+        if(index==candidates.size()){
+            if(target==0){
+            for(int x: current){
+                cout<<x<<" ";
+            }cout<<endl;
+        }
         return;
-    }
-    if(isdigit(s[index])){
-        current.push_back(s[index]);
-        generate(index+1,s,current,ans);
+        }
+
+    //case 1 Either keep picking the index that you are at currently
+    if(candidates[index]<=target){
+        current.push_back(candidates[index]);
+        sum+=candidates[index];
+        target-=candidates[index];
+        combinationSum(index,candidates,target,current,sum);
+        sum-=candidates[index];
+        target+=candidates[index];
         current.pop_back();
     }
-    else{
-        current.push_back(tolower(s[index]));
-    generate(index+1,s,current,ans);
-    current.pop_back();
+    combinationSum(index+1,candidates,target,current,sum);
+}
+void combinationSum2(int index,vector<int>&candidates,int target,vector<int>&current,int sum,vector<vector<int>>&ans){
+    //base case
 
-    current.push_back(toupper(s[index]));
-    generate(index+1,s,current,ans);
-    current.pop_back();
+        if(target==0){
+            ans.push_back(current);
+            for(int x: current){
+                cout<<x<<" ";
+            }cout<<endl;
+               return;
+        }
+     
+
+    //pick the number
+    for(int i=index;i<candidates.size();i++){
+        if(i>index && candidates[i]==candidates[i-1]) continue;
+        if(candidates[i]>target){
+            break;
+        }
+        if(candidates[i]<=target){
+            current.push_back(candidates[i]);
+            sum+=candidates[i];
+            target-=candidates[i];
+            combinationSum2(i+1,candidates,target,current,sum,ans);
+            sum-=candidates[i];
+            target+=candidates[i];
+            current.pop_back();
+        }
     }
 }
 int main(){
-    string current="";
-    string s="a1b2";
-    vector<string>ans;
-    generate(0,s,current,ans);
+    vector<int>candidates={1,2,2,2,5};
+    int target=5;
+    vector<int>current;
+    vector<vector<int>>ans;
+    combinationSum2(0,candidates,target,current,0,ans);
     return 0;
 }
