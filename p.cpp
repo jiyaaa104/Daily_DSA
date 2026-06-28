@@ -165,9 +165,54 @@ void letterCasePermutation(int index,string& s,string &current){
       current.pop_back();
    }
 }
+ void printVector(vector<vector<int>>arr){
+   for(int i=0;i<arr.size();i++){
+      for(int j=0;j<2;j++){
+         cout<<arr[i][j]<<" ";
+      }cout<<endl;
+   }return;
+ }
+vector<vector<int>> filterOccupiedIntervals(vector<vector<int>>& occupiedIntervals, int freeStart, int freeEnd) {
+        vector<vector<int>>ans;
+        sort(occupiedIntervals.begin(),occupiedIntervals.end());
+        int n=occupiedIntervals.size();
+        for(int i=0;i<n;i++){
+            int start=occupiedIntervals[i][0],end=occupiedIntervals[i][1];
+            if(!ans.empty() && ans.back()[1]>=start){
+                continue;
+            }
+            for(int j=i+1;j<n;j++){
+            if(occupiedIntervals[j][0]<=end || occupiedIntervals[j][0]==end+1){
+                end=max(end,occupiedIntervals[j][1]);
+            }else{
+                break;
+            }
+            }
+            if(start>=freeStart && start<=freeEnd){
+                    if(end<=freeEnd){
+                        continue;
+                    }else{
+                        start=freeEnd+1;
+                    }
+                }else if(end>=freeStart && end<=freeEnd){
+                    end=freeStart-1;
+                }
+                cout << "i = " << i << endl;
+cout << "start = " << start << " end = " << end << endl;
+
+if(freeStart>=start && freeEnd<=end){
+    cout << "splitting\n";
+    ans.push_back({start,freeStart-1});
+    ans.push_back({freeStart+1,end});
+    continue;
+}
+            ans.push_back({start,end});
+        }return ans;
+    }
 int main(){
-   string s="a1bc";
-   string current;
-   letterCasePermutation(0,s,current);
+   vector<vector<int>>occupiedIntervals={{1,3},{4,6}};
+   int fs=3,fe=4;
+   vector<vector<int>>ans=filterOccupiedIntervals(occupiedIntervals,fs,fe);
+   printVector(ans);
    return 0;
 }

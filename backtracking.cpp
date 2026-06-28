@@ -474,65 +474,134 @@ using namespace std;
 // }
 
 //12. COMBINATION SUM 1 & 2
+// #include<bits/stdc++.h>
+// using namespace std;
+// void combinationSum(int index,vector<int>&candidates,int target,vector<int>&current,int sum){
+//     //base case
+//         if(index==candidates.size()){
+//             if(target==0){
+//             for(int x: current){
+//                 cout<<x<<" ";
+//             }cout<<endl;
+//         }
+//         return;
+//         }
+
+//     //case 1 Either keep picking the index that you are at currently
+//     if(candidates[index]<=target){
+//         current.push_back(candidates[index]);
+//         sum+=candidates[index];
+//         target-=candidates[index];
+//         combinationSum(index,candidates,target,current,sum);
+//         sum-=candidates[index];
+//         target+=candidates[index];
+//         current.pop_back();
+//     }
+//     combinationSum(index+1,candidates,target,current,sum);
+// }
+// void combinationSum2(int index,vector<int>&candidates,int target,vector<int>&current,int sum,vector<vector<int>>&ans){
+//     //base case
+
+//         if(target==0){
+//             ans.push_back(current);
+//             for(int x: current){
+//                 cout<<x<<" ";
+//             }cout<<endl;
+//                return;
+//         }
+     
+
+//     //pick the number
+//     for(int i=index;i<candidates.size();i++){
+//         if(i>index && candidates[i]==candidates[i-1]) continue;
+//         if(candidates[i]>target){
+//             break;
+//         }
+//         if(candidates[i]<=target){
+//             current.push_back(candidates[i]);
+//             sum+=candidates[i];
+//             target-=candidates[i];
+//             combinationSum2(i+1,candidates,target,current,sum,ans);
+//             sum-=candidates[i];
+//             target+=candidates[i];
+//             current.pop_back();
+//         }
+//     }
+// }
+// int main(){
+//     vector<int>candidates={1,2,2,2,5};
+//     int target=5;
+//     vector<int>current;
+//     vector<vector<int>>ans;
+//     combinationSum2(0,candidates,target,current,0,ans);
+//     return 0;
+// }
+
+//Leetcode Subsets 1 & 2
+// #include<bits/stdc++.h>
+// using namespace std;
+// void subsets(int index,vector<int>&nums,vector<int>&current){
+//     if(index==nums.size()){
+//         for(int x: current){
+//             cout<<x<<" ";
+//         }cout<<endl;
+//         return;
+//     }
+
+//     //pick
+//     current.push_back(nums[index]);
+//     subsets(index+1,nums,current);
+
+//     //skip
+//     current.pop_back();
+//     subsets(index+1,nums,current);
+// }
+
+// void noduplicateSubsets(int index,vector<int>&nums,vector<int>&current){
+//         for(int x: current){
+//             cout<<x<<" ";
+//         }cout<<endl;
+//     for(int i=index;i<nums.size();i++){
+//         if(i>index && (nums[i]==nums[i-1])) continue;
+//         current.push_back(nums[i]);
+//         noduplicateSubsets(i+1,nums,current);
+//         current.pop_back();
+//     }
+
+// }
+// int main(){
+//     vector<int>nums={1,1,2};
+//     vector<int>current;
+//     noduplicateSubsets(0,nums,current);
+//     return 0;
+// }
+
+//Leetcode Combination Sum 3
 #include<bits/stdc++.h>
 using namespace std;
-void combinationSum(int index,vector<int>&candidates,int target,vector<int>&current,int sum){
-    //base case
-        if(index==candidates.size()){
-            if(target==0){
+void combination(int index,int k,int target,vector<int>&current,int sum){
+    if(current.size()==k){
+        if(target==0){
             for(int x: current){
                 cout<<x<<" ";
             }cout<<endl;
         }
         return;
-        }
-
-    //case 1 Either keep picking the index that you are at currently
-    if(candidates[index]<=target){
-        current.push_back(candidates[index]);
-        sum+=candidates[index];
-        target-=candidates[index];
-        combinationSum(index,candidates,target,current,sum);
-        sum-=candidates[index];
-        target+=candidates[index];
-        current.pop_back();
     }
-    combinationSum(index+1,candidates,target,current,sum);
-}
-void combinationSum2(int index,vector<int>&candidates,int target,vector<int>&current,int sum,vector<vector<int>>&ans){
-    //base case
 
-        if(target==0){
-            ans.push_back(current);
-            for(int x: current){
-                cout<<x<<" ";
-            }cout<<endl;
-               return;
-        }
-     
-
-    //pick the number
-    for(int i=index;i<candidates.size();i++){
-        if(i>index && candidates[i]==candidates[i-1]) continue;
-        if(candidates[i]>target){
-            break;
-        }
-        if(candidates[i]<=target){
-            current.push_back(candidates[i]);
-            sum+=candidates[i];
-            target-=candidates[i];
-            combinationSum2(i+1,candidates,target,current,sum,ans);
-            sum-=candidates[i];
-            target+=candidates[i];
-            current.pop_back();
-        }
+    for(int i=index;i<=9;i++){
+        if(i>target) break;
+        current.push_back(i);
+        sum+=i;
+        target-=i;
+        combination(i+1,k,target,current,sum);
+        target+=i;
+        sum-=i;
+        current.pop_back();
     }
 }
 int main(){
-    vector<int>candidates={1,2,2,2,5};
-    int target=5;
     vector<int>current;
-    vector<vector<int>>ans;
-    combinationSum2(0,candidates,target,current,0,ans);
+    combination(1,3,7,current,0);
     return 0;
 }
