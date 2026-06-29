@@ -577,31 +577,58 @@ using namespace std;
 // }
 
 //Leetcode Combination Sum 3
+// #include<bits/stdc++.h>
+// using namespace std;
+// void combination(int index,int k,int target,vector<int>&current,int sum){
+//     if(current.size()==k){
+//         if(target==0){
+//             for(int x: current){
+//                 cout<<x<<" ";
+//             }cout<<endl;
+//         }
+//         return;
+//     }
+
+//     for(int i=index;i<=9;i++){
+//         if(i>target) break;
+//         current.push_back(i);
+//         sum+=i;
+//         target-=i;
+//         combination(i+1,k,target,current,sum);
+//         target+=i;
+//         sum-=i;
+//         current.pop_back();
+//     }
+// }
+// int main(){
+//     vector<int>current;
+//     combination(1,3,7,current,0);
+//     return 0;
+// }
+
+//Leetcode - 46 (PERMUTATIONS)
 #include<bits/stdc++.h>
 using namespace std;
-void combination(int index,int k,int target,vector<int>&current,int sum){
-    if(current.size()==k){
-        if(target==0){
-            for(int x: current){
-                cout<<x<<" ";
-            }cout<<endl;
-        }
-        return;
-    }
-
-    for(int i=index;i<=9;i++){
-        if(i>target) break;
-        current.push_back(i);
-        sum+=i;
-        target-=i;
-        combination(i+1,k,target,current,sum);
-        target+=i;
-        sum-=i;
-        current.pop_back();
-    }
+void permutations(vector<int>&arr,vector<int>&current,vector<int>&used){
+   if(current.size()==arr.size()){
+      for(int x: current){
+         cout<<x<<" ";
+      }cout<<endl;
+      return;
+   }
+   for(int i=0;i<arr.size();i++){
+      if(used[i]) continue;
+      current.push_back(arr[i]);
+      used[i]=true;
+      permutations(arr,current,used);
+      used[i]=false;
+      current.pop_back();
+   }
 }
 int main(){
+    vector<int>arr={1,2,3};
     vector<int>current;
-    combination(1,3,7,current,0);
+    vector<int>used={0,0,0};
+    permutations(arr,current,used);
     return 0;
 }
