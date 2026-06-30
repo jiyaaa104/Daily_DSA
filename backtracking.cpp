@@ -625,10 +625,27 @@ void permutations(vector<int>&arr,vector<int>&current,vector<int>&used){
       current.pop_back();
    }
 }
+void uniqueP(vector<int>&arr,vector<int>&current,vector<int>&used){
+   if(current.size()==arr.size()){
+      for(int x: current){
+         cout<<x<<" ";
+      }cout<<endl;
+      return;
+   }
+   for(int i=0;i<arr.size();i++){
+      if(i>0 && arr[i]==arr[i-1] && !used[i-1]) continue;
+      if(used[i]) continue;
+      current.push_back(arr[i]);
+      used[i]=true;
+      uniqueP(arr,current,used);
+      used[i]=false;
+      current.pop_back();
+   }
+}
 int main(){
-    vector<int>arr={1,2,3};
+    vector<int>arr={1,1,3,3};
     vector<int>current;
-    vector<int>used={0,0,0};
-    permutations(arr,current,used);
+    vector<int>used={0,0,0,0};
+    uniqueP(arr,current,used);
     return 0;
 }
