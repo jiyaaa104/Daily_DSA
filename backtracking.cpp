@@ -642,11 +642,24 @@ void uniqueP(vector<int>&arr,vector<int>&current,vector<int>&used){
       current.pop_back();
    }
 }
+void combinations(int index,int n,int k,vector<int>&current){
+   if(current.size()==k){
+      for(int x: current){
+         cout<<x<<" ";
+      }cout<<endl;
+      return;
+   }
+   for(int i=index;i<=n;i++){
+      current.push_back(i);
+      combinations(i+1,n,k,current);
+      current.pop_back();
+   }
+}
 
 int main(){
     vector<int>arr={1,1,3,3};
     vector<int>current;
     vector<int>used={0,0,0,0};
-    uniqueP(arr,current,used);
+    combinations(1,1,1,current);
     return 0;
 }
