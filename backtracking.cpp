@@ -642,6 +642,7 @@ void uniqueP(vector<int>&arr,vector<int>&current,vector<int>&used){
       current.pop_back();
    }
 }
+
 int main(){
     vector<int>arr={1,1,3,3};
     vector<int>current;
