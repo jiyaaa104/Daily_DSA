@@ -33,23 +33,77 @@
 
 //WORD SEARCH
 //LEETCODE -79
+// #include<bits/stdc++.h>
+// using namespace std;
+// bool wordSearch(int index,int x,int y,string& word,vector<vector<char>>&matrix){
+//     if(index==word.size()){
+//         return true;
+//     }
+//     if(x<0 || y<0 || x>=matrix.size() || y>=matrix[0].size() || matrix[x][y]!=word[index]){
+//         return false;
+//     }
+//     char temp=matrix[x][y];
+//     matrix[x][y]='1';//visited
+//     if(wordSearch(index+1,x+1,y,word,matrix)||wordSearch(index+1,x,y+1,word,matrix)||wordSearch(index+1,x-1,y,word,matrix)||wordSearch(index+1,x,y-1,word,matrix)){matrix[x][y]=temp;return true;} 
+//     matrix[x][y]=temp;
+//     return false;
+// }
+// int main(){
+//  vector<vector<char>>matrix={{'A','B','C'},{'D','E','F'},{'G','H','I'}};
+//  string word="ABCFIH";
+//  cout<<wordSearch(0,0,0,word,matrix);
+// }
+
+//LEETCODE 51 : N QUEENS 
 #include<bits/stdc++.h>
 using namespace std;
-bool wordSearch(int index,int x,int y,string& word,vector<vector<char>>&matrix){
-    if(index==word.size()){
-        return true;
+bool isItSafe(int row,int col,vector<string>&board,int n){
+    int r=row;
+    int c=col;
+    //uper tirchha
+    while(row>=0 && col>=0){
+        if(board[row][col]=='Q') return false;
+        row--;
+        col--;
     }
-    if(x<0 || y<0 || x>=matrix.size() || y>=matrix[0].size() || matrix[x][y]!=word[index]){
-        return false;
+
+    row=r;
+    col=c;
+    //peeche
+    while(col>=0){
+        if(board[row][col]=='Q') return false;
+        col--;
     }
-    char temp=matrix[x][y];
-    matrix[x][y]='1';//visited
-    if(wordSearch(index+1,x+1,y,word,matrix)||wordSearch(index+1,x,y+1,word,matrix)||wordSearch(index+1,x-1,y,word,matrix)||wordSearch(index+1,x,y-1,word,matrix)){matrix[x][y]=temp;return true;} 
-    matrix[x][y]=temp;
-    return false;
+
+    col=c;
+    //neeche tirchha
+    while(row<n && col>=0){
+        if(board[row][col]=='Q') return false;
+        col--;
+        row++;
+    }
+    return true;
+}
+void nqueen(int col,vector<string>&board,vector<vector<string>>&ans,int n){
+    if(col==n){
+        ans.push_back(board);
+        return;
+    }
+    for(int i=0;i<n;i++){
+        if(isItSafe(i,col,board,n)){
+            board[i][col]='Q';
+            nqueen(col+1,board,ans,n);
+            board[i][col]='.';
+        }
+    }
 }
 int main(){
- vector<vector<char>>matrix={{'A','B','C'},{'D','E','F'},{'G','H','I'}};
- string word="ABCFIH";
- cout<<wordSearch(0,0,0,word,matrix);
+    vector<vector<string>>ans;
+    int n=4;
+    vector<string>board(n);
+    string s(n,'.');
+    for(int i=0;i<n;i++){
+        board[i]=s;
+    }
+    return 0;
 }
