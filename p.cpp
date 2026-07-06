@@ -24,6 +24,14 @@ int palindromePartition(int index,string& s){
       }
     }return leastCost;
 }
+void fun(int arr[]){
+   cout<<sizeof(arr)<<endl;
+   return;
+}
 int main(){
+   //  int arr[]={1,2,3,4,5};
+   //  fun(arr);
+    int x=5;
+    cout<<x++<<" "<<x;
    return 0;
 }
