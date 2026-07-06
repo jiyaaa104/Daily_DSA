@@ -55,55 +55,113 @@
 // }
 
 //LEETCODE 51 : N QUEENS 
+// #include<bits/stdc++.h>
+// using namespace std;
+// bool isItSafe(int row,int col,vector<string>&board,int n){
+//     int r=row;
+//     int c=col;
+//     //uper tirchha
+//     while(row>=0 && col>=0){
+//         if(board[row][col]=='Q') return false;
+//         row--;
+//         col--;
+//     }
+
+//     row=r;
+//     col=c;
+//     //peeche
+//     while(col>=0){
+//         if(board[row][col]=='Q') return false;
+//         col--;
+//     }
+
+//     col=c;
+//     //neeche tirchha
+//     while(row<n && col>=0){
+//         if(board[row][col]=='Q') return false;
+//         col--;
+//         row++;
+//     }
+//     return true;
+// }
+// void nqueen(int col,vector<string>&board,vector<vector<string>>&ans,int n){
+//     if(col==n){
+//         ans.push_back(board);
+//         return;
+//     }
+//     for(int i=0;i<n;i++){
+//         if(isItSafe(i,col,board,n)){
+//             board[i][col]='Q';
+//             nqueen(col+1,board,ans,n);
+//             board[i][col]='.';
+//         }
+//     }
+// }
+
+// int main(){
+//     vector<vector<string>>ans;
+//     int n=4;
+//     vector<string>board(n);
+//     string s(n,'.');
+//     for(int i=0;i<n;i++){
+//         board[i]=s;
+//     }
+//     return 0;
+// }
+
+//Rat In A Maze
 #include<bits/stdc++.h>
 using namespace std;
-bool isItSafe(int row,int col,vector<string>&board,int n){
-    int r=row;
-    int c=col;
-    //uper tirchha
-    while(row>=0 && col>=0){
-        if(board[row][col]=='Q') return false;
-        row--;
-        col--;
-    }
-
-    row=r;
-    col=c;
-    //peeche
-    while(col>=0){
-        if(board[row][col]=='Q') return false;
-        col--;
-    }
-
-    col=c;
-    //neeche tirchha
-    while(row<n && col>=0){
-        if(board[row][col]=='Q') return false;
-        col--;
-        row++;
-    }
-    return true;
+bool isSafe(int row,int col,vector<vector<int>>&maze,int n){
+    if(row<0 || col<0 || row>=n || col>=n || maze[row][col]==0 || maze[row][col]==-1){
+    return false;
+   }return true;
 }
-void nqueen(int col,vector<string>&board,vector<vector<string>>&ans,int n){
-    if(col==n){
-        ans.push_back(board);
-        return;
-    }
-    for(int i=0;i<n;i++){
-        if(isItSafe(i,col,board,n)){
-            board[i][col]='Q';
-            nqueen(col+1,board,ans,n);
-            board[i][col]='.';
-        }
-    }
+void ratInAMaze(int row,int col,vector<vector<int>>&maze,vector<string>&ans,string& s,int n){
+   if(row==n-1 && col==n-1){
+     ans.push_back(s);
+     return;
+   }
+int temp=maze[row][col];
+maze[row][col]=-1;
+   //Down
+   if(isSafe(row+1,col,maze,n)){
+      s.push_back('D');
+       ratInAMaze(row+1,col,maze,ans,s,n);
+      s.pop_back();
+   }
+   
+    //Left
+   if(isSafe(row,col-1,maze,n)){
+    s.push_back('L');
+   ratInAMaze(row,col-1,maze,ans,s,n);
+   s.pop_back();
+   }
+    //right
+   if(isSafe(row,col+1,maze,n)){
+    s.push_back('R');
+   ratInAMaze(row,col+1,maze,ans,s,n);
+   s.pop_back();
+   }
+   //UP
+   if(isSafe(row-1,col,maze,n)){
+    s.push_back('U');
+   ratInAMaze(row-1,col,maze,ans,s,n);
+   s.pop_back(); 
+   }
+   maze[row][col]=temp;
 }
 int main(){
-    vector<vector<string>>ans;
-    int n=4;
-    vector<string>board(n);
-    string s(n,'.');
-    for(int i=0;i<n;i++){
-        board[i]=s;
+    vector<vector<int>>maze={{1,0,0,0},{1,1,0,1},{1,1,0,0},{0,1,1,1}};
+    string s="";
+    vector<string>ans;
+    if(maze[0][0]!=0 && maze[3][3]!=0){
+        ratInAMaze(0,0,maze,ans,s,4);
+    } 
+    for(int i=0;i<ans.size();i++){
+        for(int j=0;j<ans[i].size();j++){
+            cout<<ans[i][j];
+        }cout<<endl;
     }
     return 0;
 }

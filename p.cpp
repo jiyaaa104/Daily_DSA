@@ -1,37 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
-bool checkPalindrome(string&s, int start,int end){
-   string s1=s.substr(start,end-start+1);
-   string s2=s1;
-   start=0,end=s2.size()-1;
-   while(start<end){
-      swap(s2[start],s2[end]);
-      start++;end--;
+bool isItSafe(int row,int col,int n,vector<string>&board){
+   int r=row;
+   int c=col;
+   while(row>=0 && col>=0){
+      if(board[row][col]=='Q') return false;
+      row--;col--;
    }
-   return (s2==s1);
+   row=r;
+   col=c;
+   while(col>=0){
+      if(board[row][col]=='Q') return false;
+      col--;
+   }
+   col=c;
+   while(row<n && col>=0){
+      if(board[row][col]=='Q') return false;
+      row++;col--;
+   }
+   return true;
 }
-int palindromePartition(int index,string& s){
-   int cost=0,n=s.size();
-    if(index==s.size()){
-      return cost;
-    }
-    int leastCost=INT_MAX;
-    for(int i=index;i<n;i++){
-      bool check=checkPalindrome(s,index,i);
-      if(check){
-         cost=1+palindromePartition(i+1,s);
-         leastCost=min(leastCost,cost);
+void nQueens(int col,vector<vector<string>>&ans,vector<string>&board,int n){
+   if(col==n){
+      ans.push_back(board);
+      return;
+   }
+   for(int i=0;i<n;i++){
+      if(isItSafe(i,col,n,board)){
+         board[i][col]='Q';
+         nQueens(col+1,ans,board,n);
+         board[i][col]='.';
       }
-    }return leastCost;
-}
-void fun(int arr[]){
-   cout<<sizeof(arr)<<endl;
-   return;
+   }
 }
 int main(){
-   //  int arr[]={1,2,3,4,5};
-   //  fun(arr);
-    int x=5;
-    cout<<x++<<" "<<x;
+   vector<vector<string>>ans;
+   int n=4;
+   vector<string>board(n);
+   string s(n,'.');
+   for(int i=0;i<n;i++){
+      board[i]=s;
+   }
    return 0;
 }
