@@ -110,58 +110,94 @@
 // }
 
 //Rat In A Maze
+// #include<bits/stdc++.h>
+// using namespace std;
+// bool isSafe(int row,int col,vector<vector<int>>&maze,int n){
+//     if(row<0 || col<0 || row>=n || col>=n || maze[row][col]==0 || maze[row][col]==-1){
+//     return false;
+//    }return true;
+// }
+// void ratInAMaze(int row,int col,vector<vector<int>>&maze,vector<string>&ans,string& s,int n){
+//    if(row==n-1 && col==n-1){
+//      ans.push_back(s);
+//      return;
+//    }
+// int temp=maze[row][col];
+// maze[row][col]=-1;
+//    //Down
+//    if(isSafe(row+1,col,maze,n)){
+//       s.push_back('D');
+//        ratInAMaze(row+1,col,maze,ans,s,n);
+//       s.pop_back();
+//    }
+   
+//     //Left
+//    if(isSafe(row,col-1,maze,n)){
+//     s.push_back('L');
+//    ratInAMaze(row,col-1,maze,ans,s,n);
+//    s.pop_back();
+//    }
+//     //right
+//    if(isSafe(row,col+1,maze,n)){
+//     s.push_back('R');
+//    ratInAMaze(row,col+1,maze,ans,s,n);
+//    s.pop_back();
+//    }
+//    //UP
+//    if(isSafe(row-1,col,maze,n)){
+//     s.push_back('U');
+//    ratInAMaze(row-1,col,maze,ans,s,n);
+//    s.pop_back(); 
+//    }
+//    maze[row][col]=temp;
+// }
+// int main(){
+//     vector<vector<int>>maze={{1,0,0,0},{1,1,0,1},{1,1,0,0},{0,1,1,1}};
+//     string s="";
+//     vector<string>ans;
+//     if(maze[0][0]!=0 && maze[3][3]!=0){
+//         ratInAMaze(0,0,maze,ans,s,4);
+//     } 
+//     for(int i=0;i<ans.size();i++){
+//         for(int j=0;j<ans[i].size();j++){
+//             cout<<ans[i][j];
+//         }cout<<endl;
+//     }
+//     return 0;
+// }
+
+//LEETCODE - 37
 #include<bits/stdc++.h>
 using namespace std;
-bool isSafe(int row,int col,vector<vector<int>>&maze,int n){
-    if(row<0 || col<0 || row>=n || col>=n || maze[row][col]==0 || maze[row][col]==-1){
-    return false;
-   }return true;
+bool isItSafe(int row,int col,char c,vector<vector<char>>&sudoku){
+    for(int i=0;i<9;i++){
+        if(sudoku[row][i]==c)return false;
+        if(sudoku[i][col]==c)return false;
+        if(sudoku[3*(row/3)+i/3][3*(col/3)+i%3]==c)return false;
+    }
+    return true;
 }
-void ratInAMaze(int row,int col,vector<vector<int>>&maze,vector<string>&ans,string& s,int n){
-   if(row==n-1 && col==n-1){
-     ans.push_back(s);
-     return;
-   }
-int temp=maze[row][col];
-maze[row][col]=-1;
-   //Down
-   if(isSafe(row+1,col,maze,n)){
-      s.push_back('D');
-       ratInAMaze(row+1,col,maze,ans,s,n);
-      s.pop_back();
-   }
-   
-    //Left
-   if(isSafe(row,col-1,maze,n)){
-    s.push_back('L');
-   ratInAMaze(row,col-1,maze,ans,s,n);
-   s.pop_back();
-   }
-    //right
-   if(isSafe(row,col+1,maze,n)){
-    s.push_back('R');
-   ratInAMaze(row,col+1,maze,ans,s,n);
-   s.pop_back();
-   }
-   //UP
-   if(isSafe(row-1,col,maze,n)){
-    s.push_back('U');
-   ratInAMaze(row-1,col,maze,ans,s,n);
-   s.pop_back(); 
-   }
-   maze[row][col]=temp;
+bool sudoku(vector<vector<char>>&board){
+    for(int i=0;i<9;i++){
+        for(int j=0;j<9;j++){
+            if(board[i][j]=='.'){
+              for(char c='1';c<='9';c++){
+                if(isItSafe(i,j,c,board)){
+                    board[i][j]=c;
+                    if(sudoku(board)) return true;
+                    else{
+                        board[i][j]='.';
+                    }
+                }
+              }return false;
+            }
+        }
+    }
+    return true;
+}
+void solve(vector<vector<char>>&board){
+    sudoku(board);
 }
 int main(){
-    vector<vector<int>>maze={{1,0,0,0},{1,1,0,1},{1,1,0,0},{0,1,1,1}};
-    string s="";
-    vector<string>ans;
-    if(maze[0][0]!=0 && maze[3][3]!=0){
-        ratInAMaze(0,0,maze,ans,s,4);
-    } 
-    for(int i=0;i<ans.size();i++){
-        for(int j=0;j<ans[i].size();j++){
-            cout<<ans[i][j];
-        }cout<<endl;
-    }
     return 0;
 }
