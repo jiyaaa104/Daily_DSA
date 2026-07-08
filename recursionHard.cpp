@@ -167,37 +167,61 @@
 // }
 
 //LEETCODE - 37
+// #include<bits/stdc++.h>
+// using namespace std;
+// bool isItSafe(int row,int col,char c,vector<vector<char>>&sudoku){
+//     for(int i=0;i<9;i++){
+//         if(sudoku[row][i]==c)return false;
+//         if(sudoku[i][col]==c)return false;
+//         if(sudoku[3*(row/3)+i/3][3*(col/3)+i%3]==c)return false;
+//     }
+//     return true;
+// }
+// bool sudoku(vector<vector<char>>&board){
+//     for(int i=0;i<9;i++){
+//         for(int j=0;j<9;j++){
+//             if(board[i][j]=='.'){
+//               for(char c='1';c<='9';c++){
+//                 if(isItSafe(i,j,c,board)){
+//                     board[i][j]=c;
+//                     if(sudoku(board)) return true;
+//                     else{
+//                         board[i][j]='.';
+//                     }
+//                 }
+//               }return false;
+//             }
+//         }
+//     }
+//     return true;
+// }
+// void solve(vector<vector<char>>&board){
+//     sudoku(board);
+// }
+// int main(){
+//     return 0;
+// }
+
+//L-36 VALID SUDOKU
 #include<bits/stdc++.h>
 using namespace std;
-bool isItSafe(int row,int col,char c,vector<vector<char>>&sudoku){
-    for(int i=0;i<9;i++){
-        if(sudoku[row][i]==c)return false;
-        if(sudoku[i][col]==c)return false;
-        if(sudoku[3*(row/3)+i/3][3*(col/3)+i%3]==c)return false;
-    }
-    return true;
-}
-bool sudoku(vector<vector<char>>&board){
+bool validSudoku(vector<vector<char>>&board){
+    bool rows[9][9]={};
+    bool cols[9][9]={};
+    bool box[9][9]={};
     for(int i=0;i<9;i++){
         for(int j=0;j<9;j++){
-            if(board[i][j]=='.'){
-              for(char c='1';c<='9';c++){
-                if(isItSafe(i,j,c,board)){
-                    board[i][j]=c;
-                    if(sudoku(board)) return true;
-                    else{
-                        board[i][j]='.';
-                    }
-                }
-              }return false;
-            }
+            if(board[i][j]=='.')continue;
+            int num=board[i][j]-'1';
+            int bval=3*(i/3)+(j/3);
+            if(rows[i][num] || cols[j][num] || box[bval][num]) return false;
+            rows[i][num]=true;
+            cols[j][num]=true;
+            box[bval][num]=true;
         }
-    }
-    return true;
-}
-void solve(vector<vector<char>>&board){
-    sudoku(board);
+    }return true;
 }
 int main(){
+
     return 0;
 }
