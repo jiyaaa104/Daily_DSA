@@ -137,7 +137,17 @@ int main(){
    // printKadane(a5);
    // vector<int>a6={1,7,2,5,6,8,1};
    // cout<<stockBuyAndSell(a6);
-   vector<int>a7={1,2,3,4,-1,-2,-3,8,9};
-   rearrange(a7);
+   // vector<int>a7={1,2,3,4,-1,-2,-3,8,9};
+   // rearrange(a7);
+   int left=0,right=1;
+   int n=3;
+   int ans=INT_MIN;
+   int arr[]={4,7,6};
+   while(right<n){
+     int mini=min(arr[left],arr[right]);
+     ans=max(ans,mini);
+     left++;right++;
+   }
+   cout<<ans<<endl;
    return 0;
 }
