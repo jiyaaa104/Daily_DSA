@@ -607,59 +607,91 @@ using namespace std;
 // }
 
 //Leetcode - 46 (PERMUTATIONS)
+// #include<bits/stdc++.h>
+// using namespace std;
+// void permutations(vector<int>&arr,vector<int>&current,vector<int>&used){
+//    if(current.size()==arr.size()){
+//       for(int x: current){
+//          cout<<x<<" ";
+//       }cout<<endl;
+//       return;
+//    }
+//    for(int i=0;i<arr.size();i++){
+//       if(used[i]) continue;
+//       current.push_back(arr[i]);
+//       used[i]=true;
+//       permutations(arr,current,used);
+//       used[i]=false;
+//       current.pop_back();
+//    }
+// }
+// void uniqueP(vector<int>&arr,vector<int>&current,vector<int>&used){
+//    if(current.size()==arr.size()){
+//       for(int x: current){
+//          cout<<x<<" ";
+//       }cout<<endl;
+//       return;
+//    }
+//    for(int i=0;i<arr.size();i++){
+//       if(i>0 && arr[i]==arr[i-1] && !used[i-1]) continue;
+//       if(used[i]) continue;
+//       current.push_back(arr[i]);
+//       used[i]=true;
+//       uniqueP(arr,current,used);
+//       used[i]=false;
+//       current.pop_back();
+//    }
+// }
+// void combinations(int index,int n,int k,vector<int>&current){
+//    if(current.size()==k){
+//       for(int x: current){
+//          cout<<x<<" ";
+//       }cout<<endl;
+//       return;
+//    }
+//    for(int i=index;i<=n;i++){
+//       current.push_back(i);
+//       combinations(i+1,n,k,current);
+//       current.pop_back();
+//    }
+// }
+
+// int main(){
+//     vector<int>arr={1,1,3,3};
+//     vector<int>current;
+//     vector<int>used={0,0,0,0};
+//     combinations(1,1,1,current);
+//     return 0;
+// }
+
+
+//LEETCODE-93 (RESTORE IP ADDRESSES)
 #include<bits/stdc++.h>
 using namespace std;
-void permutations(vector<int>&arr,vector<int>&current,vector<int>&used){
-   if(current.size()==arr.size()){
-      for(int x: current){
-         cout<<x<<" ";
-      }cout<<endl;
+void restore(int index,string& s,string& ip,vector<int>&temp){
+   if(temp.size()==4 && index<s.size()) return;
+   if(index==s.size()){
+      if(temp.size()==4){
+         ip=to_string(temp[0])+'.'+to_string(temp[1])+'.'+to_string(temp[2])+'.'+to_string(temp[3]);
+         cout<<ip<<endl;
+      }
       return;
    }
-   for(int i=0;i<arr.size();i++){
-      if(used[i]) continue;
-      current.push_back(arr[i]);
-      used[i]=true;
-      permutations(arr,current,used);
-      used[i]=false;
-      current.pop_back();
+   long long cVal=0;
+   for(int i=index;i<s.size() && i<index+3;i++){
+      if(i>index && s[index]=='0') break;
+      cVal=10*cVal+(s[i]-'0');
+      if(cVal<=255){
+         temp.push_back(cVal);
+         restore(i+1,s,ip,temp);
+         temp.pop_back();
+      }
    }
 }
-void uniqueP(vector<int>&arr,vector<int>&current,vector<int>&used){
-   if(current.size()==arr.size()){
-      for(int x: current){
-         cout<<x<<" ";
-      }cout<<endl;
-      return;
-   }
-   for(int i=0;i<arr.size();i++){
-      if(i>0 && arr[i]==arr[i-1] && !used[i-1]) continue;
-      if(used[i]) continue;
-      current.push_back(arr[i]);
-      used[i]=true;
-      uniqueP(arr,current,used);
-      used[i]=false;
-      current.pop_back();
-   }
-}
-void combinations(int index,int n,int k,vector<int>&current){
-   if(current.size()==k){
-      for(int x: current){
-         cout<<x<<" ";
-      }cout<<endl;
-      return;
-   }
-   for(int i=index;i<=n;i++){
-      current.push_back(i);
-      combinations(i+1,n,k,current);
-      current.pop_back();
-   }
-}
-
 int main(){
-    vector<int>arr={1,1,3,3};
-    vector<int>current;
-    vector<int>used={0,0,0,0};
-    combinations(1,1,1,current);
-    return 0;
+   string s="12550255";
+   string ip;
+   vector<int>temp;
+   restore(0,s,ip,temp);
+   return 0;
 }
