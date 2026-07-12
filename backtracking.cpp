@@ -428,7 +428,7 @@ using namespace std;
 //     generate(index+1,s,current,ans);
 //     current.pop_back();
 //     }
-// }
+// }  
 // int main(){
 //     string current="";
 //     string s="a1b2";
