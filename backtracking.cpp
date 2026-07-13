@@ -666,32 +666,59 @@ using namespace std;
 
 
 //LEETCODE-93 (RESTORE IP ADDRESSES)
+// #include<bits/stdc++.h>
+// using namespace std;
+// void restore(int index,string& s,string& ip,vector<int>&temp){
+//    if(temp.size()==4 && index<s.size()) return;
+//    if(index==s.size()){
+//       if(temp.size()==4){
+//          ip=to_string(temp[0])+'.'+to_string(temp[1])+'.'+to_string(temp[2])+'.'+to_string(temp[3]);
+//          cout<<ip<<endl;
+//       }
+//       return;
+//    }
+//    long long cVal=0;
+//    for(int i=index;i<s.size() && i<index+3;i++){
+//       if(i>index && s[index]=='0') break;
+//       cVal=10*cVal+(s[i]-'0');
+//       if(cVal<=255){
+//          temp.push_back(cVal);
+//          restore(i+1,s,ip,temp);
+//          temp.pop_back();
+//       }
+//    }
+// }
+// int main(){
+//    string s="12550255";
+//    string ip;
+//    vector<int>temp;
+//    restore(0,s,ip,temp);
+//    return 0;
+// }
+
+//Leetcode 1291(Sequential Digits)
+//My approach: create all numbers accept only the ones that are sequential
+//Better Approach: Create only sequential Digits
 #include<bits/stdc++.h>
 using namespace std;
-void restore(int index,string& s,string& ip,vector<int>&temp){
-   if(temp.size()==4 && index<s.size()) return;
-   if(index==s.size()){
-      if(temp.size()==4){
-         ip=to_string(temp[0])+'.'+to_string(temp[1])+'.'+to_string(temp[2])+'.'+to_string(temp[3]);
-         cout<<ip<<endl;
-      }
+void dfs(int number,int lastDigit,int low,int high){
+   if(number>high){
       return;
    }
-   long long cVal=0;
-   for(int i=index;i<s.size() && i<index+3;i++){
-      if(i>index && s[index]=='0') break;
-      cVal=10*cVal+(s[i]-'0');
-      if(cVal<=255){
-         temp.push_back(cVal);
-         restore(i+1,s,ip,temp);
-         temp.pop_back();
-      }
+   if(number>=low){
+      cout<<number<<endl;
+   }
+   if(lastDigit==9){
+      return;
+   }
+   dfs(number*10+lastDigit+1,lastDigit+1,low,high);
+}
+void answer(int low,int high){
+   for(int i=1;i<=8;i++){
+      dfs(i,i,low,high);
    }
 }
 int main(){
-   string s="12550255";
-   string ip;
-   vector<int>temp;
-   restore(0,s,ip,temp);
+   answer(100,1000);
    return 0;
 }
