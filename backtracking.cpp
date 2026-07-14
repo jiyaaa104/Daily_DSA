@@ -352,8 +352,8 @@
 // }
 
 // 9. Generating all combinations of Well formed parenthesis of a particular length
-#include<bits/stdc++.h>
-using namespace std;
+// #include<bits/stdc++.h>
+// using namespace std;
 //My approach -I was creating for n=3, 2^6 strings. But didnt understand how to remove the invalid cases from my answer. The approach itself was wrong Instead of first creating all possiblities and the removing the unrequired ones. I should have not created the unrequired ones in the first place. Just like binary strings with no consecutive ones.
 
 //But what exactly are the non required cases -> I want to insert open bracket if : the current number of open <n .Because the moment the number of open brackets become equal to n.Do I need to insert more? No.
@@ -699,26 +699,72 @@ using namespace std;
 //Leetcode 1291(Sequential Digits)
 //My approach: create all numbers accept only the ones that are sequential
 //Better Approach: Create only sequential Digits
+// #include<bits/stdc++.h>
+// using namespace std;
+// void dfs(int number,int lastDigit,int low,int high){
+//    if(number>high){
+//       return;
+//    }
+//    if(number>=low){
+//       cout<<number<<endl;
+//    }
+//    if(lastDigit==9){
+//       return;
+//    }
+//    dfs(number*10+lastDigit+1,lastDigit+1,low,high);
+// }
+// void answer(int low,int high){
+//    for(int i=1;i<=8;i++){
+//       dfs(i,i,low,high);
+//    }
+// }
+// int main(){
+//    answer(100,1000);
+//    return 0;
+// }
+
+
+//Combination Sum 4
 #include<bits/stdc++.h>
 using namespace std;
-void dfs(int number,int lastDigit,int low,int high){
-   if(number>high){
-      return;
+long long factorial(int n){
+   if(n<2){
+      return 1;
    }
-   if(number>=low){
-      cout<<number<<endl;
-   }
-   if(lastDigit==9){
-      return;
-   }
-   dfs(number*10+lastDigit+1,lastDigit+1,low,high);
+   return factorial(n-1)*n;
 }
-void answer(int low,int high){
-   for(int i=1;i<=8;i++){
-      dfs(i,i,low,high);
+void cSum4(int index,int target,int &ans,vector<int>&nums,vector<int>&current){
+   if(index==nums.size()){
+      if(target==0){
+         unordered_map<int,int>mpp;
+      for(int x: current){
+         cout<<x<<" ";
+         mpp[x]++;
+      }
+      cout<<endl;
+      long long n=factorial(current.size());
+      for(auto it:mpp){
+        n/=factorial(it.second);
+      }
+      ans+=n;
+      cout<<ans<<endl;
    }
+         return;
+   }
+   if(nums[index]<=target){
+      target-=nums[index];
+      current.push_back(nums[index]);
+      cSum4(index,target,ans,nums,current);
+      current.pop_back();
+      target+=nums[index];
+   }
+   cSum4(index+1,target,ans,nums,current);
 }
 int main(){
-   answer(100,1000);
-   return 0;
+vector<int>nums={1,2,3};
+int ans=0;
+vector<int>current;
+cSum4(0,4,ans,nums,current);
+cout<<"Total : "<<ans<<endl;
+// cout<<combinations(5,2);
 }

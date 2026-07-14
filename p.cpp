@@ -1,199 +1,108 @@
-// #include<bits/stdc++.h>
-// using namespace std;
-// //1.Find All Subsequences / POWER-SET
-// void subsequences(int index,vector<int>&arr,vector<int>&current){
-//    if(index==arr.size()){
-//       for(int x:current){
-//          cout<<x<<" ";
-//       }cout<<endl;
-//       return;
-//    }
-
-//    //pick
-//    current.push_back(arr[index]);
-//    subsequences(index+1,arr,current);
-
-//    //dont pick
-//    current.pop_back();
-//    subsequences(index+1,arr,current);
-// }
-// //Print all Subsequence with sum K
-// void subseqSumK(int index,int k,int sum,vector<int>&arr,vector<int>&current){
-//    if(index==arr.size()){
-//       if(sum==k){
-//          for(int x: current){
-//             cout<<x<<" ";
-//          }cout<<endl;
-//       }
-//       return;
-//    }
-//    current.push_back(arr[index]);
-//    sum+=arr[index];
-//    subseqSumK(index+1,k,sum,arr,current);
-
-//    sum-=arr[index];
-//    current.pop_back();
-//    subseqSumK(index+1,k,sum,arr,current);
-// }
-// bool subseqSumKExists(int index,int k,int sum,vector<int>&arr,vector<int>&current){
-//    if(index==arr.size()){
-//       if(sum==k){
-//          for(int x:current){
-//             cout<<x<<" ";
-//          }cout<<endl;
-//          return true;
-//       }
-//       return false;
-//    }
-
-//    //pick
-//    current.push_back(arr[index]);
-//    sum+=arr[index];
-//    if(subseqSumKExists(index+1,k,sum,arr,current)) return true;
-//    //not pick
-//    sum-=arr[index];
-//    current.pop_back();
-//    if(subseqSumKExists(index+1,k,sum,arr,current)) return true;
-//    return false;
-// }
-// int subseqSumKCount(int index,int k,int sum,vector<int>&arr,vector<int>&current){
-//    if(index==arr.size()){
-//       if(sum==k){
-//          for(int x:current){
-//             cout<<x<<" ";
-//          }cout<<endl;
-//          return 1;
-//       }
-//       return 0;
-//    }
-//    sum+=arr[index];
-//    current.push_back(arr[index]);
-//    int left=subseqSumKCount(index+1,k,sum,arr,current);
-
-//    sum-=arr[index];
-//    current.pop_back();
-//    int right=subseqSumKCount(index+1,k,sum,arr,current);
-//    return left+right;
-// }
-// //subsequence with even sum
-// int countEvenSumSubseq(int index,int sum,vector<int>&arr,vector<int>&current){
-//    if(index==arr.size()){
-//       if(sum%2==0){
-//          for(int x: current){
-//             cout<<x<<" "; 
-//          }cout<<endl;
-//          return 1;
-//       }
-//       return 0;
-//    }
-//    sum+=arr[index];
-//    current.push_back(arr[index]);
-//    int left=countEvenSumSubseq(index+1,sum,arr,current);
-//    sum-=arr[index];
-//    current.pop_back();
-//    int right=countEvenSumSubseq(index+1,sum,arr,current);
-//    return left+right;
-// }
-// void generateBin(int index,int n,string &current){
-//    if(index==n){
-//      cout<<current<<endl;
-//      return;
-//    }
-//    //pick
-//    current.push_back('0');
-//    generateBin(index+1,n,current);
-//    current.pop_back();
-
-//    current.push_back('1');
-//    generateBin(index+1,n,current);
-//    current.pop_back();
-// }
-// void BinaryNoConsecutiveOnes(int index,int n,string&current){
-//    if(index==n){
-//       cout<<current<<endl;
-//       return ;
-//    }
-//    current.push_back('0');
-//    BinaryNoConsecutiveOnes(index+1,n,current);
-//    current.pop_back();
-
-//    if(current.empty() || current.back()!='1'){
-//       current.push_back('1');
-//    BinaryNoConsecutiveOnes(index+1,n,current);
-//    current.pop_back();
-//    }
-// }
-// // void generateParenthesis(int n,int open,int close,string& current){
-// //    if(open==n && close==n){
-// //       cout<<current<<endl;
-// //       return;
-// //    }
-// //    if(open<n){
-// //       current.push_back('(');
-// //       generateParenthesis(n,open+1,close,current);
-// //       current.pop_back();
-// //    }
-// //    if(close<open){
-// //       current.push_back(')');
-// //       generateParenthesis(n,open,close+1,current);
-// //       current.pop_back();
-// //    }
-// // }
-// // void sequence(int index,long long num,int low,int high){
-// //         if(num>=low && num<=high){
-// //             cout<<num<<endl;
-// //             return;
-// //         }
-// //         if(num<low || num>high){
-// //             return;
-// //         }
-// //         for(int i=index;i<=9;i++){
-// //            long long old=num; 
-// //            num=num*10+i;
-// //            sequence(i+1,num,low,high);
-// //            num=old;
-// //         }
-// //     }
-// // int main(){
-// //  sequence(1,0,100,300);
-
-// //    return 0;
-// // }
-
 #include<bits/stdc++.h>
 using namespace std;
-bool checkSequence(int num){
-   string s=to_string(num);
-   int left=0,right=1;
-   while(right<s.size()){
-    if(s[left]+1==s[right]){
-        left++;right++;
-    }else{
-        return false;
+void permute(int index,string&s,string&current){
+    if(index==s.size()){
+        cout<<current<<" ";
+        return;
     }
-   }
-   return true;
+    if(isdigit(s[index])){
+        current.push_back(s[index]);
+        permute(index+1,s,current);
+        current.pop_back();
+    }
+    else{
+        current.push_back(tolower(s[index]));
+        permute(index+1,s,current);
+        current.pop_back();
+        current.push_back(toupper(s[index]));
+        permute(index+1,s,current);
+        current.pop_back();
+    }
 }
-void sequence(int index,long long &num,int low,int high){
-        if(num>=low && num<=high){
-           if(checkSequence(num)){
-             cout<<num<<endl;
-           }
-            return;
-        }
-        if(num>high){
-            return;
-        }
-        for(int i=index;i<=9;i++){
-           long long old=num; 
-           num=num*10+i;
-           sequence(i+1,num,low,high);
-           num=old;
-        }
+void combination(int index,string&digits,string & current,vector<string>&phone){
+    if(index==digits.size()){
+        cout<<current<<endl;
+        return;
     }
+    int i=digits[index]-'0';
+    string p=phone[i];
+    for(int i=0;i<p.size();i++){
+        current.push_back(p[i]);
+        combination(index+1,digits,current,phone);
+        current.pop_back();
+    }
+}
+void cSum(int index,vector<int>&candidates,int target,vector<int>&current,int sum){
+    if(index==candidates.size()){
+        if(target==0){
+            for(int x: current){
+                cout<<x<<" ";
+            }cout<<endl;
+        }
+        return;
+    }
+    if(candidates[index]<=target){
+        sum+=candidates[index];
+        target-=candidates[index];
+        current.push_back(candidates[index]);
+        cSum(index,candidates,target,current,sum);
+        current.pop_back();
+        target+=candidates[index];
+        sum-=candidates[index];
+    }
+    cSum(index+1,candidates,target,current,sum);
+}
+void cSum2(int index,vector<int>&candidates,int target,vector<int>&current,int sum){
+    if(target==0){
+        for(int x: current){
+            cout<<x<<" ";
+        }cout<<endl;
+        return;
+    }
+    for(int i=index;i<candidates.size();i++){
+        if(i>index && candidates[i]==candidates[i-1]) continue;
+        if(candidates[i]>target){
+            break;
+        }
+        sum+=candidates[i];
+        target-=candidates[i];
+        current.push_back(candidates[i]);
+        cSum2(i+1,candidates,target,current,sum);
+        current.pop_back();
+        target+=candidates[i];
+        sum-=candidates[i];
+    }
+}
+void cSum3(int index,vector<int>&current,int target,int k){
+    if(current.size()>k) return;
+    if(current.size()==k){
+        if(target==0){
+            for(int x: current){
+                cout<<x<<" ";
+            }
+            cout<<endl;
+        }
+        return;
+    }
+    for(int i=index;i<=9;i++){
+        if(i>target) break;
+        target-=i;
+        current.push_back(i);
+        cSum3(i+1,current,target,k);
+        target+=i;
+        current.pop_back();
+    }
+}
 int main(){
-   long long num=0;
- sequence(1,num,100,300);
-
-   return 0;
+    vector<string>phone={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    string s="a1b2";
+   vector<int>current;
+    string digits="23";
+    vector<int>candidates={2,2,2,1,3,6,7};
+    int sum=0,target=7;
+    // cSum2(0,candidates,target,current,sum);
+    cSum3(1,current,9,3);
+    // cSum(0,candidates,target,current,sum);
+    // combination(0,digits,current,phone);
+    return 0;
 }
