@@ -64,6 +64,10 @@ void countSetBits(int n){
     cout<<count<<endl;
     return;
 }
+//PROBLEM 9: MINIMUM NUMBER OF BIT FLIPS TO CONVERT A NUMBER
+int minimumBitFlips(int start,int goal){
+    return __builtin_popcount(start^goal);
+}
 int main(){
    countSetBits(13);
     return 0;
