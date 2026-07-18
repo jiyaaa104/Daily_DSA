@@ -157,9 +157,70 @@ int xor1486(int n,int start){
     int s=start>>1;
     return (xorRange(s,s+n-1)<<1)|((start&1)&(n&1));
 }
+int divide(int dividend,int divisor){
+    if(dividend==0)return 0;
+    if(divisor==dividend) return 1;
+    if(divisor==1)return dividend;
+    bool sign = true;
+    if(dividend>=0 && divisor<0) sign =false;
+    if(dividend<0 && divisor>=0) sign =false;
+    long long n=llabs((long long)dividend);
+    long long d=llabs((long long)divisor);
+    long long ans=0;
+    while(n>=d){
+        int count=0;
+        while(n>=(d<<(count+1))){
+            count++;
+        }
+        ans+=1<<count;
+        n=n-(d<<count);
+    }
+    if(ans==1<<31 && sign){
+        return INT_MAX;
+    }
+    if(ans==1<<31 && !sign){
+        return INT_MIN;
+    }
+    return sign?ans:ans*-1;
+
+}
+int power(int x,int n){
+    int ans=1;
+    while(n){
+      if(n&1){
+        ans*=x;
+      }
+      x*=x;
+      n>>=1;
+    }
+    return ans;
+}
+vector<int>primeFactors(int n){
+    vector<int>ans;
+    for(int i=2;i<=sqrt(n);i++){
+        if(n%i==0){
+            ans.push_back(i);
+            while(n%i==0){
+                n/=i;
+            }
+        }
+    }
+    if(n!=1) ans.push_back(n);
+    return ans;
+}
+void printAllDivisors(int n){
+    for(int i=1;i<=sqrt(n);i++){
+        if(n%i==0){
+            cout<<i<<" ";
+            if(n/i!=i){
+                cout<<n/i<<" ";
+            }
+        }
+    }
+}
 int main(){
 //     vector<int>nums={1,2,1,3,2,5};
 //    singleNumber3(nums);5^7^9^11^13
-cout<<xor1486(5,12);
+printAllDivisors(36);
     return 0;
 }
