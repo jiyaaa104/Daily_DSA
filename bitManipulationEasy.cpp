@@ -218,9 +218,32 @@ void printAllDivisors(int n){
         }
     }
 }
+int add2num(int a,int b){
+    while(b){
+        int carry=a&b;
+        a^=b;
+        b=carry<<1;
+    }
+    return a;
+}
+int seiveOfEratosthenes(int n){
+    vector<int>prime(n+1,1);
+    for(int i=2;i*i<=n;i++){
+        if(prime[i]){
+            for(int j=i*i;j<=n;j+=i){
+                prime[j]=0;
+            }
+        }
+    }
+    int count=0;
+    for(int i=2;i<=n;i++){
+        if(prime[i])count++;
+    }
+    return count;
+}
 int main(){
 //     vector<int>nums={1,2,1,3,2,5};
 //    singleNumber3(nums);5^7^9^11^13
-printAllDivisors(36);
+cout<<seiveOfEratosthenes(10);
     return 0;
 }
