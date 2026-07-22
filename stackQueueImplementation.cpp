@@ -89,8 +89,45 @@ class LinearQueue{
     cout<<"Size : "<<currSize<<endl;
   }
 };
+class CircularQueue{
+    public:
+   int front=-1,rear=-1,currSize=0;
+   int q[5];
+   void push(int value){
+      if(((rear+1)%5)==front){
+         cout<<"Queue Overflow!"<<endl;
+         return;
+      }
+      if(front==-1){
+        front=rear=0;
+      }else{
+        rear=(rear+1)%5;
+      }
+      q[rear]=value;currSize++;
+   }
+   void pop(){
+     if(front==-1){
+        cout<<"Oueue Underflow"<<endl;
+        return;
+     }else if(front == rear){
+        front=rear=-1;
+     }else{
+        front=(front+1)%5;
+     }
+     currSize--;
+   }
+   void top(){
+    if(front==-1){
+        cout<<"No element in the queue!"<<endl;return;
+    }
+    cout<<"Top : "<<q[front]<<endl;
+   }
+   void size(){
+    cout<<"size : "<<currSize<<endl;
+   }
+};
 int main(){
-   LinearQueue q;
+  CircularQueue q;
    q.push(1);
    q.push(21);
    q.push(12);
