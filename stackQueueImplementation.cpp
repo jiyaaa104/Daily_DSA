@@ -207,17 +207,54 @@ class Stack{
     }
   }
 };
+class Queue{
+    public:
+  Node* front =nullptr;
+  Node* rear= nullptr;int size=0;
+  void push(int value){
+    Node* newNode=new Node(value);
+    if(front==nullptr){
+      front=newNode;
+      rear=newNode;
+    }else{
+        Node* prev=rear;
+        prev->next=newNode;
+        rear=newNode;
+    }
+    size++;
+  }
+  void pop(){
+    if(front==nullptr){
+        cout<<"Queue underflow"<<endl;
+        return;
+    }
+    Node* delNode=front;
+    if(front->next==nullptr){
+       front=nullptr;
+       rear=nullptr;
+    }else{
+        front=front->next;
+    }
+    delete delNode;
+    size--;
+  }
+  void peek(){
+    if(front==nullptr){
+        cout<<"No element in queue!"<<endl;return;
+    }
+    cout<<"Top : "<<front->val<<endl;
+  }
+  void Size(){
+    cout<<"Size : "<<size<<endl;
+  }
+};
 int main(){
-    Stack s;
-    s.push(10);
-    s.push(20);
-    s.push(30);
-    s.peek();
-    s.pop();
-    s.peek();
-    s.pop();
-    s.peek();
-    s.pop();
-    s.peek();
+    Queue q;
+   q.push(10);
+   q.push(20);
+   q.push(30);
+   q.pop();
+   q.Size();
+   q.peek();
     return 0;
 }
