@@ -48,102 +48,176 @@
 // }
 
 //IMPLEMENTATION OF LINEAR AND CIRCULAR QUEUE  USING ARRAY
+// #include<bits/stdc++.h>
+// using namespace std;
+// class LinearQueue{
+//     public:
+//   int front=-1,rear=-1,currSize=0;
+//   int q[5];
+//   void push(int value){
+//     if(rear==4){
+//         cout<<"Queue Overflow!"<<endl;
+//         return;
+//     }
+//     if(front==-1){
+//         front=rear=0;
+//     }else{
+//         rear++;
+//     }
+//     currSize++;
+//     q[rear]=value;
+//   }
+//   void pop(){
+//     if(front==-1){
+//         cout<<"Queue underflow!"<<endl;
+//         return;
+//     }
+//     front++;
+//     currSize--;
+//     if(front>rear){
+//         front=rear=-1;
+//     }
+//   }
+//   void top(){
+//     if(front==-1) {
+//         cout<<"Queue is empty. No element at top!"<<endl;
+//         return;
+//     }
+//     cout<<"Top : "<<q[front]<<endl;
+//   }
+//   void size(){
+//     cout<<"Size : "<<currSize<<endl;
+//   }
+// };
+// class CircularQueue{
+//     public:
+//    int front=-1,rear=-1,currSize=0;
+//    int q[5];
+//    void push(int value){
+//       if(((rear+1)%5)==front){
+//          cout<<"Queue Overflow!"<<endl;
+//          return;
+//       }
+//       if(front==-1){
+//         front=rear=0;
+//       }else{
+//         rear=(rear+1)%5;
+//       }
+//       q[rear]=value;currSize++;
+//    }
+//    void pop(){
+//      if(front==-1){
+//         cout<<"Oueue Underflow"<<endl;
+//         return;
+//      }else if(front == rear){
+//         front=rear=-1;
+//      }else{
+//         front=(front+1)%5;
+//      }
+//      currSize--;
+//    }
+//    void top(){
+//     if(front==-1){
+//         cout<<"No element in the queue!"<<endl;return;
+//     }
+//     cout<<"Top : "<<q[front]<<endl;
+//    }
+//    void size(){
+//     cout<<"size : "<<currSize<<endl;
+//    }
+// };
+// int main(){
+//   CircularQueue q;
+//    q.push(1);
+//    q.push(21);
+//    q.push(12);
+//    q.push(13);
+//    q.push(123);
+// //    q.push(90);
+//    q.top();
+//    q.size();
+//    q.pop();
+//    q.pop();
+//     q.top();
+//    q.size();
+//    q.pop();
+//    q.pop();
+//    q.top();
+//    q.pop();
+//    q.top();
+//    q.pop();
+// }
+
+
+//IMPLEMENTATION OF STACK USING LINKED LIST
 #include<bits/stdc++.h>
 using namespace std;
-class LinearQueue{
+class Node{
     public:
-  int front=-1,rear=-1,currSize=0;
-  int q[5];
+    int val;
+    Node* next;
+    Node(int val1,Node* next1){
+        val=val1;
+        next=next1;
+    }
+    Node(int val1){
+        val=val1;
+        next=nullptr;
+    }
+    Node(){
+        val=0;
+        next=nullptr;
+    }
+};
+class Stack{
+  public:
+  Node* top=nullptr;
+  int size=0;
   void push(int value){
-    if(rear==4){
-        cout<<"Queue Overflow!"<<endl;
-        return;
-    }
-    if(front==-1){
-        front=rear=0;
-    }else{
-        rear++;
-    }
-    currSize++;
-    q[rear]=value;
+    Node* newNode=new Node(value);
+    newNode->next=top;
+    top=newNode;
+    size++;
   }
   void pop(){
-    if(front==-1){
-        cout<<"Queue underflow!"<<endl;
+    if(top==nullptr){
+        cout<<"Queue Underflow!"<<endl;
         return;
     }
-    front++;
-    currSize--;
-    if(front>rear){
-        front=rear=-1;
-    }
+    Node* deleteNode=top;
+    top=top->next;
+    delete deleteNode;
+    size--;
   }
-  void top(){
-    if(front==-1) {
-        cout<<"Queue is empty. No element at top!"<<endl;
+  void peek(){
+    if(top==nullptr){
+        cout<<"No element in queue!"<<endl;
         return;
     }
-    cout<<"Top : "<<q[front]<<endl;
+    cout<<"Top : "<<top->val<<endl;
   }
-  void size(){
-    cout<<"Size : "<<currSize<<endl;
+  void Size(){
+    cout<<"Size : "<<size<<endl;
   }
-};
-class CircularQueue{
-    public:
-   int front=-1,rear=-1,currSize=0;
-   int q[5];
-   void push(int value){
-      if(((rear+1)%5)==front){
-         cout<<"Queue Overflow!"<<endl;
-         return;
-      }
-      if(front==-1){
-        front=rear=0;
-      }else{
-        rear=(rear+1)%5;
-      }
-      q[rear]=value;currSize++;
-   }
-   void pop(){
-     if(front==-1){
-        cout<<"Oueue Underflow"<<endl;
-        return;
-     }else if(front == rear){
-        front=rear=-1;
-     }else{
-        front=(front+1)%5;
-     }
-     currSize--;
-   }
-   void top(){
-    if(front==-1){
-        cout<<"No element in the queue!"<<endl;return;
+  bool empty(){
+    if(top==nullptr){
+        cout<<"TRUE!"<<endl;
+    }else{
+        cout<<"FALSE!"<<endl;
     }
-    cout<<"Top : "<<q[front]<<endl;
-   }
-   void size(){
-    cout<<"size : "<<currSize<<endl;
-   }
+  }
 };
 int main(){
-  CircularQueue q;
-   q.push(1);
-   q.push(21);
-   q.push(12);
-   q.push(13);
-   q.push(123);
-//    q.push(90);
-   q.top();
-   q.size();
-   q.pop();
-   q.pop();
-    q.top();
-   q.size();
-   q.pop();
-   q.pop();
-   q.top();
-   q.pop();
-   q.top();
-   q.pop();
+    Stack s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    s.peek();
+    s.pop();
+    s.peek();
+    s.pop();
+    s.peek();
+    s.pop();
+    s.peek();
+    return 0;
 }
