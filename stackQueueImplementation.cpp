@@ -150,111 +150,147 @@
 
 
 //IMPLEMENTATION OF STACK USING LINKED LIST
+// #include<bits/stdc++.h>
+// using namespace std;
+// class Node{
+//     public:
+//     int val;
+//     Node* next;
+//     Node(int val1,Node* next1){
+//         val=val1;
+//         next=next1;
+//     }
+//     Node(int val1){
+//         val=val1;
+//         next=nullptr;
+//     }
+//     Node(){
+//         val=0;
+//         next=nullptr;
+//     }
+// };
+// class Stack{
+//   public:
+//   Node* top=nullptr;
+//   int size=0;
+//   void push(int value){
+//     Node* newNode=new Node(value);
+//     newNode->next=top;
+//     top=newNode;
+//     size++;
+//   }
+//   void pop(){
+//     if(top==nullptr){
+//         cout<<"Queue Underflow!"<<endl;
+//         return;
+//     }
+//     Node* deleteNode=top;
+//     top=top->next;
+//     delete deleteNode;
+//     size--;
+//   }
+//   void peek(){
+//     if(top==nullptr){
+//         cout<<"No element in queue!"<<endl;
+//         return;
+//     }
+//     cout<<"Top : "<<top->val<<endl;
+//   }
+//   void Size(){
+//     cout<<"Size : "<<size<<endl;
+//   }
+//   bool empty(){
+//     if(top==nullptr){
+//         cout<<"TRUE!"<<endl;
+//     }else{
+//         cout<<"FALSE!"<<endl;
+//     }
+//   }
+// };
+// class Queue{
+//     public:
+//   Node* front =nullptr;
+//   Node* rear= nullptr;int size=0;
+//   void push(int value){
+//     Node* newNode=new Node(value);
+//     if(front==nullptr){
+//       front=newNode;
+//       rear=newNode;
+//     }else{
+//         Node* prev=rear;
+//         prev->next=newNode;
+//         rear=newNode;
+//     }
+//     size++;
+//   }
+//   void pop(){
+//     if(front==nullptr){
+//         cout<<"Queue underflow"<<endl;
+//         return;
+//     }
+//     Node* delNode=front;
+//     if(front->next==nullptr){
+//        front=nullptr;
+//        rear=nullptr;
+//     }else{
+//         front=front->next;
+//     }
+//     delete delNode;
+//     size--;
+//   }
+//   void peek(){
+//     if(front==nullptr){
+//         cout<<"No element in queue!"<<endl;return;
+//     }
+//     cout<<"Top : "<<front->val<<endl;
+//   }
+//   void Size(){
+//     cout<<"Size : "<<size<<endl;
+//   }
+// };
+// int main(){
+//     Queue q;
+//    q.push(10);
+//    q.push(20);
+//    q.push(30);
+//    q.pop();
+//    q.Size();
+//    q.peek();
+//     return 0;
+// }
+
+//IMPLEMENTING STACK USING QUEUE
 #include<bits/stdc++.h>
 using namespace std;
-class Node{
-    public:
-    int val;
-    Node* next;
-    Node(int val1,Node* next1){
-        val=val1;
-        next=next1;
-    }
-    Node(int val1){
-        val=val1;
-        next=nullptr;
-    }
-    Node(){
-        val=0;
-        next=nullptr;
-    }
-};
 class Stack{
-  public:
-  Node* top=nullptr;
-  int size=0;
-  void push(int value){
-    Node* newNode=new Node(value);
-    newNode->next=top;
-    top=newNode;
-    size++;
-  }
-  void pop(){
-    if(top==nullptr){
-        cout<<"Queue Underflow!"<<endl;
-        return;
+public:
+   queue<int>q;
+   void push(int value){
+    int s=q.size();
+    q.push(value);
+    for(int i=0;i<s;i++){
+      q.push(q.front());
+      q.pop();
     }
-    Node* deleteNode=top;
-    top=top->next;
-    delete deleteNode;
-    size--;
-  }
-  void peek(){
-    if(top==nullptr){
-        cout<<"No element in queue!"<<endl;
-        return;
+   }
+   void pop(){
+    if(q.empty()){
+      cout<<"Stack Underflow "<<endl;
+      return;
     }
-    cout<<"Top : "<<top->val<<endl;
-  }
-  void Size(){
-    cout<<"Size : "<<size<<endl;
-  }
-  bool empty(){
-    if(top==nullptr){
-        cout<<"TRUE!"<<endl;
-    }else{
-        cout<<"FALSE!"<<endl;
+    q.pop();
+   }
+   void top(){
+    if(q.size()==0){
+      cout<<"No element in queue"<<endl;
+      return;
     }
-  }
-};
-class Queue{
-    public:
-  Node* front =nullptr;
-  Node* rear= nullptr;int size=0;
-  void push(int value){
-    Node* newNode=new Node(value);
-    if(front==nullptr){
-      front=newNode;
-      rear=newNode;
-    }else{
-        Node* prev=rear;
-        prev->next=newNode;
-        rear=newNode;
-    }
-    size++;
-  }
-  void pop(){
-    if(front==nullptr){
-        cout<<"Queue underflow"<<endl;
-        return;
-    }
-    Node* delNode=front;
-    if(front->next==nullptr){
-       front=nullptr;
-       rear=nullptr;
-    }else{
-        front=front->next;
-    }
-    delete delNode;
-    size--;
-  }
-  void peek(){
-    if(front==nullptr){
-        cout<<"No element in queue!"<<endl;return;
-    }
-    cout<<"Top : "<<front->val<<endl;
-  }
-  void Size(){
-    cout<<"Size : "<<size<<endl;
-  }
+    cout<<"Front : "<<q.front()<<endl;
+   }
+   void size(){
+    cout<<"Size : "<<q.size()<<endl;
+   }
 };
 int main(){
-    Queue q;
-   q.push(10);
-   q.push(20);
-   q.push(30);
-   q.pop();
-   q.Size();
-   q.peek();
-    return 0;
+  return 0;
 }
