@@ -291,6 +291,40 @@ public:
     cout<<"Size : "<<q.size()<<endl;
    }
 };
+//IMPLEMENTNG QUEUE USING 2 STACKS
+//APPROACH 1 : IN THIS THE PUSH OPERATION IS COSTLIER WHEN COMAPARED TO TOP,POP,ETC
+class Queue1{
+  public:
+  stack<int>s1;
+  stack<int>s2;
+  void push(int val){
+    while(s1.size()){
+      s2.push(s1.top());s1.pop();
+    }
+    s1.push(val);
+    while(s2.size()){
+      s1.push(s2.top());
+      s2.pop();
+    }
+  }
+  int pop(){
+    if(s1.empty()){
+      cout<<"Queue Underflow"<<endl;return -1;
+    }
+    int t=s1.top();
+    s1.pop();
+    return t;
+  }
+  int Top(){
+   if(s1.empty()){
+    cout<<"Queue is empty"<<endl;return -1;
+   }
+   return s1.top();
+  }
+  void Size(){
+    cout<<"Size : "<<s1.size()<<endl;
+  }
+};
 int main(){
   return 0;
 }
