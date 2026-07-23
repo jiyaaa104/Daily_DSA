@@ -325,6 +325,42 @@ class Queue1{
     cout<<"Size : "<<s1.size()<<endl;
   }
 };
+//APPROACH 2
+class Queue2{
+public:
+ stack<int>s1;
+ stack<int>s2;
+ void push(int x){
+  s1.push(x);
+ }
+ void pop(){
+  if(s1.empty() && s2.empty()){
+    cout<<"Queue Underflow!"<<endl;
+    return;
+  }
+  if(!s2.empty()) s2.pop();
+  else{
+    while(s1.size()){
+      s2.push(s1.top());s1.pop();
+    }
+    s2.pop();
+  }
+ }
+ void top(){
+  if(s1.empty() && s2.empty()){
+    cout<<"Queue Underflow!"<<endl;
+    return;
+  }
+  if(!s2.empty()){
+    cout<<"Top : "<<s2.top()<<endl;
+  }else{
+    while(s1.size()){
+      s2.push(s1.top());s1.pop();
+    }
+    cout<<"Top : "<<s2.top()<<endl;
+  }
+ }
+};
 int main(){
   return 0;
 }
