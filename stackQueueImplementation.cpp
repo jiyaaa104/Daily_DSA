@@ -361,6 +361,63 @@ public:
   }
  }
 };
+//IMPLEMENTING A MIN STACK : L-155
+//This approach stores two numbers in the stack
+// class MinStack{
+//  stack<pair<int,int>>st;
+//  int mini=INT_MAX;
+//  void push(int x){
+//   if(st.size()==0){
+//    st.push({x,x});
+//   }else{
+//     st.push({x,min(st.top().second,x)});
+//   }
+//  }
+//  int top(){
+//   int t=st.top().first;
+//   return t;
+//  }
+//  void pop(){
+//   st.pop();
+//  }
+//  int getMin(){
+//   int m=st.top().second;
+//   return m;
+//  }
+// };
+
+//Approach 2
+class MinStack{
+public:
+stack<int>st;
+int mini;
+void push(int x){
+if(st.empty()){
+  mini=x;
+  st.push(x);
+}else{
+  if(x>=mini){
+    st.push(x);
+  }else{
+    st.push(2*x-mini);
+    mini=x;
+  }
+}
+}
+void pop(){
+  int x=st.top();
+  st.pop();
+  if(x<mini){
+    mini=2*mini-x;
+  }
+}
+int top(){
+  return max(st.top(),mini);
+}
+int getMin(){
+  return mini;
+}
+};
 int main(){
   return 0;
 }
