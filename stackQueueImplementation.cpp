@@ -72,11 +72,9 @@
 //         cout<<"Queue underflow!"<<endl;
 //         return;
 //     }
-//     front++;
+//     if(front==rear){ front=rear=-1;}
+//     else{front++;}
 //     currSize--;
-//     if(front>rear){
-//         front=rear=-1;
-//     }
 //   }
 //   void top(){
 //     if(front==-1) {
