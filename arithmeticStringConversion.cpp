@@ -125,8 +125,26 @@ string prefixToInfix(string s){
     ans+=st.top();
     return ans;
 }
+string postfixToPrefix(string s){
+    stack<string>st;string ans;int i=0,n=s.size();
+    while(i<n){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;x+=s[i];st.push(x);
+        }else{
+            string b=st.top();st.pop();
+            string a=st.top();st.pop();
+            string x=s[i]+a+b;
+            st.push(x);
+        }
+        i++;
+    }
+    ans+=st.top();
+    return ans;
+}
+
 int main(){
-    string s="*+PQ-MN";
-    cout<<prefixToInfix(s);
+    string s="AB-DE+F*/";
+    string x=postfixToPrefix(s);
+    // cout<<prefixToPostfix(x);
     return 0;
 }
