@@ -141,10 +141,25 @@ string postfixToPrefix(string s){
     ans+=st.top();
     return ans;
 }
-
+string prefixToPostfix(string s){
+    string ans;stack<string>st;int n=s.size();int i=n-1;
+    while(i>=0){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;x+=s[i];st.push(x);
+        }else{
+            string a=st.top();st.pop();
+            string b=st.top();st.pop();
+            string x=a+b+s[i];
+            st.push(x);
+        }
+        i--;
+    }
+    ans+=st.top();
+    return ans;
+}
 int main(){
     string s="AB-DE+F*/";
     string x=postfixToPrefix(s);
-    // cout<<prefixToPostfix(x);
+    cout<<prefixToPostfix(x);
     return 0;
 }
