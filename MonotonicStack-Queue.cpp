@@ -47,8 +47,35 @@ void nextGreaterElement2(vector<int>arr){
     cout<<ans[i]<<" ";
    }
 }
+int nextGreaterElement3(int n){
+    string s=to_string(n);
+    int l=s.size();
+    int breakIndex=-1;
+    for(int i=l-2;i>=0;i--){
+       if(s[i]<s[i+1]){
+        breakIndex=i;
+        break;
+       }
+    }
+    if(breakIndex==-1){
+        return -1;
+    }
+    for(int i=l-1;i>=breakIndex;i--){
+        if(s[i]>s[breakIndex]){
+            swap(s[i],s[breakIndex]);
+            break;
+        }
+    }
+    reverse(s.begin()+breakIndex+1,s.end());
+    long long ans=0;
+    for(int i=0;i<l;i++){
+      ans=ans*10+(s[i]-'0');
+    }
+    if(ans>INT_MAX)return -1;
+    return (int)ans;
+}
 int main(){
-    vector<int>arr={1,2,4,3,1};
-    nextGreaterElement2(arr);
+   int n=232410;
+   cout<<nextGreaterElement3(n);
     return 0;
 }
