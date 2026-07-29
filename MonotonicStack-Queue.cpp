@@ -74,8 +74,52 @@ int nextGreaterElement3(int n){
     if(ans>INT_MAX)return -1;
     return (int)ans;
 }
+void nextSmallerElement(vector<int>arr){
+    int n=arr.size();stack<int>st;vector<int>ans(n);
+    for(int i=n-1;i>=0;i--){
+        if(st.empty()){
+            ans[i]=-1;
+        }else{
+            while(!st.empty() && st.top()>=arr[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                ans[i]=-1;
+            }else{
+                ans[i]=st.top();
+            }
+        }
+        st.push(arr[i]);
+    }
+    for(int i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+}
+void numberOfNextGreaterElements(vector<int>arr){
+    int n=arr.size();vector<int>ans(n);stack<int>st;
+    for(int i=n-1;i>=0;i--){
+        if(st.empty()){
+            ans[i]=0;
+        }else{
+            while(!st.empty() && st.top()<=arr[i]){
+              st.pop();
+            }
+            if(st.empty()){
+                ans[i]=0;
+            }else{
+                ans[i]=st.size();
+            }
+        }
+        st.push(arr[i]);
+    }
+    for(int i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+    }cout<<endl;
+}
+
 int main(){
-   int n=232410;
-   cout<<nextGreaterElement3(n);
+   vector<int>arr={0,1,0,2,1,0,1,3,2,1,2,1};
+   cout<<trappingRainWater(arr);
     return 0;
 }

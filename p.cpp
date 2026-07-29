@@ -1,135 +1,78 @@
 #include<bits/stdc++.h>
 using namespace std;
-int priority(char ch){
-  if(ch=='^')return 3;
-  if(ch=='*'|| ch=='/')return 2;
-  if(ch=='+' || ch=='-')return 1;
-  return -1;
-}
-string infixToPostfix(string s){
-  string ans;stack<char>st;int i=0,n=s.size();
-  while(i<n){
-    if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      ans+=s[i];
-    }else if(s[i]=='('){
-      st.push(s[i]);
-    }else if(s[i]==')'){
-      while(!st.empty() && st.top()!='('){
-        ans+=st.top();st.pop();
-      }
-      st.pop();
+void nextGreaterElement1(vector<int>arr){
+  int n=arr.size();vector<int>ans(n);stack<int>st;
+  for(int i=n-1;i>=0;i--){
+    if(st.empty()){
+      ans[i]=-1;
     }else{
-      while(!st.empty() && ((priority(s[i])<priority(st.top())) || ((priority(s[i])==priority(st.top())) && s[i]!='^'))){
-        ans+=st.top();st.pop();
+      while(!st.empty() && st.top()<=arr[i]){
+        st.pop();
       }
-      st.push(s[i]);
+      if(st.empty()){
+        ans[i]=-1;
+      }else{
+        ans[i]=st.top();
+      }
     }
-    i++;
+    st.push(arr[i]);
   }
-  while(!st.empty()){
-    ans+=st.top();st.pop();
-  }
-  return ans;
-}
-string infixToPrefix(string s){
-  string ans;stack<char>st;int i=0,n=s.size();
-  reverse(s.begin(),s.end());
   for(int i=0;i<n;i++){
-    if(s[i]=='('){
-      s[i]=')';
-    }else if(s[i]==')'){
-      s[i]='(';
-    }
+    cout<<ans[i]<<" ";
   }
-  while(i<n){
-    if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      ans+=s[i];
-    }else if(s[i]=='('){
-      st.push(s[i]);
-    }else if(s[i]==')'){
-      while(!st.empty() && st.top()!='('){
-        ans+=st.top();st.pop();
+}
+void nextGreaterElement2(vector<int>arr){
+  int n=arr.size();stack<int>st;vector<int>ans(n);
+  for(int i= 2*n-1;i>=0;i--){
+    if(st.empty()){
+      ans[i%n]=-1;
+    }else{
+      while(!st.empty() && st.top()<=arr[i%n]){
+        st.pop();
       }
-      st.pop();
-    }else{
-      while(!st.empty() && ((priority(s[i])<priority(st.top())) || ((priority(s[i])==priority(st.top())) && s[i]=='^'))){
-        ans+=st.top();st.pop();
+      if(st.empty()){
+        ans[i%n]=-1;
+      }else{
+        ans[i%n]=st.top();
       }
-      st.push(s[i]);
     }
-    i++;
+    st.push(arr[i%n]);
   }
-  while(!st.empty()){
-    ans+=st.top();st.pop();
+  for(int i=0;i<n;i++){
+    cout<<ans[i]<<" ";
   }
-  reverse(ans.begin(),ans.end());
+}
+int nextGreaterElement3(int n){
+  string s=to_string(n);
+  int l=s.size();int breakIndex=-1;
+  if(l==1){
+    return -1;
+  }
+  for(int i=l-2;i>=0;i--){
+    if(s[i]<s[i+1]){
+      breakIndex=i;
+      break;
+    }
+  }
+  if(breakIndex==-1){
+    return -1;
+  }
+  for(int i=l-1;i>breakIndex;i--){
+    if(s[i]>s[breakIndex]){
+      swap(s[i],s[breakIndex]);
+      break;
+    }
+  }
+  reverse(s.begin()+breakIndex+1,s.end());
+  long long ans=0;
+  for(int i=0;i<l;i++){
+    ans=ans*10+(s[i]-'0');
+  }
+  if(ans>INT_MAX)return -1;
   return ans;
-}
-string postfixToInfix(string s){
-  int i=0,n=s.size();stack<string>st;string ans;
-  while(i<n){
-    if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      string x;x+=s[i];st.push(x);
-    }
-    else{
-      string b=st.top();st.pop();
-      string a=st.top();st.pop();
-      string x="("+a+s[i]+b+")";
-      st.push(x);
-    }
-    i++;
-  }
-  ans+=st.top();
-  return ans;
-}
-string prefixToInfix(string s){
-int n=s.size();int i=n-1;string ans;stack<string>st;
-while(i>=0){
-   if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      string x;x+=s[i];st.push(x);
-    }else{
-      string a=st.top();st.pop();
-      string b=st.top();st.pop();
-      string x="("+a+s[i]+b+")";
-      st.push(x);
-    }
-    i--;
-}
-return st.top();
-}
-string postfixToPrefix(string s){
-  int i=0,n=s.size();string ans;stack<string>st;
-  while(i<n){
-    if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      string x;x+=s[i];st.push(x);
-    }else{
-      string b=st.top();st.pop();
-      string a=st.top();st.pop();
-      string x=s[i]+a+b;
-      st.push(x);
-    }
-    i++;
-  }
-  ans+=st.top();
-  return ans;
-}
-string prefixToPostfix(string s){
-  int n=s.size();string ans;stack<string>st;int i=n-1;
-  while(i>=0){
-    if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-      string x;x+=s[i];st.push(x);
-    }else{
-      string a=st.top();st.pop();
-      string b=st.top();st.pop();
-      string x=a+b+s[i];
-      st.push(x);
-    }
-    i--;
-  }
-  return st.top();
 }
 int main(){
-  string s="*+PQ-MN";
-  cout<<prefixToPostfix(s);
+  int n=123456798;
+  cout<<nextGreaterElement3(n);
   return 0;
 }
