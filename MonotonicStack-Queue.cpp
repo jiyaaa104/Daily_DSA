@@ -117,7 +117,70 @@ void numberOfNextGreaterElements(vector<int>arr){
         cout<<ans[i]<<" ";
     }cout<<endl;
 }
+vector<int>prefixMax(vector<int>nums){
+    int n=nums.size();vector<int>ans(n);
+    ans[0]=nums[0];
+    for(int i=1;i<n;i++){
+        ans[i]=max(ans[i-1],nums[i]);
+    }
+    return ans;
+}
+vector<int>suffixMax(vector<int>nums){
+    int n=nums.size();
+    vector<int>ans(n);
+    ans[n-1]=nums[n-1];
+    for(int i=n-2;i>=0;i--){
+        ans[i]=max(nums[i],ans[i+1]);
+    }return ans;
+}
+int trappingRainWater(vector<int>nums){
+    //TAKES SPACE O(2N)
+    // int n=nums.size();
+    // vector<int>left(n);
+    // vector<int>right(n);
+    // left=prefixMax(nums);
+    // right=suffixMax(nums);
+    // int total=0;
+    // for(int i=0;i<n;i++){
+    //   int heightWater=min(left[i],right[i]);
+    //   if(heightWater>nums[i]){
+    //        total+=(heightWater-nums[i]);
+    //   }
+    // }return total;
 
+    //TAKES SC=>0(N)
+    // int n=nums.size();
+    // vector<int>right(n);
+    // right=suffixMax(nums);
+    // int left=-1,total=0;
+    // for(int i=0;i<n;i++){
+    //     left=max(left,nums[i]);
+    //     int hWater=min(left,right[i]);
+    //     if(hWater>nums[i]){
+    //         total+=(hWater-nums[i]);
+    //     }
+    // }return total;
+
+    int n=nums.size();
+    int l=0,r=n-1,lMax=0,rMax=0,total=0;
+    while(l<r){
+        if(nums[l]<=nums[r]){
+            if(lMax>nums[l]){
+                total+=lMax-nums[l];
+            }else{
+                lMax=nums[l];
+            }
+            l++;
+        }else{
+            if(rMax>nums[r]){
+                total+=rMax-nums[r];
+            }else{
+                rMax=nums[r];
+            }
+            r--;
+        }
+    }return total;
+}
 int main(){
    vector<int>arr={0,1,0,2,1,0,1,3,2,1,2,1};
    cout<<trappingRainWater(arr);
