@@ -181,7 +181,7 @@ int trappingRainWater(vector<int>nums){
         }
     }return total;
 }
-vector<int> nextSmallerEl(vector<int>&nums){
+vector<int> nse(vector<int>&nums){
     int n=nums.size();
     stack<pair<int,int>>st;vector<int>ans(n);
     for(int i=n-1;i>=0;i--){
@@ -201,7 +201,27 @@ vector<int> nextSmallerEl(vector<int>&nums){
     }
     return ans;
 }
-vector<int> previousSmallerEl(vector<int>&nums){
+vector<int> nge(vector<int>&nums){
+    int n=nums.size();
+    stack<pair<int,int>>st;vector<int>ans(n);
+    for(int i=n-1;i>=0;i--){
+        if(st.empty()){
+            ans[i]=-1;
+        }else{
+            while(!st.empty() && st.top().first<nums[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                ans[i]=-1;
+            }else{
+                ans[i]=st.top().second;
+            }
+        }
+        st.push({nums[i],i});
+    }
+    return ans;
+}
+vector<int> pse(vector<int>&nums){
     int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
     for(int i=0;i<n;i++){
         if(st.empty()){
@@ -220,10 +240,29 @@ vector<int> previousSmallerEl(vector<int>&nums){
     }
     return ans;
 }
+vector<int> pge(vector<int>&nums){
+    int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
+    for(int i=0;i<n;i++){
+        if(st.empty()){
+            ans[i]=-1;
+        }else{
+            while(!st.empty() && st.top().first<=nums[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                ans[i]=-1;
+            }else{
+                ans[i]=st.top().second;
+            }
+        }
+        st.push({nums[i],i});
+    }
+    return ans;
+}
 int sumSubArrayMinimum(vector<int>&nums){
   int n=nums.size();
-  vector<int>left=previousSmallerEl(nums);
-  vector<int>right=nextSmallerEl(nums);
+  vector<int>left=pse(nums);
+  vector<int>right=nse(nums);
   long long ans=0;
   for(int i=0;i<n;i++){
     int l=-1,r=n;
@@ -238,8 +277,23 @@ int sumSubArrayMinimum(vector<int>&nums){
   int a=ans%(1000000007);
   return a;
 }
+long long sumSubarrayRange(vector<int>&nums){
+    long long ans=0;int n=nums.size();
+    vector<int>lsmall=pse(nums);
+    vector<int>lgreat=pge(nums);
+    vector<int>rsmall=nse(nums);
+    vector<int>rgreat=nge(nums);
+    for(int i=0;i<n;i++){
+        int ls=(lsmall[i]==-1)?-1:lsmall[i];
+        int lg=(lgreat[i]==-1)?n:lgreat[i];
+        int rs=(rsmall[i]==-1)?-1:rsmall[i];
+        int rg=(rgreat[i]==-1)?n:rgreat[i];
+        ans=(ans+1LL*(i-lg)*(rg-i)*nums[i]);
+        ans=(ans-1LL*(i-ls)*(rs-i)*nums[i]);
+    }return ans;
+}
 int main(){
-   vector<int>arr={3,1,2,4};
-   cout<<sumSubArrayMinimum(arr);
+   vector<int>arr={1,2,3};
+   cout<<sumSubarrayRange(arr);
     return 0;
 }
