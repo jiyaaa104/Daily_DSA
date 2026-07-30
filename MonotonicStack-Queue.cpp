@@ -181,8 +181,65 @@ int trappingRainWater(vector<int>nums){
         }
     }return total;
 }
+vector<int> nextSmallerEl(vector<int>&nums){
+    int n=nums.size();
+    stack<pair<int,int>>st;vector<int>ans(n);
+    for(int i=n-1;i>=0;i--){
+        if(st.empty()){
+            ans[i]=-1;
+        }else{
+            while(!st.empty() && st.top().first>nums[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                ans[i]=-1;
+            }else{
+                ans[i]=st.top().second;
+            }
+        }
+        st.push({nums[i],i});
+    }
+    return ans;
+}
+vector<int> previousSmallerEl(vector<int>&nums){
+    int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
+    for(int i=0;i<n;i++){
+        if(st.empty()){
+            ans[i]=-1;
+        }else{
+            while(!st.empty() && st.top().first>=nums[i]){
+                st.pop();
+            }
+            if(st.empty()){
+                ans[i]=-1;
+            }else{
+                ans[i]=st.top().second;
+            }
+        }
+        st.push({nums[i],i});
+    }
+    return ans;
+}
+int sumSubArrayMinimum(vector<int>&nums){
+  int n=nums.size();
+  vector<int>left=previousSmallerEl(nums);
+  vector<int>right=nextSmallerEl(nums);
+  long long ans=0;
+  for(int i=0;i<n;i++){
+    int l=-1,r=n;
+    if(left[i]!=-1){
+        l=left[i];
+    }
+    if(right[i]!=-1){
+       r= right[i];
+    }
+    ans+=(i-l)*(r-i)*nums[i];
+  }
+  int a=ans%(1000000007);
+  return a;
+}
 int main(){
-   vector<int>arr={0,1,0,2,1,0,1,3,2,1,2,1};
-   cout<<trappingRainWater(arr);
+   vector<int>arr={3,1,2,4};
+   cout<<sumSubArrayMinimum(arr);
     return 0;
 }
