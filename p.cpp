@@ -162,10 +162,45 @@ int trappingRainWater(vector<int>nums){
   }
   return total;
 }
+string removeKdigits(string s,int k){
+  int n=s.size();string ans;stack<char>st;
+  if(k==n){
+    return "0";
+  }
+  for(int i=0;i<n;i++){
+    if(st.empty() || k==0 || st.top()<=s[i]){
+      st.push(s[i]);
+    }else{
+      while(k>0 && !st.empty() && st.top()>s[i]){
+        st.pop();k--;
+      }st.push(s[i]);
+    }
+  }
+  while(k>0 && !st.empty()){
+    st.pop();k--;
+  }
+  while(!st.empty()){
+    ans.push_back(st.top());st.pop();
+  }
+  for(int i=ans.size()-1;i>=0;i--){
+    if(ans[i]=='0'){
+      ans.pop_back();
+    }else{
+      break;
+    }
+  }
+  if(ans.size()==0){
+    return "0";
+  }
+  reverse(ans.begin(),ans.end());
+  return ans;
+}
 int main(){
   // vector<int>arr={1,2,3,4,3,2,1};
   // nextGreaterEl2(arr);
-  int num=1232340;
-  cout<<nextGreaterEl3(num);
+  // int num=1232340;
+  // cout<<nextGreaterEl3(num);
+  string s="1422319";
+  cout<<removeKdigits(s,3);
   return 0;
 }
