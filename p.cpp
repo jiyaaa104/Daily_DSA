@@ -1,31 +1,86 @@
 #include<bits/stdc++.h>
 using namespace std;
-void nextGreaterElement1(vector<int>nums){
-  int n=nums.size();stack<int>st;vector<int>ans(n);
+vector<int> nge(vector<int>nums){
+  int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
   for(int i=n-1;i>=0;i--){
     if(st.empty()){
       ans[i]=-1;
     }else{
-      while(!st.empty() && st.top()<=nums[i]){
+      while(!st.empty() && st.top().first<=nums[i]){
         st.pop();
       }
       if(st.empty()){
         ans[i]=-1;
       }else{
-        ans[i]=st.top();
+        ans[i]=st.top().second;
       }
     }
-    st.push(nums[i]);
+    st.push({nums[i],i});
   }
-  for(int i=0;i<n;i++){
-    cout<<ans[i]<<" ";
-  }
+  return ans;
 }
-void nextGreaterElement2(vector<int>nums){
-  stack<int>st;int n=nums.size();vector<int>ans(n);
+vector<int> nse(vector<int>nums){
+  int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
+  for(int i=n-1;i>=0;i--){
+    if(st.empty()){
+      ans[i]=-1;
+    }else{
+      while(!st.empty() && st.top().first>=nums[i]){
+        st.pop();
+      }
+      if(st.empty()){
+        ans[i]=-1;
+      }else{
+        ans[i]=st.top().second;
+      }
+    }
+    st.push({nums[i],i});
+  }
+  return ans;
+}
+vector<int> pge(vector<int>nums){
+  int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
+  for(int i=0;i<n;i++){
+    if(st.empty()){
+      ans[i]=-1;
+    }else{
+      while(!st.empty() && st.top().first<nums[i]){
+        st.pop();
+      }
+      if(st.empty()){
+        ans[i]=-1;
+      }else{
+        ans[i]=st.top().second;
+      }
+    }
+    st.push({nums[i],i});
+  }
+  return ans;
+}
+vector<int> pse(vector<int>nums){
+  int n=nums.size();stack<pair<int,int>>st;vector<int>ans(n);
+  for(int i=0;i<n;i++){
+    if(st.empty()){
+      ans[i]=-1;
+    }else{
+      while(!st.empty() && st.top().first>nums[i]){
+        st.pop();
+      }
+      if(st.empty()){
+        ans[i]=-1;
+      }else{
+        ans[i]=st.top().second;
+      }
+    }
+    st.push({nums[i],i});
+  }
+  return ans;
+}
+void nextGreaterEl2(vector<int>nums){
+  int n=nums.size();stack<int>st;vector<int>ans(n);
   for(int i=2*n-1;i>=0;i--){
     if(st.empty()){
-      ans[i%n]=-1;
+      ans[i%n]=i;
     }else{
       while(!st.empty() && st.top()<=nums[i%n]){
         st.pop();
@@ -40,80 +95,77 @@ void nextGreaterElement2(vector<int>nums){
   }
   for(int i=0;i<n;i++){
     cout<<ans[i]<<" ";
-  }
+  }cout<<endl;
 }
-int nextGreaterElement3(int n){
+int nextGreaterEl3(int n){
   string s=to_string(n);
-  int l=s.size();
-  int breakIndex=-1;
+  int l=s.size(),bIndex=-1;
   if(l==1){
     return -1;
   }
   for(int i=l-2;i>=0;i--){
     if(s[i]<s[i+1]){
-      breakIndex=i;
+      bIndex=i;
       break;
     }
   }
-  if(breakIndex==-1){
+  if(bIndex==-1){
     return -1;
   }
-  for(int i=l-1;i>breakIndex;i--){
-    if(s[i]>s[breakIndex]){
-      swap(s[i],s[breakIndex]);
+  for(int i=l-1;i>bIndex;i--){
+    if(s[i]>s[bIndex]){
+      swap(s[i],s[bIndex]);
       break;
     }
   }
-  reverse(s.begin()+breakIndex+1,s.end());
+  reverse(s.begin()+bIndex+1,s.end());
   long long ans=0;
   for(int i=0;i<l;i++){
-    ans=ans*10+(s[i]-'0');
+    ans=10*ans+(s[i]-'0');
   }
   if(ans>INT_MAX){
     return -1;
-  }else{
-    return ans;
   }
+  return ans;
 }
-vector<int>prefixMax(vector<int>nums){
+static int const MOD=1000000007;
+int subArrayMinimumSum(vector<int>nums){
   int n=nums.size();
-  vector<int>ans(n);
-  ans[0]=nums[0];
-  for(int i=1;i<n;i++){
-    ans[i]=max(ans[i-1],nums[i]);
-  }return ans;
-}
-vector<int>suffixMax(vector<int>nums){
-  int n=nums.size();
-  vector<int>ans(n);
-  ans[n-1]=nums[n-1];
-  for(int i=n-2;i>=0;i--){
-    ans[i]=max(ans[i+1],nums[i]);
-  }return ans;
+  vector<int>leftGreat=pse(nums);
+  vector<int>rightGreat=nse(nums);
+  int total=0;
+  for(int i=0;i<n;i++){
+    int lg=(leftGreat[i]==-1)?-1:leftGreat[i];
+    int rg=(rightGreat[i]==-1)?n:rightGreat[i];
+    total=(total+(1LL*(((i-lg)*(rg-i))%MOD)*nums[i])%MOD)%MOD;
+  }return total;
 }
 int trappingRainWater(vector<int>nums){
   int n=nums.size();
   int l=0,r=n-1,lMax=0,rMax=0,total=0;
   while(l<r){
-     if(nums[l]<nums[r]){
+    if(nums[l]<nums[r]){
       if(nums[l]<lMax){
-        total+=(lMax-nums[l]);
+        total+=lMax-nums[l];
       }else{
         lMax=nums[l];
       }
       l++;
-     }else{
+    }else{
       if(nums[r]<rMax){
-        total+=(rMax-nums[r]);
+       total+=rMax-nums[r];
       }else{
         rMax=nums[r];
       }
       r--;
-     }
-  }return total;
+    }
+  }
+  return total;
 }
 int main(){
-  vector<int>arr={0,1,0,2,1,0,1,3,2,1,2,1};
-   cout<<trappingRainWater(arr);
+  // vector<int>arr={1,2,3,4,3,2,1};
+  // nextGreaterEl2(arr);
+  int num=1232340;
+  cout<<nextGreaterEl3(num);
   return 0;
 }

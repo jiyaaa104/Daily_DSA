@@ -292,6 +292,28 @@ long long sumSubarrayRange(vector<int>&nums){
         ans=(ans-1LL*(i-ls)*(rs-i)*nums[i]);
     }return ans;
 }
+vector<int> asteroidCollision(vector<int>asteroids){
+    stack<int>st;vector<int>ans;int n=asteroids.size();
+    for(int i=0;i<n;i++){
+        if(asteroids[i]>=0){
+            st.push(asteroids[i]);
+        }else{
+            if(!st.empty() && st.top()<0){
+                st.push(asteroids[i]);continue;
+            }
+            while(!st.empty() && st.top() >=0 && st.top()<-asteroids[i]){st.pop();}
+            if(!st.empty() && st.top()==-asteroids[i]){st.pop();continue;}
+            if(st.empty() || st.top()<0){
+                st.push(asteroids[i]);
+            }
+        }
+    }
+    while(!st.empty()){
+        ans.push_back(st.top());st.pop();
+    }
+    reverse(ans.begin(),ans.end());
+    return ans;
+}
 int main(){
    vector<int>arr={1,2,3};
    cout<<sumSubarrayRange(arr);
