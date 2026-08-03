@@ -226,45 +226,47 @@
 // }
 
 //L-282 EXPRESSION ADD OPERATORS
-#include<bits/stdc++.h>
-using namespace std;
-void expression(int index,string &num,int target,string& exp,long long currentValue,long long lastOperand,vector<string>&ans){
-     if(index==num.size()){
-        if(target==currentValue){
-            ans.push_back(exp);
-        }
-        return;
-     }
-     long long currentNum=0;
-     for(int i=index;i<num.size();i++){
-        if(i>index && num[index]=='0') break;
-        currentNum=currentNum*10+(num[i]-'0');
-        string operand=to_string(currentNum);
-        int len=exp.size();
-        if(index==0){
-            exp=operand;
-            expression(i+1,num,target,exp,currentNum,currentNum,ans);
-            exp.erase(len);
-        }else{
-            exp.push_back('+');
-            exp+=operand;
-            expression(i+1,num,target,exp,currentValue+currentNum,currentNum,ans);
-            exp.erase(len);
+// #include<bits/stdc++.h>
+// using namespace std;
+// void expression(int index,string &num,int target,string& exp,long long currentValue,long long lastOperand,vector<string>&ans){
+//      if(index==num.size()){
+//         if(target==currentValue){
+//             ans.push_back(exp);
+//         }
+//         return;
+//      }
+//      long long currentNum=0;
+//      for(int i=index;i<num.size();i++){
+//         if(i>index && num[index]=='0') break;
+//         currentNum=currentNum*10+(num[i]-'0');
+//         string operand=to_string(currentNum);
+//         int len=exp.size();
+//         if(index==0){
+//             exp=operand;
+//             expression(i+1,num,target,exp,currentNum,currentNum,ans);
+//             exp.erase(len);
+//         }else{
+//             exp.push_back('+');
+//             exp+=operand;
+//             expression(i+1,num,target,exp,currentValue+currentNum,currentNum,ans);
+//             exp.erase(len);
 
-            exp.push_back('-');
-            exp+=operand;
-            expression(i+1,num,target,exp,currentValue-currentNum,-currentNum,ans);
-            exp.erase(len);
+//             exp.push_back('-');
+//             exp+=operand;
+//             expression(i+1,num,target,exp,currentValue-currentNum,-currentNum,ans);
+//             exp.erase(len);
 
-            exp.push_back('*');
-            exp+=operand;
-            long long newValue=currentValue-lastOperand+(lastOperand*currentNum);
-            expression(i+1,num,target,exp,newValue,lastOperand*currentNum,ans);
-            exp.erase(len);
-        }
-     }
-}
-int main(){
+//             exp.push_back('*');
+//             exp+=operand;
+//             long long newValue=currentValue-lastOperand+(lastOperand*currentNum);
+//             expression(i+1,num,target,exp,newValue,lastOperand*currentNum,ans);
+//             exp.erase(len);
+//         }
+//      }
+// }
+// int main(){
 
-    return;
-}
+//     return;
+// }
+
+

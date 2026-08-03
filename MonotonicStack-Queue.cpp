@@ -314,8 +314,21 @@ vector<int> asteroidCollision(vector<int>asteroids){
     reverse(ans.begin(),ans.end());
     return ans;
 }
+int largestRectangleHistogram(vector<int>&heights){
+    int n=heights.size();
+    vector<int>prevSmall=pse(heights);
+    vector<int>nextSmall=nse(heights);
+    int largestArea=-1;
+    for(int i=0;i<n;i++){
+       int ps=prevSmall[i];
+       int ns=(nextSmall[i]==-1)?n:nextSmall[i];
+       int breadth=(ns-(ps+1));
+       int area=heights[i]*breadth;
+       largestArea=max(area,largestArea);
+    }return largestArea;
+}
 int main(){
-   vector<int>arr={1,2,3};
-   cout<<sumSubarrayRange(arr);
+   vector<int>arr={2,1,5,6,2,3};
+   cout<<largestRectangleHistogram(arr);
     return 0;
 }
