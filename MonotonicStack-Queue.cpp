@@ -315,20 +315,46 @@ vector<int> asteroidCollision(vector<int>asteroids){
     return ans;
 }
 int largestRectangleHistogram(vector<int>&heights){
+    // int n=heights.size();
+    // vector<int>prevSmall=pse(heights);
+    // vector<int>nextSmall=nse(heights);
+    // int largestArea=-1;
+    // for(int i=0;i<n;i++){
+    //    int ps=prevSmall[i];
+    //    int ns=(nextSmall[i]==-1)?n:nextSmall[i];
+    //    int breadth=(ns-(ps+1));
+    //    int area=heights[i]*breadth;
+    //    largestArea=max(area,largestArea);
+    // }return largestArea;
+
     int n=heights.size();
-    vector<int>prevSmall=pse(heights);
-    vector<int>nextSmall=nse(heights);
-    int largestArea=-1;
+    stack<int>st;int lArea=-1;
     for(int i=0;i<n;i++){
-       int ps=prevSmall[i];
-       int ns=(nextSmall[i]==-1)?n:nextSmall[i];
-       int breadth=(ns-(ps+1));
-       int area=heights[i]*breadth;
-       largestArea=max(area,largestArea);
-    }return largestArea;
+        while(!st.empty() && heights[st.top()]>heights[i]){
+            int len=heights[st.top()];st.pop();
+            int ns=i;
+            int ps=-1;
+            if(!st.empty()){
+                ps=st.top();
+            }
+            int area=len*(ns-ps-1);
+            lArea=max(lArea,area);
+        }
+        st.push(i);
+    }
+    while(!st.empty()){
+        int len=heights[st.top()];st.pop();
+        int ns=n;
+        int ps=-1;
+        if(!st.empty()){
+            ps=st.top();
+        }
+        int area=len*(ns-ps-1);
+        lArea=max(lArea,area);
+    }return lArea;
 }
 int main(){
-   vector<int>arr={2,1,5,6,2,3};
+   vector<int>arr={2,3,5};
    cout<<largestRectangleHistogram(arr);
     return 0;
 }
