@@ -353,6 +353,43 @@ int largestRectangleHistogram(vector<int>&heights){
         lArea=max(lArea,area);
     }return lArea;
 }
+int largestHistogram(vector<int>&nums){
+    int n=nums.size();
+    stack<int>st;int lArea=0;
+    for(int i=0;i<n;i++){
+      while(!st.empty() && nums[st.top()]>=nums[i]){
+        int ns=i,ps=-1,len=nums[st.top()];st.pop();
+        if(!st.empty()){
+            ps=st.top();
+        }
+        int area=len*(ns-ps-1);
+        lArea=max(lArea,area);
+      }
+      st.push(i);
+    }
+    while(!st.empty()){
+        int ns=n,ps=-1,len=nums[st.top()];st.pop();
+        if(!st.empty()){
+            ps=st.top();
+        }
+        lArea=max(lArea,len*(ns-ps-1));
+    }return lArea;
+}
+int maximalRectangle(vector<vector<char>>&matrix){
+    int r=matrix.size(),c=matrix[0].size();
+    vector<int>height(c,0);
+    int lArea=0;
+    for(int i=0;i<r;i++){
+        for(int j=0;j<c;j++){
+            if(matrix[i][j]=='1'){
+                height[j]++;
+            }else{
+                height[j]=0;
+            }
+        }
+        lArea=max(lArea,largestHistogram(height));
+    }return lArea;
+}
 int main(){
    vector<int>arr={2,3,5};
    cout<<largestRectangleHistogram(arr);
