@@ -39,6 +39,67 @@ int celebrityProblem(vector<vector<int>>&mat){
     } 
     return top;
 }
+class Node{
+ public: 
+   int key,val;Node* next;Node* prev;
+   Node(int k,int v){
+    key=k;
+    val=v;
+    next=nullptr;
+    prev=nullptr;
+   }
+};
+class LRUCache{
+    public: 
+    int size;Node* head;Node* tail;unordered_map<int,Node*>mpp;
+    LRUCache(int capacity){
+        head=new Node(-1,-1);
+        tail=new Node(-1,-1);
+        head->next=tail;
+        tail->prev=head;
+        mpp.clear();
+        size=capacity;
+    }
+    void insertAtHead(Node* node){
+        Node* nextNode=head->next;
+        head->next=node;
+        node->prev=head;
+        node->next=nextNode;
+        nextNode->prev=node;
+    }
+    void deleteNode(Node* node){
+        Node* nextNode=node->next;
+        Node* prevNode=node->prev;
+        prevNode->next=nextNode;
+        nextNode->prev=prevNode;
+    }
+    int get(int key){
+        if(mpp.find(key)==mpp.end()){
+            return -1;
+        }
+        Node* node=mpp[key];
+        deleteNode(node);
+        insertAtHead(node);
+        return node->val;
+    }
+    void put(int key,int val){
+        if(mpp.find(key)!=mpp.end()){
+            mpp[key]->val=val;
+            deleteNode(mpp[key]);
+            insertAtHead(mpp[key]);
+            return;
+        }
+        if(mpp.size()==size){
+            Node* del=tail->prev;
+            deleteNode(del);
+            mpp.erase(del->key);
+            delete del;
+        }
+        Node* node=new Node(key,val);
+        mpp[key]=node;
+        insertAtHead(node);
+    }
+};
 int main(){
 
 }
