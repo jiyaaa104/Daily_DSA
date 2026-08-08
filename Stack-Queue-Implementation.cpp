@@ -16,6 +16,29 @@ vector<int> slidingWindowMaximum(vector<int>&nums,int k){
         }
     }return ans;
 }
+//L-17-> THE CELEBRITY PROBLEM
+int celebrityProblem(vector<vector<int>>&mat){
+    int r=mat.size();
+    int top=0,down=r-1;
+    while(top<down){
+        //does top know down ?
+        if(mat[top][down]){
+            top++;
+        }else if(mat[down][top]){
+            down--;
+        }else{
+            top++;down--;
+        }
+    }
+    if(top>down) return -1;
+    for(int i=0;i<r;i++){
+        if(mat[top][i]) return -1;
+        if(i!=top && (mat[i][top]==1)){
+          return -1;
+        }
+    } 
+    return top;
+}
 int main(){
 
 }
