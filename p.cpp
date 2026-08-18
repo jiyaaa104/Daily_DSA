@@ -1,41 +1,44 @@
 #include<bits/stdc++.h>
 using namespace std;
-vector<int>slidingWindowMaximum(vector<int>&nums,int k){
-    vector<int>ans;int n=nums.size();deque<int>dq;
-    for(int i=0;i<n;i++){
-        if(!dq.empty() && dq.front()<=i-k){
-            dq.pop_front();
-        }
-        while(!dq.empty() && nums[dq.back()]<=nums[i]){
-            dq.pop_back();
-        }
-        dq.push_back(i);
-        if(i>=k-1){
-            ans.push_back(nums[dq.front()]);
-        }
-    }return ans;
+vector<int> slidingWindowMaximum(vector<int>&nums,int k){
+   vector<int>ans;deque<int>dq;int n=nums.size();
+   for(int i=0;i<n;i++){
+    if(!dq.empty() && dq.front()<=i-k){
+        dq.pop_front();
+    }
+    while(!dq.empty() && nums[dq.back()]<=nums[i]){
+        dq.pop_back();
+    }
+    dq.push_back(i);
+    if(i>=k-1){
+        ans.push_back(nums[dq.front()]);
+    }
+   }
+   return ans;
 }
-int celebrityProblem(vector<vector<int>>&nums){
-    int n=nums.size();
+int celebrityProblem(vector<vector<int>>&mat){
+    int n=mat.size();
     int top=0,bottom=n-1;
     while(top<bottom){
-        if(nums[top][bottom])top++;
-        else if(nums[bottom][top])bottom--;
-        else{
+        if(mat[top][bottom]){
+            top++;
+        }else if(mat[bottom][top]){
+            bottom--;
+        }else{
             top++;bottom--;
         }
     }
     if(top>bottom)return -1;
     for(int i=0;i<n;i++){
         if(i!=top){
-            if(!(nums[i][top]==1 && nums[top][i]==0))return -1;
+            if(!(mat[top][i]==0 && mat[i][top]==1))return -1;
         }
     }return top;
 }
 // class Node{
-//   public:  
+// public:
 //   int key,val;
-//   Node* next;Node* prev;
+//   Node* prev;Node* next;
 //   Node(int k,int v){
 //     key=k;
 //     val=v;
@@ -44,14 +47,13 @@ int celebrityProblem(vector<vector<int>>&nums){
 //   }
 // };
 // class LRUCache{
-//    public:
-//    Node* head;Node* tail;unordered_map<int,Node*>mpp;int size;
+//    Node* head;Node* tail;int size;unordered_map<int,Node*>mpp;
 //    LRUCache(int capacity){
+//     size=capacity;
 //     head=new Node(-1,-1);
 //     tail=new Node(-1,-1);
 //     head->next=tail;
 //     tail->prev=head;
-//     size=capacity;
 //     mpp.clear();
 //    }
 //    void insertAtHead(Node* node){
@@ -68,11 +70,13 @@ int celebrityProblem(vector<vector<int>>&nums){
 //     nextNode->prev=prevNode;
 //    }
 //    int get(int key){
-//     if(mpp.find(key)==mpp.end())return -1;
-//     Node* node=mpp[key];
-//     deleteNode(node);
-//     insertAtHead(node);
-//     return node->val;
+//     if(mpp.find(key)!=mpp.end()){
+//         Node*  node=mpp[key];
+//         deleteNode(node);
+//         insertAtHead(node);
+//         return node->val;
+//     }
+//     return -1;
 //    }
 //    void put(int key,int value){
 //     if(mpp.find(key)!=mpp.end()){
@@ -80,114 +84,110 @@ int celebrityProblem(vector<vector<int>>&nums){
 //         node->val=value;
 //         deleteNode(node);
 //         insertAtHead(node);
-//         return ;
+//     }else{
+//         if(mpp.size()==size){
+//             Node* delNode=tail->prev;
+//             deleteNode(delNode);
+//             mpp.erase(delNode->key);
+//             delete delNode;
+//         }
+//         Node* newNode=new Node(key,value);
+//         insertAtHead(newNode);
+//         mpp[newNode->key]=newNode;
 //     }
-//     if(size==mpp.size()){
-//         Node* delNode=tail->prev;
-//         deleteNode(delNode);
-//         mpp.erase(delNode->key);
-//         delete delNode;
-//     }
-//     Node* newNode=new Node(key,value);
-//     insertAtHead(newNode);
-//     mpp[key]=newNode;
 //    }
 // };
 class Node{
-    public:
-    int key,val,count;
-    Node* next;Node* prev;
-    Node(int k,int v){
-        key=k;
-        val=v;
-        count=1;
-        next=nullptr;prev=nullptr;
-    }
+  public:
+  int key,val,count;
+  Node* next;Node* prev;
+  Node(int k,int v){
+    key=k;
+    val=v;
+    next=nullptr;
+    prev=nullptr;
+    count=1;
+  }
 };
 class List{
-  public:
-   Node* head;Node* tail;int size;
-   List(){
-    head=new Node(-1,-1);
-    tail=new Node(-1,-1);
-    head->next=tail;
-    tail->prev=head;
-    size=0;
-   }
-   void addFront(Node* node){
-    Node* nextNode=head->next;
-    head->next=node;
-    node->prev=head;
-    node->next=nextNode;
-    nextNode->prev=node;
-    size++;
-   }
-   void removeNode(Node* node){
-    Node* nextNode=node->next;
-    Node* prevNode=node->prev;
-    prevNode->next=nextNode;
-    nextNode->prev=prevNode;
-    size--;
-   }
+    public:
+    Node* head;Node* tail;int size;
+    List(){
+        head=new Node(-1,-1);
+        tail=new Node(-1,-1);
+        head->next=tail;
+        tail->prev=head;
+        size=0;
+    }
+    void addFront(Node* node){
+        Node* nextNode=head->next;
+        head->next=node;
+        node->prev=head;
+        node->next=nextNode;
+        nextNode->prev=node;
+        size++;
+    }
+    void removeNode(Node* node){
+        Node* nextNode=node->next;
+        Node* prevNode=node->prev;
+        prevNode->next=nextNode;
+        nextNode->prev=prevNode;
+        size--;
+    }
 };
 class LFUCache{
-  public:
-   unordered_map<int,Node*>mpp;
-   unordered_map<int,List*>freqList;
-   int minFreq,currCap,maxCap;
-   LFUCache(int capacity){
-    minFreq=0,currCap=0,maxCap=capacity;
-   }
-   void updateFreqList(Node* node){
-     freqList[node->count]->removeNode(node);
-     if(node->count==minFreq && freqList[node->count]->size==0) minFreq++;
-     List* newList;
-     if(freqList.find(node->count+1)!=freqList.end()){
-        newList=freqList[node->count+1];
-     }else{
-        newList=new List();
-     }
-     node->count+=1;
-     newList->addFront(node);
-     freqList[node->count]=newList;
-   }
-   int get(int key){
-    if(mpp.find(key)!=mpp.end()){
-       Node* node=mpp[key];
-       updateFreqList(node);
-       return node->val;
-    }return -1;
-   }
-   void put(int key,int value){
-    if(maxCap==0)return;
-    if(mpp.find(key)!=mpp.end()){
-        Node* node=mpp[key];
-        node->val=value;
-        updateFreqList(node);
-        return;
+    public: 
+    unordered_map<int,Node*>keyNode;
+    unordered_map<int,List*>freqList;
+    int minFreq,maxCap,currCap;
+    LFUCache(int capacity){
+         minFreq=0;maxCap=capacity;currCap=0;
     }
-    Node* node=new Node(key,value);
-     
-    if(currCap==maxCap){  
-        List* list=freqList[minFreq];
-       Node* delNode=list->tail->prev;
-       list->removeNode(delNode);
-       mpp.erase(delNode->key);
-       delete delNode;
-       currCap--;
+    void updateFreqList(Node* node){
+       freqList[node->count]->removeNode(node);
+       if(node->count==minFreq && freqList[node->count]->size==0){
+        minFreq++;
+       }
+       List* list=new List();
+       if(freqList.find(node->count+1)!=freqList.end()){
+         list=freqList[node->count+1];
+       }
+       list->addFront(node);
+       node->count+=1;
+       freqList[node->count]=list;
     }
-    currCap++;
-    minFreq=1;
-    List* list;
-    if(freqList.find(minFreq)!=freqList.end()){
-        list=freqList[minFreq];
-    }else{
-        list=new List();
-    }  
-    list->addFront(node);
-    freqList[minFreq]=list;
-    mpp[key]=node;
-   }
+    int get(int key){
+        if(keyNode.find(key)!=keyNode.end()){
+            Node* node=keyNode[key];
+            updateFreqList(node);
+            return node->val;
+        }return -1;
+    }
+    void put(int key,int value){
+        if(maxCap==0)return;
+        if(keyNode.find(key)!=keyNode.end()){
+            Node* node=keyNode[key];
+            node->val=value;
+            updateFreqList(node);
+        }else{
+          if(currCap==maxCap){
+            List* list=freqList[minFreq];
+            list->removeNode(freqList[minFreq]->tail->prev);
+            keyNode.erase(freqList[minFreq]->tail->prev->key);
+            currCap--;
+          }
+          Node* newNode=new Node(key,value);
+          minFreq=1;
+          currCap++;
+          List* list=new List();
+          if(freqList.find(minFreq)!=freqList.end()){
+            list=freqList[minFreq];
+        }
+        list->addFront(newNode);
+        keyNode[key]=newNode;
+        freqList[minFreq]=list;
+        }
+    }
 };
 int main(){
     return 0;
