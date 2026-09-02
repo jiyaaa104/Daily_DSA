@@ -105,7 +105,39 @@ string longestSubstringAtMostKDistinct(string s,int k){
     }
     return s.substr(sIndex,maxLen);
 }
+string minWindowSubsequence(string s,string t){
+   int n=s.size(),m=t.size();
+   int j=0,l=0,r=0,len=INT_MAX,sIndex=-1;
+   while(r<n){
+    if(s[r]==t[j]){
+        r++;j++;
+    }else{
+        r++;
+    }
+    if(j==m){
+        int si=r-1,ti=m-1;
+        while(ti>=0){
+            if(s[si]==t[ti]){
+                ti--;si--;
+            }else{
+                si--;
+            }
+        }
+        int right=r-1,left=si+1;
+        if(len>right-left+1){
+            len=right-left+1;
+            sIndex=left;
+        }
+        j=0;
+        r=left+1;
+    }
+   }
+   if(sIndex==-1){
+    return "";
+   }
+   return s.substr(sIndex,len);
+}
 int main(){
-    cout<<longestSubstringAtMostKDistinct("abc",1);
+    cout<<minWindowSubsequence("aaxxbxcaxbxxcaxbxc","axbc");
     return 0;
 }
