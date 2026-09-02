@@ -56,25 +56,56 @@
 // }
 
 //L-713
+// #include<bits/stdc++.h>
+// using namespace std;
+// //NUMBER OF SUBARRAY PRODUCT (STRICTLY!) LESSER THAN K
+// //->WHEN DO WE KNOW IF WHILE{WHILE} IS GOING TO WORK OR WHILE{IF-ELSE} IS GOING TO WORK?
+// //WHEN WE ARE SURE THAT ON REMOVING JUST ONE PERSON FROM THE SUBARRAY GIVES ME THE VALID SUBARRAY WE USE IF-ELSE INSIDE WHILE ELSE WE KEEP ON REMOVING FROM THE LEFT UNTIL WE ARE LEFT WITH A VALID SUBARRAY!
+// //EX=> {10,10,5,10000} K=5000 DO A DRY RUN
+// int function(vector<int>&nums,int k){
+//     int n=nums.size(),l=0,r=0,ans=0,product=1;
+//     while(r<n){
+//         product*=nums[r];
+//         while(l<n && product>=k){
+//             product/=nums[l];
+//             l++;
+//         }
+//         ans+=r-l+1;
+//         r++;
+//     }
+//     return ans;
+// }
+// int main(){
+  
+// }
+//LONGEST SUBSTRING WITH ATMOST K DISTINCT CHARACTERS
 #include<bits/stdc++.h>
 using namespace std;
-//NUMBER OF SUBARRAY PRODUCT (STRICTLY!) LESSER THAN K
-//->WHEN DO WE KNOW IF WHILE{WHILE} IS GOING TO WORK OR WHILE{IF-ELSE} IS GOING TO WORK?
-//WHEN WE ARE SURE THAT ON REMOVING JUST ONE PERSON FROM THE SUBARRAY GIVES ME THE VALID SUBARRAY WE USE IF-ELSE INSIDE WHILE ELSE WE KEEP ON REMOVING FROM THE LEFT UNTIL WE ARE LEFT WITH A VALID SUBARRAY!
-//EX=> {10,10,5,10000} K=5000 DO A DRY RUN
-int function(vector<int>&nums,int k){
-    int n=nums.size(),l=0,r=0,ans=0,product=1;
+string longestSubstringAtMostKDistinct(string s,int k){
+    int n=s.size();
+    int l=0,r=0,sIndex=-1,maxLen=0;
+    unordered_map<char,int>mpp;
     while(r<n){
-        product*=nums[r];
-        while(l<n && product>=k){
-            product/=nums[l];
-            l++;
+      mpp[s[r]]++;
+      if(mpp.size()>k){
+        mpp[s[l]]--;
+        if(mpp[s[l]]==0){
+            mpp.erase(s[l]);
         }
-        ans+=r-l+1;
-        r++;
+        l++;
+      }
+      if(r-l+1>maxLen){
+        maxLen=r-l+1;
+        sIndex=l;
+      }
+      r++;
     }
-    return ans;
+    if(sIndex==-1){
+        return "";
+    }
+    return s.substr(sIndex,maxLen);
 }
 int main(){
+    cout<<longestSubstringAtMostKDistinct("abc",1);
     return 0;
 }
