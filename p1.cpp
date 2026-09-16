@@ -1,148 +1,272 @@
 #include<bits/stdc++.h>
 using namespace std;
-int function1(string s){
-    int n=s.size();
-    int l=0,r=0,maxLen=0;
-    vector<int>mpp(26,0);
-    while(r<n){
-        mpp[s[r]-'a']++;
-        while(mpp[s[r]-'a']>2){
-            mpp[s[l]-'a']--;
-            l++;
+class Stack{
+   int top=-1;int arr[10];
+   void push(int x){
+    if(top==9){
+        cout<<"Stack Overflow"<<endl;
+        return;
+    }
+    top++;
+    arr[top]=x;
+   }
+   void pop(){
+    if(top==-1){
+        cout<<"Stack Underflow"<<endl;
+        return;
+    }
+    top--;
+   }
+};
+class Queue{
+  public:
+  int front=-1,rear=-1,currSize=0;int q[5];
+  void push(int x){
+    if(currSize==5){
+        cout<<"Queue Overflow"<<endl;
+        return;
+    }
+    if(front==-1){
+        front=rear=0;
+    }else{
+        rear=(rear+1)%5;
+    }
+    currSize++;q[rear]=x;
+  }
+  void pop(){
+    if(front==-1){
+        cout<<"Queue Underflow"<<endl;
+        return;
+    }
+    if(front==rear){
+        front=rear=-1;
+    }else{
+        front=(front+1)%5;
+    }
+    currSize--;
+  }
+};
+class Node{
+    public:
+   int val;Node* next;
+   Node( int v,Node* n){
+    val=v;
+    next=n;
+   }
+   Node(int v){
+    val=v;
+    next=nullptr;
+   }
+};
+class StackLL{
+    public:
+    Node* top=nullptr;int size=0;
+    void push(int x){
+        Node* newNode=new Node(x);
+        if(top==nullptr){
+            top=newNode;
+        }else{
+        top->next=newNode;
+        top=newNode;
         }
-        maxLen=max(maxLen,r-l+1);
-        r++;
-    }return maxLen;
-}
-int function2(vector<int>&nums){
-    int n=nums.size();
-    int x=0;
-    for(int i=0;i<n;i++){
-        x^=nums[i];
+        size++;
     }
-    if(x!=0)return n;
-    //x==0->
-    for(int i=0;i<n;i++){
-        x^=nums[i];
-        //remove one person 0^y=y if(y>0) 
-        if(x!=0)return n-1;
-        x^=nums[i];
+    void pop(){
+        if(top==nullptr){
+            cout<<"Stack Underflow"<<endl;
+            return;
+        }
+        Node* del=top;
+        top=top->next;
+        delete del;
+        size--;
     }
+};
+class QueueLL{
+   public:
+    int size=0;Node* front=nullptr;Node* rear=nullptr;
+    void push(int x){
+        Node* newNode=new Node(x);
+        if(front==nullptr){
+            front=newNode;
+            rear=newNode;
+        }else{
+            rear->next=newNode;
+            rear=newNode;
+        }
+        size++;
+    }
+    void pop(){
+        if(front==nullptr){
+            cout<<"Queue Underflow"<<endl;
+            return;
+        }
+        Node* delNode=front;
+        if(front->next==nullptr){
+            front=nullptr;
+            rear=nullptr;
+        }else{
+            front=front->next;
+        }
+         delete delNode;
+        size--;
+    }
+};
+class minStack{
+   public: 
+   stack<long long>st;int mini;
+   void push(int x){
+     if(st.empty()){
+        st.push(x);mini=x;
+     }else{
+        if(x>=mini){
+            st.push(x);
+        }else{
+            st.push(2LL*x-mini);
+            mini=x;
+        }
+     }
+   }
+   void pop(){
+     int x=st.top();
+     if(x>=mini){
+        st.pop();
+     }else{
+        mini=2LL*mini-x;
+        st.pop();
+     }
+   }
+   int Top(){
+    int x=st.top();
+    if(x>=mini)return x;
+    return mini;
+   }
+};
+int priority(char ch){
+    if(ch=='^')return 3;
+    if(ch=='*' || ch=='/')return 2;
+    if(ch=='+' || ch=='-')return 1;
     return 0;
 }
-int function3(vector<int>&nums){
-    int n=nums.size();
-    int left=0;
-    for(int right=0;right<n;right++){
-        if(left<2 || nums[right]!=nums[left-2]){
-            nums[left]=nums[right];
-            left++;
+string infixToPostfix(string s){
+    string ans;int n=s.size();
+    stack<char>st;
+    for(int i=0;i<n;i++){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9'))ans+=s[i];
+        else if(s[i]=='(')st.push(s[i]);
+        else if(s[i]==')'){
+            while(!st.empty() && st.top()!='('){
+                ans+=st.top();st.pop();
+            }
+            st.pop();
+        }else{
+            while(!st.empty() && ((priority(s[i])<priority(st.top())) || (priority(s[i])==priority(st.top())) && s[i]!='^')){
+                ans+=st.top();
+                st.pop();
+            }
+            st.push(s[i]);
         }
-    }return left;
+    }
+    while(!st.empty()){
+        ans+=st.top();st.pop();
+    }
+    return ans;
 }
-int function4(string s){
-    int n=s.size();
-    int l=0,r=0,maxLen=0;
-    unordered_map<char,int>mpp;
-    while(r<n){
-        if((mpp.find(s[r])!=mpp.end()) && mpp[s[r]]>=l){
-           l=mpp[s[r]]+1;
+string infixToPrefix(string s){
+    int n=s.size();string ans;stack<char>st;
+    reverse(s.begin(),s.end());
+    for(int i=0;i<n;i++){
+      if(s[i]=='('){
+        s[i]=')';
+      }else if(s[i]==')'){
+        s[i]='(';
+      }
+    }
+    for(int i=0;i<n;i++){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9'))ans+=s[i];
+        else if(s[i]=='(')st.push(s[i]);
+        else if(s[i]==')'){
+            while(!st.empty() && st.top()!='('){
+                ans+=st.top();st.pop();
+            }
+            st.pop();
         }
-        mpp[s[r]]=r;
-        maxLen=max(maxLen,r-l+1);
-        r++;
-    }return maxLen;
-}
-int function5(vector<int>&nums){
-    int n=nums.size();
-    int l=0,r=0,minLen=INT_MAX;
-    unordered_map<int,int>mpp;
-    while(r<n){
-        mpp[nums[r]]++;
-        while(mpp[nums[r]]==2){
-           minLen=min(minLen,r-l+1);
-           mpp[nums[l]]--;
-           l++;
+        else{
+            while(!st.empty() && ((priority(s[i])<priority(st.top())) || (priority(s[i])==priority(st.top())) && s[i]=='^')){
+                ans+=st.top();st.pop();
+            }
+            st.push(s[i]);
         }
-        r++;
-    }return minLen==INT_MAX?-1:minLen;
+    }
+    while(!st.empty()){
+        ans+=st.top();
+        st.pop();
+    }
+    reverse(ans.begin(),ans.end());
+    return ans;
 }
-int function6(vector<int>&nums){
-    int n=nums.size();
-    int l=0,r=0,sum=0,maxSum=0;
-    unordered_map<int,int>mpp;
-    while(r<n){
-        sum+=nums[r];
-        mpp[nums[r]]++;
-        while(mpp[nums[r]]>1){
-            sum-=nums[l];
-            mpp[nums[l]]--;
-            l++;
+string postfixToInfix(string s){
+    stack<string>st;string ans;int n=s.size();
+    for(int i=0;i<n;i++){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;
+            x+=s[i];
+            st.push(x);
+        }else{
+            string b=st.top();st.pop();
+            string a=st.top();st.pop();
+            string x="("+a+s[i]+b+")";
+            st.push(x);
         }
-        maxSum=max(maxSum,sum);
-        r++;
-    }return maxSum;
+    }
+    return st.top();
 }
-int function7(vector<int>&nums){
-    int used=0,n=nums.size();
-    int l=0,r=0,maxLen=0;
-    while(r<n){
-        while((used&nums[r])!=0){
-            used^=nums[l];
-            l++;
+string prefixToInfix(string s){
+    string ans;stack<string>st;int n=s.size();
+    for(int i=n-1;i>=0;i--){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;
+            x+=s[i];
+            st.push(x);
+        }else{
+            string a=st.top();st.pop();
+            string b=st.top();st.pop();
+            string x="("+a+s[i]+b+")";
+            st.push(x);
         }
-        used|=nums[r];
-        maxLen=max(maxLen,r-l+1);
-        r++;
-    }return maxLen;
+    }return st.top();
 }
-int function8(string s){
-    int count=0,n=s.size(),l=0,r=0;
-    unordered_map<char,int>mpp;
-    while(r<n){
-        mpp[s[r]]++;
-        if(mpp[s[r]]>1)count++;
-     while(mpp[s[r]]>1){
-        mpp[s[l]]--;
-        l++;
-     }
-     r++;
-    }return count+1;
-}
-int function9(vector<int>&nums,int k){
-    int n=nums.size();
-    int l=0,r=0,maxLen=0,z=0;
-    while(r<n){
-       if(nums[r]==0)z++;
-       if(z>k){
-         if(nums[l]==0)z--;
-         l++;
-       }
-       else{
-        maxLen=max(maxLen,r-l+1);
-       }
-       r++;
-    }return maxLen;
-}
-int function10(vector<int>&nums,int k){
-    int n=nums.size(),sum=0,maxSum=0,l=0,r=0;
-    unordered_map<int,int>mpp;
-    while(r<n){
-        sum+=nums[r];
-        mpp[nums[r]]++;
-        while(mpp[nums[r]]>1 || r-l+1>k){
-            mpp[nums[l]]--;
-            sum-=nums[l];
-            l++;
+string postfixToPrefix(string s){
+    int n=s.size();stack<string>st;
+    for(int i=0;i<n;i++){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;
+            x+=s[i];
+            st.push(x);
+        }else{
+            string b=st.top();st.pop();
+            string a=st.top();st.pop();
+            string x=s[i]+a+b;
+            st.push(x);
         }
-        if(r-l+1==k){
-            maxSum=max(maxSum,sum);
+    }return st.top();
+}
+string prefixToPostfix(string s){
+    int n=s.size();stack<string>st;
+    for(int i=n-1;i>=0;i--){
+        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
+            string x;
+            x+=s[i];
+            st.push(x);
+        }else{
+            string a=st.top();st.pop();
+            string b=st.top();st.pop();
+            string x=a+b+s[i];
+            st.push(x);
         }
-        r++;
-    }return maxSum;
+    }return st.top();
 }
 int main(){
-    vector<int>nums={1,5,4,2,9,9,9};
-    cout<<function10(nums,3);
+    cout<<prefixToPostfix("/-AB*+DEF");
     return 0;
 }

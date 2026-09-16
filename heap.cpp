@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 class BinaryHeap{
+    public:
    int capacity;
    int size;
    int* arr;
@@ -75,6 +76,7 @@ class BinaryHeap{
    }
    //9
    void decreaseKey(int i,int val){
+      if(i<0 || i>=size)return;
      arr[i]=val;
      while(i!=0 && arr[parent(i)]>arr[i]){
         swap(&arr[parent(i)],&arr[i]);
@@ -83,6 +85,7 @@ class BinaryHeap{
    }
    //10
    void Delete(int i){
+      if(i<0 || i>=size)return;
     decreaseKey(i,INT_MIN);
     ExtractMin();
    }
@@ -94,6 +97,15 @@ class BinaryHeap{
     cout<<endl;
    }
 };
+bool checkIfArrayIsMinHeap(vector<int>&nums){
+   int n=nums.size();
+   for(int i=1;i<n;i++){
+      int parent=(i-1)/2;
+      if(nums[parent]>nums[i])return false;
+   }return true;
+}
 int main(){
+     vector<int>n={1,2,13,4,5,6};
+     cout<<checkIfArrayIsMinHeap(n);
     return 0;
 }
