@@ -104,8 +104,38 @@ bool checkIfArrayIsMinHeap(vector<int>&nums){
       if(nums[parent]>nums[i])return false;
    }return true;
 }
+void swap(int *x,int *y){
+   int temp=*x;
+   *x=*y;
+   *y=temp;
+}
+void heapify(vector<int>&arr,int i){
+   int n=arr.size();
+   int largest=i;
+   int li=2*i+1,ri=2*i+2;
+   if(li<n && arr[largest]<arr[li]){
+      largest=li;
+   }
+   if(ri<n && arr[largest]<arr[ri]){
+      largest=ri;
+   }
+   if(i!=largest){
+      swap(&arr[i],&arr[largest]);
+      heapify(arr,largest);
+   }
+}
+void convertMinHeap2MaxHeap(vector<int>&arr){
+   int n=arr.size();
+   for(int i=(n/2)-1;i>=0;i--){
+      heapify(arr,i);
+   }
+   for(int i=0;i<n;i++){
+      cout<<arr[i]<<" ";
+   }cout<<endl;
+   return;
+}
 int main(){
-     vector<int>n={1,2,13,4,5,6};
-     cout<<checkIfArrayIsMinHeap(n);
+     vector<int>arr={5,30,10,40,50,20,25};
+    convertMinHeap2MaxHeap(arr);
     return 0;
 }

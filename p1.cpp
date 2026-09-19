@@ -1,272 +1,132 @@
 #include<bits/stdc++.h>
 using namespace std;
-class Stack{
-   int top=-1;int arr[10];
-   void push(int x){
-    if(top==9){
-        cout<<"Stack Overflow"<<endl;
+class Heap{
+  int capacity;
+  int size;
+  int * arr;
+   Heap(int cap){
+    capacity=cap;
+    size=0;
+    arr=new int[capacity];
+   }
+   int parent(int i){
+    return (i-1)/2;
+   }
+   int left(int i){
+    return 2*i+1;
+   }
+   int right(int i){
+    return 2*i+2;
+   }
+   void swap(int *x,int *y){
+    int temp=*x;
+    *x=*y;
+    *y=temp;
+   }
+   void print(){
+     for(int i=0;i<size;i++){
+        cout<<arr[i]<<" ";
+     }cout<<endl;
+   }
+   void insert(int val){
+      if(size==capacity){
+        cout<<"Binary Heap Overflow"<<endl;
         return;
-    }
-    top++;
-    arr[top]=x;
-   }
-   void pop(){
-    if(top==-1){
-        cout<<"Stack Underflow"<<endl;
-        return;
-    }
-    top--;
-   }
-};
-class Queue{
-  public:
-  int front=-1,rear=-1,currSize=0;int q[5];
-  void push(int x){
-    if(currSize==5){
-        cout<<"Queue Overflow"<<endl;
-        return;
-    }
-    if(front==-1){
-        front=rear=0;
-    }else{
-        rear=(rear+1)%5;
-    }
-    currSize++;q[rear]=x;
-  }
-  void pop(){
-    if(front==-1){
-        cout<<"Queue Underflow"<<endl;
-        return;
-    }
-    if(front==rear){
-        front=rear=-1;
-    }else{
-        front=(front+1)%5;
-    }
-    currSize--;
-  }
-};
-class Node{
-    public:
-   int val;Node* next;
-   Node( int v,Node* n){
-    val=v;
-    next=n;
-   }
-   Node(int v){
-    val=v;
-    next=nullptr;
-   }
-};
-class StackLL{
-    public:
-    Node* top=nullptr;int size=0;
-    void push(int x){
-        Node* newNode=new Node(x);
-        if(top==nullptr){
-            top=newNode;
-        }else{
-        top->next=newNode;
-        top=newNode;
-        }
-        size++;
-    }
-    void pop(){
-        if(top==nullptr){
-            cout<<"Stack Underflow"<<endl;
-            return;
-        }
-        Node* del=top;
-        top=top->next;
-        delete del;
-        size--;
-    }
-};
-class QueueLL{
-   public:
-    int size=0;Node* front=nullptr;Node* rear=nullptr;
-    void push(int x){
-        Node* newNode=new Node(x);
-        if(front==nullptr){
-            front=newNode;
-            rear=newNode;
-        }else{
-            rear->next=newNode;
-            rear=newNode;
-        }
-        size++;
-    }
-    void pop(){
-        if(front==nullptr){
-            cout<<"Queue Underflow"<<endl;
-            return;
-        }
-        Node* delNode=front;
-        if(front->next==nullptr){
-            front=nullptr;
-            rear=nullptr;
-        }else{
-            front=front->next;
-        }
-         delete delNode;
-        size--;
-    }
-};
-class minStack{
-   public: 
-   stack<long long>st;int mini;
-   void push(int x){
-     if(st.empty()){
-        st.push(x);mini=x;
-     }else{
-        if(x>=mini){
-            st.push(x);
-        }else{
-            st.push(2LL*x-mini);
-            mini=x;
-        }
-     }
-   }
-   void pop(){
-     int x=st.top();
-     if(x>=mini){
-        st.pop();
-     }else{
-        mini=2LL*mini-x;
-        st.pop();
-     }
-   }
-   int Top(){
-    int x=st.top();
-    if(x>=mini)return x;
-    return mini;
-   }
-};
-int priority(char ch){
-    if(ch=='^')return 3;
-    if(ch=='*' || ch=='/')return 2;
-    if(ch=='+' || ch=='-')return 1;
-    return 0;
-}
-string infixToPostfix(string s){
-    string ans;int n=s.size();
-    stack<char>st;
-    for(int i=0;i<n;i++){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9'))ans+=s[i];
-        else if(s[i]=='(')st.push(s[i]);
-        else if(s[i]==')'){
-            while(!st.empty() && st.top()!='('){
-                ans+=st.top();st.pop();
-            }
-            st.pop();
-        }else{
-            while(!st.empty() && ((priority(s[i])<priority(st.top())) || (priority(s[i])==priority(st.top())) && s[i]!='^')){
-                ans+=st.top();
-                st.pop();
-            }
-            st.push(s[i]);
-        }
-    }
-    while(!st.empty()){
-        ans+=st.top();st.pop();
-    }
-    return ans;
-}
-string infixToPrefix(string s){
-    int n=s.size();string ans;stack<char>st;
-    reverse(s.begin(),s.end());
-    for(int i=0;i<n;i++){
-      if(s[i]=='('){
-        s[i]=')';
-      }else if(s[i]==')'){
-        s[i]='(';
       }
+      arr[size]=val;
+      int k=size;
+      size++;
+      while(k!=0 && arr[parent(k)]>arr[k]){
+        swap(&arr[parent(k)],&arr[k]);
+        k=parent(k);
+      }
+   }
+   void heapify(int ind){
+    int smallest=ind;
+    int li=left(ind);
+    int ri=right(ind);
+    if(li<size && arr[smallest]>arr[li]){
+        smallest=li;
     }
-    for(int i=0;i<n;i++){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9'))ans+=s[i];
-        else if(s[i]=='(')st.push(s[i]);
-        else if(s[i]==')'){
-            while(!st.empty() && st.top()!='('){
-                ans+=st.top();st.pop();
-            }
-            st.pop();
-        }
-        else{
-            while(!st.empty() && ((priority(s[i])<priority(st.top())) || (priority(s[i])==priority(st.top())) && s[i]=='^')){
-                ans+=st.top();st.pop();
-            }
-            st.push(s[i]);
-        }
+    if(ri<size && arr[smallest]>arr[ri]){
+        smallest=ri;
     }
-    while(!st.empty()){
-        ans+=st.top();
-        st.pop();
+    if(ind!=smallest){
+        swap(&arr[ind],&arr[smallest]);
+        heapify(smallest);
     }
-    reverse(ans.begin(),ans.end());
-    return ans;
-}
-string postfixToInfix(string s){
-    stack<string>st;string ans;int n=s.size();
-    for(int i=0;i<n;i++){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-            string x;
-            x+=s[i];
-            st.push(x);
-        }else{
-            string b=st.top();st.pop();
-            string a=st.top();st.pop();
-            string x="("+a+s[i]+b+")";
-            st.push(x);
-        }
+   }
+   int extractMin(){
+     if(size<=0)return INT_MAX;
+     if(size==1){
+        size--;
+        return arr[0];
+     }
+     int mini=arr[0];
+     arr[0]=arr[size-1];
+     size--;
+     heapify(0);
+     return mini;
+   }
+   void decreaseKey(int i,int val){
+      if(i>=size){
+        cout<<"No such index exists yet."<<endl;
+        return ; 
+      }
+      int k=i;
+      while(k!=0 && arr[parent(k)]>arr[k]){
+        swap(&arr[parent(k)],&arr[k]);
+        k=parent(k);
+      }
+   }
+   void Delete(int i){
+    decreaseKey(i,INT_MIN);
+    extractMin();
+   }
+   int getMin(){
+    return arr[0];
+   }
+};
+bool checkIfArrayIsMinHeap(vector<int>&arr){
+    int n=arr.size();
+    for(int i=1;i<n;i++){
+        if(arr[(i-1)/2]>arr[i])return false;
     }
-    return st.top();
+    return true;
 }
-string prefixToInfix(string s){
-    string ans;stack<string>st;int n=s.size();
-    for(int i=n-1;i>=0;i--){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-            string x;
-            x+=s[i];
-            st.push(x);
-        }else{
-            string a=st.top();st.pop();
-            string b=st.top();st.pop();
-            string x="("+a+s[i]+b+")";
-            st.push(x);
-        }
-    }return st.top();
+void swap(int *x,int *y){
+    int temp=*y;
+    *y=*x;
+    *x=temp;
 }
-string postfixToPrefix(string s){
-    int n=s.size();stack<string>st;
-    for(int i=0;i<n;i++){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-            string x;
-            x+=s[i];
-            st.push(x);
-        }else{
-            string b=st.top();st.pop();
-            string a=st.top();st.pop();
-            string x=s[i]+a+b;
-            st.push(x);
-        }
-    }return st.top();
+void heapify(vector<int>&arr,int k){
+   int n=arr.size();
+   int largest=k;
+   int li=2*k+1;
+   int ri=2*k+2;
+   if(li<n && arr[largest]<arr[li]){
+    largest=li;
+   }
+   if(ri<n && arr[largest]<arr[ri]){
+    largest=ri;
+   }
+   if(largest!=k){
+    swap(&arr[largest],&arr[k]);
+    heapify(arr,largest);
+   }
 }
-string prefixToPostfix(string s){
-    int n=s.size();stack<string>st;
-    for(int i=n-1;i>=0;i--){
-        if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9')){
-            string x;
-            x+=s[i];
-            st.push(x);
-        }else{
-            string a=st.top();st.pop();
-            string b=st.top();st.pop();
-            string x=a+b+s[i];
-            st.push(x);
-        }
-    }return st.top();
+void convertMinHeap2MaxHeap(vector<int>&arr){
+   int n=arr.size();
+   for(int i=(n/2)-1;i>=0;i--){
+      heapify(arr,i);
+   }
+   for(int i=0;i<n;i++){
+    cout<<arr[i]<<" ";
+   }cout<<endl;
+   return;
 }
 int main(){
-    cout<<prefixToPostfix("/-AB*+DEF");
+    vector<int>arr={5,30,10,40,50,20,25};
+    convertMinHeap2MaxHeap(arr);
     return 0;
 }
