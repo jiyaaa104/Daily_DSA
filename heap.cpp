@@ -109,33 +109,60 @@ void swap(int *x,int *y){
    *x=*y;
    *y=temp;
 }
-void heapify(vector<int>&arr,int i){
-   int n=arr.size();
-   int largest=i;
-   int li=2*i+1,ri=2*i+2;
-   if(li<n && arr[largest]<arr[li]){
-      largest=li;
-   }
-   if(ri<n && arr[largest]<arr[ri]){
-      largest=ri;
-   }
-   if(i!=largest){
-      swap(&arr[i],&arr[largest]);
-      heapify(arr,largest);
+// void heapify(vector<int>&arr,int i){
+//    int n=arr.size();
+//    int largest=i;
+//    int li=2*i+1,ri=2*i+2;
+//    if(li<n && arr[largest]<arr[li]){
+//       largest=li;
+//    }
+//    if(ri<n && arr[largest]<arr[ri]){
+//       largest=ri;
+//    }
+//    if(i!=largest){
+//       swap(&arr[i],&arr[largest]);
+//       heapify(arr,largest);
+//    }
+// }
+// void convertMinHeap2MaxHeap(vector<int>&arr){
+//    int n=arr.size();
+//    for(int i=(n/2)-1;i>=0;i--){
+//       heapify(arr,i);
+//    }
+//    for(int i=0;i<n;i++){
+//       cout<<arr[i]<<" ";
+//    }cout<<endl;
+//    return;
+// }
+void heapifyDown(vector<int>&nums,int n,int i){
+   int largest=i,li=2*i+1,ri=2*i+2;
+   if(li<n && nums[largest]<nums[li])largest=li;
+   if(ri<n && nums[largest]<nums[ri])largest=ri;
+   if(largest!=i){
+      swap(nums[largest],nums[i]);
+      heapifyDown(nums,n,largest);
    }
 }
-void convertMinHeap2MaxHeap(vector<int>&arr){
-   int n=arr.size();
-   for(int i=(n/2)-1;i>=0;i--){
-      heapify(arr,i);
+void heapify(vector<int>&nums,int n){
+   for(int i=n/2;i>=0;i--){
+      heapifyDown(nums,n,i);
+   }
+}
+void heapSort(vector<int>&nums){
+   int n=nums.size();
+   int size=n;
+   heapify(nums,size);
+   for(int i=0;i<n;i++){
+      swap(nums[0],nums[size-1]);
+      size--;
+      heapifyDown(nums,size,0);
    }
    for(int i=0;i<n;i++){
-      cout<<arr[i]<<" ";
+      cout<<nums[i]<<" ";
    }cout<<endl;
-   return;
 }
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
-    convertMinHeap2MaxHeap(arr);
+   //  kthLargestEl(arr,1);
     return 0;
 }
