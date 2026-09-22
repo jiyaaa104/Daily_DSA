@@ -161,6 +161,17 @@ void heapSort(vector<int>&nums){
       cout<<nums[i]<<" ";
    }cout<<endl;
 }
+void kthLargestEl(vector<int>&nums,int k){
+   int n=nums.size();
+   int size=n;
+   heapify(nums,size);
+   for(int i=0;i<k-1;i++){
+      swap(nums[0],nums[size-1]);
+      size--;
+      heapifyDown(nums,size,0);
+   }
+   cout<<k<<"th Largest El : "<<nums[0]<<endl;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
