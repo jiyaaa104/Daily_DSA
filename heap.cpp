@@ -172,6 +172,29 @@ void kthLargestEl(vector<int>&nums,int k){
    }
    cout<<k<<"th Largest El : "<<nums[0]<<endl;
 }
+bool checkKSorted(vector<int>&nums,int k){
+   int n=nums.size();
+   priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+   for(int i=0;i<k+1;i++){
+      pq.push({nums[i],i});
+   }
+   vector<int>a;
+   int index=0;
+   for(int i=k+1;i<n;i++){
+     a.push_back(pq.top().first);
+     if(abs(index-pq.top().second)>k)return false;
+     index++;
+     pq.pop();
+     pq.push({nums[i],i});
+   }
+   while(!pq.empty()){
+      a.push_back(pq.top().first);
+      if(abs(index-pq.top().second)>2)return false;
+      index++;
+      pq.pop();
+   }
+   return true;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
