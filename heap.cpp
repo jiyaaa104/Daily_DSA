@@ -244,6 +244,28 @@ vector<vector<int>>kClosestPointsToOrigin(vector<vector<int>>&points,int k){
   }
   return ans;
 }
+bool checkKSorted(vector<int>nums,int k){
+   priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+   int n=nums.size();
+   for(int i=0;i<k+1;i++){
+      pq.push({nums[i],i});
+   }
+   vector<int>arr(n);int index=0;
+   for(int i=k+1;i<n;i++){
+     arr[index]=pq.top().first;
+     if(abs(index-pq.top().second)>k)return false;
+     index++;
+     pq.pop();
+     pq.push({nums[i],i});
+   }
+   while(!pq.empty()){
+      arr[index]=pq.top().first;
+      if(abs(index-pq.top().second)>k)return false;
+      index++;
+      pq.pop();
+   }
+   return true;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
