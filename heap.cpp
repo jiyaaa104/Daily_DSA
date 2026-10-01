@@ -266,6 +266,24 @@ bool checkKSorted(vector<int>nums,int k){
    }
    return true;
 }
+pair<int,int>KSmallestPrimeFraction(vector<int>&arr,int k){
+   int n=arr.size();
+   priority_queue<pair<double,pair<int,int>>,vector<pair<double,pair<int,int>>>,greater<pair<double,pair<int,int>>>>pq;
+   for(int i=0;i<n-1;i++){
+      pq.push({double(arr[i])/arr[n-1],{i,n-1}});
+   }
+   while(k--){
+      auto t=pq.top();
+      int i=t.second.first,j=t.second.second;
+      pq.pop();
+      if(k==0){
+         return {arr[i],arr[j]};
+      }
+      if(j-1>i){
+         pq.push({double(arr[i])/arr[j-1],{i,j-1}});
+      }
+   }return  {};
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
