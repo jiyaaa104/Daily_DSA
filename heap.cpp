@@ -195,6 +195,36 @@ bool checkKSorted(vector<int>&nums,int k){
    }
    return true;
 }
+struct Compare{
+   bool operator()(const pair<int,string>&a,const pair<int,string>&b){
+      if(a.first!=b.first){
+         return a.first>b.first;
+      }
+      return a.second<b.second;
+   }
+};
+vector<string> KMostFrequentWords(vector<string>&words,int k){
+   int n=words.size();
+   vector<string>ans;
+   unordered_map<string,int>mpp;
+   for(int i=0;i<n;i++){
+      mpp[words[i]]++;
+   }
+   priority_queue<pair<int,string>,vector<pair<int,string>>,Compare>pq;
+   for(auto it:mpp){
+     pq.push({it.second,it.first});
+     if(pq.size()>k)pq.pop();
+   }
+   while(!pq.empty()){
+      ans.push_back(pq.top().second);
+      pq.pop();
+   }
+   sort(ans.begin(),ans.end(),[&](const string&a,const string&b){
+      if(mpp[a]!=mpp[b])return mpp[a]>mpp[b];
+      return a<b;
+   });
+   return ans;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);

@@ -1,132 +1,187 @@
 #include<bits/stdc++.h>
 using namespace std;
 class Heap{
-  int capacity;
-  int size;
-  int * arr;
+   public:
+   int* arr;int size,capacity;
    Heap(int cap){
-    capacity=cap;
-    size=0;
-    arr=new int[capacity];
+      capacity=cap;
+      size=0;
+      arr=new int[capacity];
    }
    int parent(int i){
-    return (i-1)/2;
+      return (i-1)/2;
    }
    int left(int i){
-    return 2*i+1;
+      return 2*i+1;
    }
    int right(int i){
-    return 2*i+2;
+      return 2*i+2;
    }
-   void swap(int *x,int *y){
-    int temp=*x;
-    *x=*y;
-    *y=temp;
-   }
-   void print(){
-     for(int i=0;i<size;i++){
-        cout<<arr[i]<<" ";
-     }cout<<endl;
-   }
-   void insert(int val){
-      if(size==capacity){
-        cout<<"Binary Heap Overflow"<<endl;
-        return;
+   void printHeap(){
+      for(int i=0;i<size;i++){
+         cout<<arr[i]<<" ";
       }
-      arr[size]=val;
+      cout<<endl;
+   }
+   void swap(int *x,int * y){
+      int temp=*x;
+      *x=*y;
+      *y=temp;
+   }
+   void insert(int x){
+      if(size==capacity){
+         cout<<"No space left in heap"<<endl;
+         return;
+      }
+      arr[size]=x;
       int k=size;
       size++;
       while(k!=0 && arr[parent(k)]>arr[k]){
-        swap(&arr[parent(k)],&arr[k]);
-        k=parent(k);
+         swap(&arr[parent(k)],&arr[k]);
+         k=parent(k);
       }
    }
-   void heapify(int ind){
-    int smallest=ind;
-    int li=left(ind);
-    int ri=right(ind);
-    if(li<size && arr[smallest]>arr[li]){
-        smallest=li;
-    }
-    if(ri<size && arr[smallest]>arr[ri]){
-        smallest=ri;
-    }
-    if(ind!=smallest){
-        swap(&arr[ind],&arr[smallest]);
-        heapify(smallest);
-    }
+   void heapify(int i){
+      int smallest=i,li=2*i+1,ri=2*i+2;
+      if(li<size && arr[li]<arr[smallest])smallest=li;
+      if(ri<size && arr[ri]<arr[smallest])smallest=ri;
+      if(i!=smallest){
+         swap(&arr[i],&arr[smallest]);
+         heapify(smallest);
+      }
+   }
+   int getMin(){
+      if(size==0){
+         cout<<"Heap is empty"<<endl;
+         return INT_MAX;
+      }
+      return arr[0];
    }
    int extractMin(){
-     if(size<=0)return INT_MAX;
-     if(size==1){
-        size--;
-        return arr[0];
-     }
-     int mini=arr[0];
-     arr[0]=arr[size-1];
-     size--;
-     heapify(0);
-     return mini;
-   }
-   void decreaseKey(int i,int val){
-      if(i>=size){
-        cout<<"No such index exists yet."<<endl;
-        return ; 
+      if(size==0){
+         cout<<"Heap is empty"<<endl;
+         return INT_MAX;
       }
+      if(size==1){
+         size--;
+         return arr[0];
+      }
+      int mini=arr[0];
+      arr[0]=arr[size-1];
+      size--;
+      heapify(0);
+      return mini;
+   }
+   int decreaseKey(int i,int val){
+      if(i>=size || i<0){
+         cout<<"Invalid index passed!"<<endl;
+         return;
+      }
+      arr[i]=val;
       int k=i;
       while(k!=0 && arr[parent(k)]>arr[k]){
-        swap(&arr[parent(k)],&arr[k]);
-        k=parent(k);
+         swap(&arr[k],&arr[parent(k)]);
+         k=parent(k);
       }
    }
    void Delete(int i){
-    decreaseKey(i,INT_MIN);
-    extractMin();
-   }
-   int getMin(){
-    return arr[0];
+      decreaseKey(i,INT_MIN);
+      extractMin();
    }
 };
-bool checkIfArrayIsMinHeap(vector<int>&arr){
-    int n=arr.size();
-    for(int i=1;i<n;i++){
-        if(arr[(i-1)/2]>arr[i])return false;
-    }
-    return true;
-}
-void swap(int *x,int *y){
-    int temp=*y;
-    *y=*x;
-    *x=temp;
-}
-void heapify(vector<int>&arr,int k){
+bool checkIfArrayIsAHeap(vector<int>&arr){
    int n=arr.size();
-   int largest=k;
-   int li=2*k+1;
-   int ri=2*k+2;
-   if(li<n && arr[largest]<arr[li]){
-    largest=li;
-   }
-   if(ri<n && arr[largest]<arr[ri]){
-    largest=ri;
-   }
-   if(largest!=k){
-    swap(&arr[largest],&arr[k]);
-    heapify(arr,largest);
-   }
+   for(int i=1;i<n;i++){
+      if(arr[i]<arr[(i-1)/2])return false;
+   }return true;
 }
-void convertMinHeap2MaxHeap(vector<int>&arr){
-   int n=arr.size();
-   for(int i=(n/2)-1;i>=0;i--){
-      heapify(arr,i);
-   }
-   for(int i=0;i<n;i++){
-    cout<<arr[i]<<" ";
-   }cout<<endl;
-   return;
+// void heapifyDown(vector<int>&nums,int n,int i){
+//    int largest=i,li=2*i+1,ri=2*i+2;
+//    if(li<n && nums[largest]<nums[li])largest=li;
+//    if(ri<n && nums[largest]<nums[ri])largest=ri;
+//    if(largest!=i){
+//       swap(nums[largest],nums[i]);
+//       heapifyDown(nums,n,largest);
+//    }
+// }
+// void heapify(vector<int>&nums,int n){
+//    for(int i=n/2-1;i>=0;i--){
+//       heapifyDown(nums,n,i);
+//    }
+// }
+// void heapSort(vector<int>&nums){
+//    int n=nums.size();
+//    int size=n;
+//    heapify(nums,size);
+//    for(int i=0;i<n;i++){
+//       swap(nums[0],nums[size-1]);
+//       size--;
+//       heapifyDown(nums,size,0);
+//    }
+// }
+// int kthLargestElement(vector<int>&nums,int k){
+//    int n=nums.size();
+//    int size=n;
+//    heapify(nums,n);
+//    for(int i=0;i<k-1;i++){
+//       swap(nums[0],nums[size-1]);
+//       size--;
+//       heapifyDown(nums,size,0);
+//    }return nums[0];
+// }
+//Kth largest INTEGER in an array of strings
+bool largerString(string &a,string &b){
+   if(a.size()>b.size())return true;
+   if(a.size()<b.size())return false;
+   int i=0;
+   for(int i=0;i<a.size();i++){
+      if(a[i]>=b[i])return true;
+   }return false;
 }
+// void heapifyDown(vector<string>&nums,int n,int i){
+//    int largest=i,li=2*i+1,ri=2*i+2;
+//    if(li<n && largerString(nums[li],nums[largest]))largest=li;
+//    if(ri<n && largerString(nums[ri],nums[largest]))largest=ri;
+//    if(largest!=i){
+//       swap(nums[largest],nums[i]);
+//       heapifyDown(nums,n,largest);
+//    }
+// }
+// void heapify(vector<string>&nums,int n){
+//    for(int i=n/2-1;i>=0;i--){
+//       heapifyDown(nums,n,i);
+//    }
+// }
+// void kthlargestInteger(vector<string>&nums,int k){
+//    int n=nums.size();
+//    heapify(nums,n);
+//    int size=n;
+//    for(int i=0;i<k-1;i++){
+//       swap(nums[0],nums[size-1]);
+//       size--;
+//       heapifyDown(nums,size,0);
+//    }
+// }
+// //TOP K FREQUENT ELEMENTs
+// vector<int> kMostFrequent(vector<int>&nums,int k){
+//    int n=nums.size();
+//    vector<int>ans;
+//    unordered_map<int,int>mpp;
+//    for(int i=0;i<n;i++){
+//       mpp[nums[i]]++;
+//    }
+//    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+//    for(auto it:mpp){
+//       pq.push({it.second,it.first});
+//       if(pq.size()>k)pq.pop();
+//    }
+//    while(!pq.empty()){
+//       ans.push_back(pq.top().first);
+//       pq.pop();
+//    }
+// }
+
+
 int main(){
-    vector<int>arr={5,30,10,40,50,20,25};
-    convertMinHeap2MaxHeap(arr);
-    return 0;
+   return 0;
 }
