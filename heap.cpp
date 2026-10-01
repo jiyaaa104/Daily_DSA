@@ -225,6 +225,25 @@ vector<string> KMostFrequentWords(vector<string>&words,int k){
    });
    return ans;
 }
+vector<vector<int>>kClosestPointsToOrigin(vector<vector<int>>&points,int k){
+  int n=points.size();
+  unordered_map<int,int>mpp;
+  vector<vector<int>>ans;
+  for(int i=0;i<n;i++){
+    int d=points[i][0]*points[i][0]+points[i][1]*points[i][1];
+    mpp[i]=d;
+  }
+  priority_queue<pair<int,int>>pq;
+  for(auto it:mpp){
+     pq.push({it.second,it.first});
+     if(pq.size()>k)pq.pop();
+  }
+  while(!pq.empty()){
+     ans.push_back({points[pq.top().second][0],points[pq.top().second][1]});
+     pq.pop();
+  }
+  return ans;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
