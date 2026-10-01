@@ -284,6 +284,25 @@ pair<int,int>KSmallestPrimeFraction(vector<int>&arr,int k){
       }
    }return  {};
 }
+vector<vector<int>>KSmallestPairSum(vector<int>&a,vector<int>&b,int k){
+   int a1=a.size(),b1=b.size();
+   vector<vector<int>>ans;
+   priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
+   for(int i=0;i<a1;i++){
+      pq.push({a[i]+b[0],{i,0}});
+   }
+   while(k--){
+      auto t=pq.top();
+      int i=t.second.first,j=t.second.first;
+      pq.pop();
+      if(k>=0){
+         ans.push_back({a[i],b[j]});
+      }
+      if(j+1<b1){
+         pq.push({a[i]+b[j+1],{i,j+1}});
+      }
+   }return ans;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
