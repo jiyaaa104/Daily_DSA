@@ -303,6 +303,72 @@ vector<vector<int>>KSmallestPairSum(vector<int>&a,vector<int>&b,int k){
       }
    }return ans;
 }
+//L-621 (TASK SCHEDULER)
+//BRUTE FORCE->
+// int taskScheduler(vector<int>&tasks,int n){
+//    int t=tasks.size();
+//    vector<int>frequency(26,0);
+//    vector<int>availableAt(26,0);
+//    for(int i=0;i<t;i++){
+//       frequency[tasks[i]-'A']++;
+//    }
+//    int remaining=t,time=0;
+//    while(remaining){
+//       int chosen=-1;
+//       for(int i=0;i<26;i++){
+//          if(frequency[i]>0 && availableAt[i]>=time){
+//             if(chosen==-1 || frequency[i]>frequency[chosen]){
+//                chosen=i;
+//             }
+//          }
+//       }
+//       if(chosen==-1){
+//          time++;
+//          continue;
+//       }
+//       remaining--;
+//       availableAt[chosen]=time+n+1;
+//       frequency[chosen]--;
+//       time++;
+//    }return time;
+// }
+
+//BETTER
+int taskScheduler(vector<int>&tasks,int n){
+   vector<int>frequency(26,0);
+   int t=tasks.size();
+   for(int i=0;i<t;i++){
+      frequency[tasks[i]-'A']++;
+   }
+   int time=0;
+   priority_queue<int>pq;
+   for(int i=0;i<26;i++){
+      if(frequency[i]>0){
+         pq.push(frequency[i]);
+      }
+   }
+   while(!pq.empty()){
+      vector<int>pending;
+      int slots=n+1,used=0;
+      while(slots>0 && !pq.empty()){
+         int count=pq.top();
+         count--;
+         slots--;
+         used++;
+         if(count>0){
+            pending.push_back(count);
+         }
+      }
+      for(int i=0;i<pending.size();i++){
+         pq.push(pending[i]);
+      }
+      if(pq.empty()){
+         time+=used;
+      }else{
+         time+=n+1;
+      }
+   }return time;
+}
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
