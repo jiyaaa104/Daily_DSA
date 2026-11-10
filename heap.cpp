@@ -369,6 +369,48 @@ int taskScheduler(vector<int>&tasks,int n){
       }
    }return time;
 }
+// class DesignTwitter{
+//    private: 
+//      unordered_map<int,vector<pair<int,int>>>tweets;
+//      unordered_map<int,unordered_set<int>>following;
+//      int timestamp=0;
+//      public:
+//       DesignTwitter(){}
+//       void postTweets(int userId,int tweetId){
+//          tweets[userId].push_back({timestamp++,tweetId});
+//       }
+//       void follow(int followerId,int followeeId){
+//          if(followeeId!=followerId){
+//             following[followerId].insert(followeeId);
+//          }
+//       }
+//       void unfollow(int followerId,int followeeId){
+//          following[followerId].erase(followeeId);
+//       }  
+//       vector<int> getPostsFeed(int userId){
+//          priority_queue<tuple<int,int,int>>pq;
+//          unordered_set<int>users=following[userId];
+//          users.insert(userId);
+//          for(auto uid: users){
+//             if(!tweets[uid].empty()){
+//                int idx=tweets[uid].size()-1;
+//                int time=tweets[uid][idx].first;
+//                pq.push({time,uid,idx});
+//             }
+//          }
+//          vector<int>ans;
+//          while(!pq.empty() && ans.size()<10){
+//            auto [time,uid,idx]=pq.top();pq.pop();
+//            ans.push_back(tweets[uid][idx].second);
+//            if(idx>0){
+//              int prevIdx=idx-1;
+//              int prevTime=tweets[uid][prevIdx].first;
+//              pq.push({prevTime,uid,prevIdx});
+//            }
+//          }
+//          return ans;
+//       }
+// };
 int main(){
      vector<int>arr={5,30,10,40,50,20,25};
    //  kthLargestEl(arr,1);
