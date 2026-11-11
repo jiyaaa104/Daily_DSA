@@ -448,6 +448,27 @@ long long maximumSubsequenceScore(vector<int>&nums1,vector<int>&nums2,int k){
      }
   }return ans;
 }
+class FindMedian{
+    private:
+     priority_queue<int>left;//max heap
+     priority_queue<int,vector<int>,greater<int>>right;//min heap
+     public:
+     FindMedian(){}
+     void addNum(int num){
+      left.push(num);
+      right.push(left.top());left.pop();
+      if(right.size()>left.size()){
+         left.push(right.top());
+         right.pop();
+      }
+     }
+     double getMedian(){
+      if(left.size()>right.size()){
+         return left.top();
+      }
+      return (left.top()+(double)right.top())/2.0;
+     }
+};
 int main(){
      vector<int>arr={2, 4, 3};
    //  kthLargestEl(arr,1);
