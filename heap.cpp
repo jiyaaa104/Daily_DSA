@@ -411,8 +411,25 @@ int taskScheduler(vector<int>&tasks,int n){
 //          return ans;
 //       }
 // };
+int connectSticks(vector<int>&sticks){
+   int n=sticks.size();
+   priority_queue<int,vector<int>,greater<int>>pq;
+   for(int i=0;i<n;i++){
+      pq.push(sticks[i]);
+   }
+   int ans=0;
+   while(pq.size()>1){
+      int a= pq.top();pq.pop();
+      int b= pq.empty() ? 0 : pq.top();
+      if(b>0) pq.pop();
+      ans+=a+b;
+      pq.push(a+b);
+   }
+   return ans;
+}
 int main(){
-     vector<int>arr={5,30,10,40,50,20,25};
+     vector<int>arr={2, 4, 3};
    //  kthLargestEl(arr,1);
+   cout<<connectSticks(arr);
     return 0;
 }
