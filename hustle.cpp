@@ -907,6 +907,29 @@ vector<int> postOrderTraversal12(TreeNode* root){
         ans.push_back(s2.top()->val);s2.pop();
     }return ans;
 }
+vector<int> postOrderTraversal(TreeNode* root){
+    vector<int>ans;
+    TreeNode* curr=root;
+    stack<TreeNode*>st;
+    while(curr || !st.empty()){
+        if(curr){
+            st.push(curr);
+            curr=curr->left;
+        }else{
+            TreeNode* temp=st.top()->right;
+            if(temp)curr=temp;
+            else{
+                temp=st.top();st.pop();
+                ans.push_back(temp->val);
+                while(!st.empty() && temp==st.top()->right){
+                    temp=st.top();st.pop();
+                    ans.push_back(temp->val);
+                }
+            }
+        }
+    }
+    return ans;
+}
 int main(){
     // vector<int>nums={1,2,3,4,5,6};
     // heapSort(nums);
