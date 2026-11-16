@@ -833,6 +833,80 @@ long long maximumSubsequenceScore(vector<int>&nums1,vector<int>&nums2,int k){
         }
     }return ans;
 }
+class TreeNode{
+    public:
+    int val;TreeNode* right;TreeNode* left;
+    TreeNode(int v){
+        val=v;
+        right=left=nullptr;
+    }
+};
+vector<vector<int>> breadthFirstSearch(TreeNode* root){
+    vector<vector<int>>ans;
+    if(root==nullptr){
+      return ans;
+    }
+    queue<TreeNode*>q;
+    q.push(root);
+    while(!q.empty()){
+        vector<int>level;
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+            level.push_back(node->val);
+        }
+        ans.push_back(level);
+    }
+    return ans;
+}
+vector<int> preOrderTraversal(TreeNode* root){
+    vector<int>ans;
+    if(root==nullptr)return ans;
+    stack<TreeNode*>st;
+    st.push(root);
+    while(!st.empty()){
+       TreeNode* node=st.top();st.pop();
+       if(node->right)st.push(node->right);
+       if(node->left)st.push(node->left);
+       ans.push_back(node->val);
+    }
+    return ans;
+}
+vector<int> inOrderTraversal(TreeNode* root){
+    vector<int>ans;
+    stack<TreeNode*>st;
+    TreeNode* node=root;
+    while(true){
+       if(node){
+         st.push(node);
+         node=node->left;
+       }else{
+        if(st.empty()){
+            break;
+        }
+        node=st.top();st.pop();
+        ans.push_back(node->val);
+        node=node->right;
+       }
+    }
+    return ans;
+}
+vector<int> postOrderTraversal12(TreeNode* root){
+    stack<TreeNode*>s1,s2;
+    vector<int>ans;
+    s1.push(root);
+    while(!s1.empty()){
+        TreeNode* node=s1.top();s1.pop();
+        s2.push(node);
+        if(node->left)s1.push(node->left);
+        if(node->right)s1.push(node->right);
+    }
+    while(!s2.empty()){
+        ans.push_back(s2.top()->val);s2.pop();
+    }return ans;
+}
 int main(){
     // vector<int>nums={1,2,3,4,5,6};
     // heapSort(nums);
