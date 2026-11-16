@@ -790,6 +790,49 @@ int taskScheduler(vector<int>&tasks,int n){
         else time+=n+1;
     }return time;
 }
+class FindMedian{
+   private: 
+      priority_queue<int>left;//max Heap
+      priority_queue<int,vector<int>,greater<int>>right;//min heap
+   public:
+      FindMedian(){}
+      void addNum(int num){
+        left.push(num);
+        right.push(left.top());
+        left.pop();
+        if(right.size()>left.size()){
+            left.push(right.top());
+            right.pop();
+        }
+      }
+      double getMedian(){
+        if(left.size()>right.size()){
+            return left.top();
+        }
+        return (left.top()+(double)right.top())/2.0;
+      }   
+};
+long long maximumSubsequenceScore(vector<int>&nums1,vector<int>&nums2,int k){
+    int n=nums1.size();
+    long long ans=0,sum=0;
+    vector<pair<int,int>>v;
+    for(int i=0;i<n;i++){
+        v.push_back({nums2[i],nums1[i]});
+    }
+    sort(v.rbegin(),v.rend());
+    priority_queue<int,vector<int>,greater<int>>pq;
+    for(int i=0;i<n;i++){
+        pq.push(v[i].second);
+        sum+=v[i].second;
+        if(pq.size()>k){
+            sum-=pq.top();
+            pq.pop();
+        }
+        if(pq.size()==k){
+            ans=max(ans,v[i].first*sum);
+        }
+    }return ans;
+}
 int main(){
     // vector<int>nums={1,2,3,4,5,6};
     // heapSort(nums);
