@@ -115,6 +115,43 @@ void preInPostOrderTraversal(TreeNode* root){
         }
     }
 }
+//MAXIMUM DEPTH OF A TREE
+int maxDepth(TreeNode* root){
+    //BFS :
+    int depth=0;queue<TreeNode*>q;
+    if(root==nullptr)return depth;
+    q.push(root);
+    while(!q.empty()){
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+        }
+        depth++;
+    }return depth;
+
+    //DFS (RECURSIVE) : 
+    // if(root==nullptr)return 0;
+    // int left=maxDepth(root->left);
+    // int right=maxDepth(root->right);
+    // return max(left,right)+1;
+
+    //DFS (ITERATIVE) : 
+    // int depth=0;stack<pair<TreeNode*,int>>st;
+    // if(root==nullptr)return 0;
+    // st.push({root,1});
+    // while(!st.empty()){
+    //     auto [node,d]=st.top();st.pop();
+    //     depth=max(depth,d);
+    //     if(node->left){
+    //         st.push({node->left,1});
+    //     }
+    //     if(node->right){
+    //         st.push({node->right,1});
+    //     }
+    // }return depth;
+}
 int main()
 {
     
