@@ -28,6 +28,19 @@ vector<vector<int>> breadthFirstSearch(TreeNode* root){
      }
      return ans;
 }
+vector<int> preOrderTraversal(TreeNode* root){
+    vector<int>ans;
+    if(root==nullptr)return ans;
+    stack<TreeNode*>st;
+    st.push(root);
+    while(!st.empty()){
+        TreeNode* node=st.top();st.pop();
+        if(node->right)st.push(node->right);
+        if(node->left)st.push(node->left);
+        ans.push_back(node->val);
+    }
+    return ans;
+}
 int main()
 {
     
