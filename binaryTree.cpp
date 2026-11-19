@@ -189,6 +189,27 @@ bool pathSum1(TreeNode* root,int &targetSum){
     bool right=pathSum1(root->right,t);
     return left||right;
 }
+void checkHeight3(TreeNode* root,int &targetSum,vector<int>&current,vector<vector<int>>&ans){
+  if(root==nullptr)return;
+  current.push_back(root->val);
+  if(root->left==nullptr && root->right==nullptr){
+    if(targetSum==root->val){
+        ans.push_back(current);
+    }
+    current.pop_back();
+    return;
+  }
+  int t=targetSum-root->val;
+  checkHeight3(root->left,t,current,ans);
+  checkHeight3(root->right,t,current,ans);
+  current.pop_back();
+}
+vector<vector<int>>pathSum2(TreeNode* root,int &targetSum){
+   vector<int>current;
+   vector<vector<int>>ans;
+   checkHeight3(root,targetSum,current,ans);
+   return ans;
+}
 int main()
 {
     return 0;
