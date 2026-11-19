@@ -152,17 +152,29 @@ int maxDepth(TreeNode* root){
     //     }
     // }return depth;
 }
-int checkHeight(TreeNode* root){
+int checkHeight1(TreeNode* root){
     if(root==nullptr)return 0;
-    int leftH=checkHeight(root->left);
+    int leftH=checkHeight1(root->left);
     if(leftH==-1)return -1;
-    int rightH=checkHeight(root->right);
+    int rightH=checkHeight1(root->right);
     if(rightH==-1)return -1;
     if(abs(leftH-rightH)>1)return -1;
     return 1+max(leftH,rightH);
 }
 bool isBalancedTree(TreeNode* root){
-  return checkHeight(root)!=-1;
+  return checkHeight1(root)!=-1;
+}
+int checkHeight2(TreeNode* root,int &ans){
+    if(root==nullptr)return 0;
+    int leftH=checkHeight2(root->left,ans);
+    int rightH=checkHeight2(root->right,ans);
+    ans=max(ans,leftH+rightH);
+    return 1+max(leftH,rightH);
+}
+int diameterOfBinaryTree(TreeNode* root){
+  int ans=0;
+  checkHeight2(root,ans);
+  return ans;
 }
 int main()
 {
