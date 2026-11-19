@@ -152,6 +152,18 @@ int maxDepth(TreeNode* root){
     //     }
     // }return depth;
 }
+int checkHeight(TreeNode* root){
+    if(root==nullptr)return 0;
+    int leftH=checkHeight(root->left);
+    if(leftH==-1)return -1;
+    int rightH=checkHeight(root->right);
+    if(rightH==-1)return -1;
+    if(abs(leftH-rightH)>1)return -1;
+    return 1+max(leftH,rightH);
+}
+bool isBalancedTree(TreeNode* root){
+  return checkHeight(root)!=-1;
+}
 int main()
 {
     return 0;
