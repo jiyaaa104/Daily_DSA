@@ -210,7 +210,31 @@ vector<vector<int>>pathSum2(TreeNode* root,int &targetSum){
    checkHeight3(root,targetSum,current,ans);
    return ans;
 }
-int main()
-{
+void checkHeight4(TreeNode* root,long long &targetSum,int &count){
+    if(root==nullptr)return;
+    if(targetSum==root->val) count++;
+    long long t=targetSum-root->val;
+    checkHeight4(root->left,t,count);
+    checkHeight4(root->right,t,count);
+}
+int pathSum3(TreeNode* root,int targetSum){
+    if(root==nullptr)return 0;
+    queue<TreeNode*>q;
+    q.push(root);
+    int count=0;
+    while(!q.empty()){
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            int c=0;long long target=targetSum;
+            checkHeight4(node,target,c);
+            count+=c;
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+        }
+    }
+    return count;
+}
+int main(){
     return 0;
 }
