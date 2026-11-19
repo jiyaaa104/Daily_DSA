@@ -176,6 +176,19 @@ int diameterOfBinaryTree(TreeNode* root){
   checkHeight2(root,ans);
   return ans;
 }
+bool pathSum1(TreeNode* root,int &targetSum){
+    if(root==nullptr)return false;
+    if(root->left==nullptr && root->right==nullptr){
+        if(targetSum==root->val){
+            return true;
+        }
+        return false;
+    }
+    int t=targetSum-root->val;
+    bool left=pathSum1(root->left,t);
+    bool right=pathSum1(root->right,t);
+    return left||right;
+}
 int main()
 {
     return 0;
