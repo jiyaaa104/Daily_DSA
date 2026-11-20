@@ -282,6 +282,30 @@ bool childrenSumProperty(TreeNode* root){
     }
     return true;
 }
+vector<vector<int>> zigZagTraversal(TreeNode* root){
+    vector<vector<int>>ans;
+    if(!root)return ans;
+    queue<TreeNode*>q;
+    q.push(root);
+    bool even=false;
+    while(!q.empty()){
+        vector<int>level;int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+            level.push_back(node->val);
+        }
+        if(!even){
+            even=true;
+        }else{
+            even=false;
+            reverse(level.begin(),level.end());
+        }
+        ans.push_back(level);
+    }
+    return ans;
+}
 int main(){
     return 0;
 }
