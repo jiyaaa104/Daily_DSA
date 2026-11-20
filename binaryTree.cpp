@@ -259,6 +259,29 @@ bool isSymmetric(TreeNode* root){
     if(root==nullptr) return true;
     return SymmetryCheck(root->left,root->right);
 }
+bool childrenSumProperty(TreeNode* root){
+    if(!root)return true;
+    queue<TreeNode*>q;
+    q.push(root);
+    while(!q.empty()){
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            int l=0,r=0;
+            if(node->left){
+                q.push(node->left);
+                l=node->left->val;
+            }
+            if(node->right){
+                q.push(node->right);
+                r=node->right->val;
+            }
+            if(!node->left && !node->right)continue;
+            if(l+r!=node->val)return false;
+        }
+    }
+    return true;
+}
 int main(){
     return 0;
 }
