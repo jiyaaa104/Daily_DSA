@@ -249,6 +249,16 @@ int solve(TreeNode* root,int &ans){
     ans=max(ans,leftPath+rightPath);
     return 1+max(leftPath,rightPath);
 }
+bool SymmetryCheck(TreeNode* left,TreeNode* right){
+    if(left==nullptr && right==nullptr)return true;
+    if(left==nullptr || right==nullptr)return false;
+    if(left->val!=right->val)return false;
+    return SymmetryCheck(left->left,right->right) && SymmetryCheck(left->right,right->left);
+}
+bool isSymmetric(TreeNode* root){
+    if(root==nullptr) return true;
+    return SymmetryCheck(root->left,root->right);
+}
 int main(){
     return 0;
 }
