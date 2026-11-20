@@ -235,6 +235,20 @@ int pathSum3(TreeNode* root,int targetSum){
     }
     return count;
 }
+int solve(TreeNode* root,int &ans){
+    if(root==nullptr)return 0;
+    int left=solve(root->left,ans);
+    int right=solve(root->right,ans);
+    int leftPath=0,rightPath=0;
+    if(root->left && root->left->val==root->val){
+        leftPath=left;
+    }
+    if(root->right && root->right->val==root->val){
+       rightPath=right;
+    }
+    ans=max(ans,leftPath+rightPath);
+    return 1+max(leftPath,rightPath);
+}
 int main(){
     return 0;
 }
