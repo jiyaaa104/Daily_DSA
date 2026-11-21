@@ -306,6 +306,48 @@ vector<vector<int>> zigZagTraversal(TreeNode* root){
     }
     return ans;
 }
+bool isLeaf(TreeNode* root){
+    return root->left==nullptr && root->right==nullptr;
+}
+void addLeft(TreeNode* root,vector<int>&ans){
+   TreeNode* curr=root->left;
+   while(curr){
+     if(!isLeaf(curr)){
+        ans.push_back(curr->val);
+     }
+     if(curr->left)curr=curr->left;
+     else curr=curr->right;
+   }
+}
+void addRight(TreeNode* root,vector<int>&ans){
+    TreeNode* curr=root->right;
+    stack<TreeNode*>st;
+    while(curr){
+        if(!isLeaf(curr))st.push(curr);
+        if(curr->right)curr=curr->right;
+        else curr=curr->left;
+    }
+    while(!st.empty()){
+        ans.push_back(st.top()->val);st.pop();
+    }
+}
+void addLeaves(TreeNode* root,vector<int>&ans){
+    if(isLeaf(root)){
+        ans.push_back(root->val);
+        return;
+    }
+    if(root->left)addLeaves(root->left,ans);
+    if(root->right)addLeaves(root->right,ans);
+}
+vector<int>boundaryTraversal(TreeNode* root){
+    vector<int>ans;
+    if(!root)return ans;
+    ans.push_back(root->val);
+    addLeft(root,ans);
+    addLeaves(root,ans);
+    addRight(root,ans);
+    return  ans;
+}
 int main(){
     return 0;
 }
