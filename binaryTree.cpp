@@ -348,6 +348,23 @@ vector<int>boundaryTraversal(TreeNode* root){
     addRight(root,ans);
     return  ans;
 }
+vector<int>rightView(TreeNode* root){
+    queue<TreeNode*>q;
+    vector<int>ans;
+    if(!root)return ans;
+    q.push(root);
+    while(!q.empty()){
+        vector<int>level;
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+            level.push_back(node->val);
+        }
+        if(size>=1)ans.push_back(level[size-1]);
+    }return ans;
+}
 int main(){
     return 0;
 }
