@@ -365,6 +365,35 @@ vector<int>rightView(TreeNode* root){
         if(size>=1)ans.push_back(level[size-1]);
     }return ans;
 }
+vector<vector<int>>verticalTraversal(TreeNode* root){
+   queue<pair<TreeNode*,pair<int,int>>>nodes;
+   map<int,map<int,multiset<int>>>mpp;
+   vector<vector<int>>ans;
+   if(!root)return ans;
+   nodes.push({root,{0,0}});
+   while(!nodes.empty()){
+    auto p=nodes.front();nodes.pop();
+    int vertical=p.second.first,level=p.second.second;
+    TreeNode* node=p.first;
+    mpp[vertical][level].insert(node->val);
+    if(node->left){
+        nodes.push({node->left,{vertical-1,level+1}});
+    }
+    if(node->right){
+        nodes.push({node->right,{vertical+1,level+1}});
+    }
+   }
+   for(auto& verticalEntry:mpp){
+    vector<int>verticalVal;
+    for(auto& levelEntry:verticalEntry.second){
+        for(int value:levelEntry.second){
+            verticalVal.push_back(value);
+        }
+    }
+    ans.push_back(verticalVal);
+   }
+   return ans;
+}
 int main(){
     return 0;
 }
