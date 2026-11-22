@@ -450,6 +450,25 @@ vector<int> topView(TreeNode* root){
     }
     return ans;
 }
+vector<int> bottomView(TreeNode* root){
+    vector<int>ans;
+    if(!root)return ans;
+    queue<pair<TreeNode*,pair<int,int>>>nodes;
+    map<int,int>mpp;
+    nodes.push({root,{0,0}});
+    while(!nodes.empty()){
+        auto p=nodes.front();nodes.pop();
+        int vertical=p.second.first,level=p.second.second;
+        TreeNode* node=p.first;
+        mpp[vertical]=node->val;
+        if(node->left)nodes.push({node->left,{vertical-1,level+1}});
+        if(node->right)nodes.push({node->right,{vertical+1,level+1}});
+    }
+    for(auto it:mpp){
+        ans.push_back(it.second);
+    }
+    return ans;
+}
 int main(){
     return 0;
 }
