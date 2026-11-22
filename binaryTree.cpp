@@ -469,6 +469,26 @@ vector<int> bottomView(TreeNode* root){
     }
     return ans;
 }
+void path(TreeNode* root,vector<int>&current,vector<vector<int>>&ans){
+    if(!root)return;
+    if(root->left==nullptr && root->right==nullptr){
+        current.push_back(root->val);
+        ans.push_back(current);
+        current.pop_back();
+        return;
+    }
+    current.push_back(root->val);
+    if(root->left)path(root->left,current,ans);
+    if(root->right)path(root->right,current,ans);
+    current.pop_back();
+}
+vector<vector<int>> allPaths(TreeNode* root){
+   vector<vector<int>>ans;
+   if(!root)return;
+   vector<int>current;
+   path(root,current,ans);
+   return ans; 
+}
 int main(){
     return 0;
 }
