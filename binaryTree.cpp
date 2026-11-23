@@ -500,6 +500,26 @@ TreeNode* lowestCommonAncestor(TreeNode* root,TreeNode* p,TreeNode* q){
     if(left)return left;
     return right;
 }
+int maxWidth(TreeNode* root){
+    int ans=0;
+    if(!root)return ans;
+    queue<pair<TreeNode*,long long>>q;
+    q.push({root,0});
+    while(!q.empty()){
+        int size=q.size(),first,last,minInd=q.front().second;
+        for(int i=0;i<size;i++){
+            int currInd=q.front().second-minInd;
+            TreeNode* node=q.front().first;
+            q.pop();
+            if(i==0)first=currInd;
+            if(i==size-1)last=currInd;
+            if(node->left)q.push({node->left,2LL*currInd+1});
+            if(node->right)q.push({node->right,2LL*currInd+2});
+        }
+        ans=max(ans,last-first+1);
+    }
+    return ans;
+}
 int main(){
     return 0;
 }
