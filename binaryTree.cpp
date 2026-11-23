@@ -520,6 +520,55 @@ int maxWidth(TreeNode* root){
     }
     return ans;
 }
+void parentTrack(TreeNode* root,unordered_map<TreeNode*,TreeNode*>&parent){
+    queue<TreeNode*>q;
+    q.push(root);
+    while(!q.empty()){
+        int size=q.size();
+        for(int i=0;i<size;i++){
+            TreeNode* node=q.front();q.pop();
+            if(node->left){
+                parent[node->left]=node;
+            }
+            if(node->right){
+                parent[node->right]=node;
+            }
+        }
+    }
+}
+vector<int> kDistance(TreeNode* root,TreeNode* target,int k){
+    vector<int>ans;
+    unordered_map<TreeNode*,TreeNode*>parent;
+    unordered_map<TreeNode*,bool>visited;
+    queue<TreeNode*>q;
+    q.push(target);
+    int currSize=0;
+    visited[target]=true;
+    while(!q.empty()){
+       int size=q.size();
+       if(currSize++==k)break;
+       for(int i=0;i<size;i++){
+         TreeNode* node=q.front();
+         q.pop();
+         if(node->left && !visited[node->left]){
+            q.push(node->left);
+            visited[node->left]=true;
+         }
+         if(node->right && !visited[node->right]){
+            q.push(node->right);
+            visited[node->right]=true;
+         }
+         if(parent[node] && !visited[parent[node]]){
+            q.push(parent[node]);
+            visited[parent[node]]=true;
+         }
+       }
+    }
+    while(!q.empty()){
+        ans.push_back(q.front()->val);q.pop();
+    }
+    return ans;
+}
 int main(){
     return 0;
 }
