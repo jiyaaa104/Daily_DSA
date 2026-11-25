@@ -590,6 +590,27 @@ int countNodes(TreeNode* root){
     if(left==right)return (1<<left)-1;
     return 1+countNodes(root->left)+countNodes(root->right);
 }
+// TreeNode* prev=nullptr;
+// void flatten(TreeNode* root){
+//    if(!root)return;
+//    flatten(root->right);
+//    flatten(root->left);
+//    root->right=prev;
+//    root->left=nullptr;
+//    prev=root;
+// }
+void flatten(TreeNode* root){
+   stack<TreeNode*>st;
+   st.push(root);
+   TreeNode* curr;
+   while(!st.empty()){
+     curr=st.top();st.pop();
+     if(curr->right)st.push(curr->right);
+     if(curr->left)st.push(curr->left);
+     if(!st.empty())curr->right=st.top();
+     curr->left=nullptr;
+   }
+}
 int main(){
     return 0;
 }
