@@ -569,6 +569,27 @@ vector<int> kDistance(TreeNode* root,TreeNode* target,int k){
     }
     return ans;
 }
+int leftHeight(TreeNode* root){
+    TreeNode* node=root;int l=0;
+    while(node){
+        node=node->left;
+        l++;
+    }return l;
+}
+int rightHeight(TreeNode* root){
+    TreeNode* node=root;int r=0;
+    while(node){
+        node=node->right;
+        r++;
+    }
+    return r;
+}
+int countNodes(TreeNode* root){
+    if(!root)return 0;
+    int left=leftHeight(root),right=rightHeight(root);
+    if(left==right)return (1<<left)-1;
+    return 1+countNodes(root->left)+countNodes(root->right);
+}
 int main(){
     return 0;
 }
