@@ -629,6 +629,24 @@ TreeNode* buildTree1(vector<int>&preorder,vector<int>&inorder){
     TreeNode* root=construct1(preorder,0,n-1,inorder,0,n-1,mpp);
     return root;
 }
+TreeNode* construct(vector<int>&postorder,int pstart,int pend,vector<int>&inorder,int istart,int iend,unordered_map<int,int>mpp){
+    if(pstart>pend || istart>iend)return nullptr;
+    TreeNode* root=new TreeNode(postorder[pend]);
+    int inroot=mpp[root->val];
+    int numsleft=inroot-istart;
+    root->left=construct(postorder,pstart,pstart+numsleft-1,inorder,istart,inroot-1,mpp);
+    root->right=construct(postorder,pstart+numsleft,pend-1,inorder,inroot+1,iend,mpp);
+    return root;
+}
+TreeNode* buildTree(vector<int>&postorder,vector<int>&inorder){
+    int n=inorder.size();
+    unordered_map<int,int>mpp;
+    for(int i=0;i<n;i++){
+        mpp[inorder[i]]=i;
+    }
+    TreeNode* root=construct(postorder,0,n-1,inorder,0,n-1,mpp);
+    return root;
+}
 int main(){
     return 0;
 }
